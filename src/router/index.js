@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import PlatformOverview from "@/views/admin/PlatformOverview.vue";
+import ClaimReview from "@/views/admin/ClaimReview.vue";
+import PlatformScholars from "@/views/admin/PlatformScholars.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,7 +54,12 @@ const router = createRouter({
     {
       path:'/admin',
       name:'admin',
-      component: () => import('../views/user/Admin.vue')
+      component: () => import('../views/admin/Admin.vue'),
+      children: [
+        { path: "overview", name: "overview", component: PlatformOverview },
+        { path: "review", name: "review", component: ClaimReview },
+        { path: "scholars", name: "scholars", component: PlatformScholars },
+      ],
     },
     {
       path:'/login',
