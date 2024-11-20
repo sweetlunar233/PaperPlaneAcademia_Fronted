@@ -1,6 +1,6 @@
 <!-- 文章详情页面 -->
 <template >
-    <div style="background-color: white">
+    <div style="background-color:#EBEEF5">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
