@@ -1,7 +1,7 @@
 <template>
-    <div style="line-height: 160px; background-color: lightgray; text-align: center;">顶部组件</div>
-  
+  <h1 style="color:var(--text-color);font-size:24px;padding-left:20vh">学者身份认证</h1>
     <div class="authentication">
+        
       <el-row class="info-div" style="padding: 30px 0px 30px 0px;">
 
         <el-row justify="center" style="width: 100vh; height: 60px; margin-right:10px; padding-top:20px">
@@ -190,7 +190,7 @@
   export default {
     data() {
       return {
-        step: 2,
+        step: 1,
         steps: ["个人信息", "学术成果", "等待审核"],
         formData: {
             name: '',
@@ -295,6 +295,7 @@
         }, 
     },
     goHome() {
+        this.$router.push("/home");
     },
 
   created() {
