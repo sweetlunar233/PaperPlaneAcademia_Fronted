@@ -166,5 +166,67 @@ initHome(userId.value);
 </template>
 
 <style scoped>
+.home {
+  min-width: 1100px;
+}
 
+.home .title-and-input {
+  padding-left: 7%;
+  padding-right: 10%;
+  text-align: left;
+}
+
+.home .background {
+  position:absolute;
+  width:100%;
+  height:100%;
+  left:0;
+  z-index:-1;
+  object-fit: cover;
+}
+
+.home .input-box {
+  margin-top: 60px;
+}
+
+.home .input-box >>> .el-input.is-active .el-input__inner, .el-input__inner:focus {
+  border: 5px solid #409EFF;
+}
+
+.home .input-box >>> .el-input__inner {
+  height: 50px;
+}
+
+.home .input-box >>> .el-input-group__append {
+  background-color: #409EFF;
+  color: white;
+  vertical-align: middle;
+  display: table-cell;
+  position: relative;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  padding: 0 20px;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.home .input-box >>> .el-input-group__append:hover {
+  background-color: #52a9ff;
+}
+
+.home .input-box >>> .el-input-group--prepend {
+  border-radius: 6px 0 0 6px;
+}
+
+.home .title-and-input .input-box button {
+  color: white;
+}
+
+.home .title {
+  font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif;
+  font-size: 60px;
+  margin-top: 160px;
+  color: white;
+  font-weight: 600;
+}
 </style>
