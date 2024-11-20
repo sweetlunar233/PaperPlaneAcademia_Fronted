@@ -14,4 +14,4 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.use(ElementPlus).use(router)
 
-app.mount('#app')
+app.use(ElementPlus).mount('#app')
