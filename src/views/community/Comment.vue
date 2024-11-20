@@ -7,9 +7,9 @@
 
     <el-main>
       <!-- 文章详情 -->
-      <el-card style="margin-bottom: 16px;">
+      <el-card style="margin-bottom: 16px; background-color: #f0f8ff;">
         <el-row gutter="0" type="flex" align="middle">
-          <el-col :span="4" >
+          <el-col :span="3" >
             <el-image
               style=" width: 100%;display: flex; justify-content: center;"
               :src="article.image"
@@ -31,6 +31,11 @@
             <p style="color: #000; font-size: 12px; margin-top: 8px;font:bold;">
               {{ article.author }}
             </p>
+            
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
             <p style="color: #000; font-size: 12px; margin-top: 8px; font-style: italic;">
               {{ article.description }}
             </p>
@@ -40,7 +45,7 @@
 
       <!-- 发表评论 -->
 
-      <el-card style="margin-bottom: 16px; width: 80%;">
+      <el-card style="margin-bottom: 16px; width: 80%; background-color: #f5f5f5;">
         <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
           发表评论
         </h2>
@@ -59,7 +64,7 @@
       </el-card>
       
       <!-- 评论列表 -->
-      <el-card style="width: 80%; margin-top: 20px;">
+      <el-card style="width: 80%; margin-top: 20px; background-color: #f5f5f5;">
   <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
     评论
   </h2>
@@ -151,7 +156,7 @@ export default {
       replyingTo: null, // 当前正在回复的评论ID
       article: {
         id: 101,
-        image: "src/assets/images/bookpic.png", // 文章图片链接
+        image: "src/assets/images/plane.png", // 文章图片链接
         title: "AI Security Continuum: Concept and Challenges", // 文章标题
         time: "2024-4-14", // 文章时间
         author: "Hironori Washizaki; Nobukazu Yoshioka", //作者
