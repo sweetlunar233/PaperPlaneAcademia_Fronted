@@ -1,7 +1,33 @@
 <template>
   <div class="search-container">
     <el-affix class="search-filters">
-      <p>检索条件组件</p>
+      <div class="block">
+        <div class="filter-title">关键词</div>
+        <div class="filter-selections">
+        <el-checkbox-group v-model="selectedKeywords" fill="var(--button-color)">
+          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="var(--button-color)"></el-checkbox>
+        </el-checkbox-group></div>
+      </div>
+
+      <div class="block"> 
+        <div class="filter-title">发表年份</div>
+        <div class="filter-selections">
+        <el-date-picker
+          v-model="selectedYears"
+          type="years"
+          placeholder="选择一个或多个年份"
+          @clear="selectedYears=[]"
+        /></div>
+      </div>
+
+      <div class="block">
+        <div class="filter-title">作者单位</div>
+        <div class="filter-selections">
+        <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)">
+          <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
+        </el-checkbox-group>
+      </div>
+      </div>
     </el-affix>
 
     <div class="results-section">
@@ -26,7 +52,7 @@
       </div>
 
         <div 
-          v-for="(paper, index) in results" 
+          v-for="(paper, index) in showRes" 
           :key="index" 
           class="result-item"
           @click="viewPaper(paper)"
@@ -81,11 +107,20 @@
 import { ref, onMounted, watch } from 'vue';
 
 const results = ref([]);
+const showRes = ref([]);
 const loading = ref(false);
 const currentPage = ref(1);
 const totalPages = ref(1);
+
 const sortBy = ref(0);
 const sortDown = ref(0);
+
+const allKeywords = ref([]);
+const allAuthorOrganizations = ref([]);
+
+const selectedKeywords = ref([]);
+const selectedYears = ref([]);
+const selectedAuthors = ref([]);
 
 const citationColor = (citations) => {
   if (citations >= 50) {
@@ -103,29 +138,71 @@ const fetchResults = async () => {
   loading.value = true;
 
   const response = await new Promise((resolve) =>
-    setTimeout(() => {
-      const mockData = {
-        totalResults: 20,
-        papers: Array.from({ length: 10 }, (_, index) => ({
-          title: `长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题 ${index + 1 + (currentPage.value - 1) * 10}`,
-          date: `2023-08-${index + 1}`,
-          journal: '期刊名',
-          citations: Math.floor(Math.random() * 100),
+  setTimeout(() => {
+    const mockData = {
+      //测试数据，均为随机生成
+      totalResults: 25,
+      papers: Array.from({ length: 10 }, (_, index) => {
+        let year = 2022 + (index % 5);
+        let month = String(index % 12 + 1).padStart(2, '0');
+        let date = `${year}-${month}-01`;
+
+        let citations = Math.floor(Math.random() * 100);
+
+        let organizations = [
+          '北京航空航天大学',
+          '清华大学',
+          '中国科学院',
+          '上海交通大学',
+          '复旦大学',
+        ];
+        let randomOrg = organizations[index % organizations.length];
+
+        let keywords = [
+          '人工智能', '深度学习', '自然语言处理', '机器学习', '数据分析',
+          '大数据', '计算机视觉', '图像处理', '算法优化', '自动化',
+        ];
+        let selectedKeywords = [
+          keywords[index % keywords.length],
+          keywords[(index + 1) % keywords.length],
+        ];
+
+        return {
+          title: `长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题 ${index + 1}`,
+          date: date,
+          journal: `期刊名${index + 1}`,
+          citations: citations,
           authors: [
-            { id: index, name: `作者` },
-            { id: index + 1, name: `长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长作者作者 ${index + 2}` },
+            { id: index, name: `作者 ${index + 1}`, organization: randomOrg },
+            { id: index + 1, name: `作者 ${index + 2}`, organization: randomOrg },
           ],
-          keywords: ['关键词', '关键', '关键111111111'],
-        })),
-      };
+          keywords: selectedKeywords,
+        };
+      }),
+    };
 
       resolve(mockData);
     }, 1000)
   );
 
   results.value = response.papers;
+  showRes.value = response.papers;
   totalPages.value = Math.ceil(response.totalResults / 10);
+  allKeywords.value = Array.from(new Set(response.papers.flatMap(paper => paper.keywords)));
+  allAuthorOrganizations.value = Array.from(new Set(response.papers.flatMap(paper => paper.authors.map(author => author.organization))));
   loading.value = false;
+};
+
+const filterResults = () => {
+  showRes.value = results.value.filter(paper => {
+    let years = selectedYears.value.map(date => date.getFullYear());
+    let paperYear = parseInt(paper.date.slice(0, 4), 10);
+    const keywordMatch = selectedKeywords.value.length === 0 || paper.keywords.some(keyword => selectedKeywords.value.includes(keyword));
+    const yearMatch = selectedYears.value.length === 0 || years.includes(paperYear);
+    const authorMatch = selectedAuthors.value.length === 0 || paper.authors.some(author => selectedAuthors.value.includes(author.organization));
+
+    return keywordMatch && yearMatch && authorMatch;
+  });
 };
 
 const goToPage = (page) => {
@@ -156,6 +233,17 @@ watch([sortBy], () => {
   fetchResults();
 });
 
+watch([selectedKeywords, selectedYears, selectedAuthors], () => {
+  filterResults();
+  console.log('selectedKeywords:', selectedKeywords.value);
+  console.log('selectedYears:', selectedYears.value);
+  console.log('selectedAuthors:', selectedAuthors.value);
+
+  currentPage.value = 1
+  fetchResults
+
+});
+
 onMounted(() => {
   fetchResults();
 });
@@ -165,6 +253,7 @@ onMounted(() => {
 
 :root {
   --theme-color: #3f389d;
+  --mid-color:#665fc7;
   --light-color: #e9e5fe;
   --back-color: #ffffff;
   --button-color:#bfb5f0;
@@ -172,9 +261,9 @@ onMounted(() => {
   --deep-shadow:rgba(108, 65, 156, 0.311);
   --gray-color:#cbc7db;
   --dark-color: #8d86a8;
-  --secondary-color: #ecfff5;
-  --second-text:#212121;
-  --text-color: #251c57;
+  --secondary-color: #ecfffb;
+  --second-text:#000000aa;
+  --text-color: #282829;
   --light-text-color: #4f4454;
 }
 
@@ -186,9 +275,10 @@ onMounted(() => {
 .search-filters {
   width: 250px;
   min-width: 250px;
-  padding-right: 20px;
+  max-width: 250px;
   border-right: 2px solid var(--gray-color);
   position: sticky;
+
 }
 
 .results-section {
@@ -250,7 +340,7 @@ onMounted(() => {
   font-size: 15px;
   display: flex;
   align-items: center;
-  color: var(--dark-color);
+  color: var(--mid-color);
   margin-left:10px;
 }
 
@@ -361,5 +451,22 @@ onMounted(() => {
 
 .pagination span {
   align-self: center;
+}
+
+.block{
+  padding-top:20px;
+}
+
+.filter-title{
+  background-color: var(--button-color);
+  padding:10px 10px 10px 10px;
+  margin-bottom: 10px;
+  margin-right: 15px;
+  border-radius: 5px;
+  color: var(--back-color);
+}
+.filter-selections{
+  padding-left:10px;
+  margin-right: 20px;
 }
 </style>
