@@ -161,14 +161,14 @@ onMounted(() => {
 :root {
   --theme-color: #3f389d;
   --light-color: #e9e5fe;
-  --back-color: #fefaff;
+  --back-color: #ffffff;
   --button-color:#bfb5f0;
   --shadow-color:rgba(121, 68, 183, 0.185);
   --deep-shadow:rgba(108, 65, 156, 0.311);
   --gray-color:#cbc7db;
   --dark-color: #8d86a8;
-  --secondary-color: #ecfbff;
-  --second-text:#0c4bd4;
+  --secondary-color: #ecfff5;
+  --second-text:#212121;
   --text-color: #251c57;
   --light-text-color: #4f4454;
 }
@@ -231,6 +231,7 @@ onMounted(() => {
 .paper-title {
   font-size: 22px;
   margin: 0 0 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--gray-color);
 }
 
