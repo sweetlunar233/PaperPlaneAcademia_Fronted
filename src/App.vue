@@ -121,6 +121,11 @@ export default {
 };
 </script>
 
-<style scoped>
-/* 样式与之前一致 */
+<style>
+html {
+  /*防止滚动条导致页面滚动，勿删*/
+  overflow-y: scroll;
+}
+
+
 </style>

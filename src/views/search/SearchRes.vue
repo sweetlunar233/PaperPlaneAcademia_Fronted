@@ -311,7 +311,7 @@ onMounted(() => {
   margin-bottom: 15px;
   border-radius: 5px;
   background-color: var(--back-color);
-  width: 96%;
+  width: 96.5%;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 5px var(--shadow-color);
@@ -319,7 +319,7 @@ onMounted(() => {
 }
 
 .result-item:hover {
-  transform: scale(1.015, 1.05);
+  transform: scale(1.015, 1.02);
   box-shadow: 0 2px 10px var(--deep-shadow);
 }
 
