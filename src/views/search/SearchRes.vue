@@ -39,7 +39,11 @@
               <span class="paper-journal"><i>{{ paper.journal }}</i></span>
             </div>
             <div class="paper-citations">
-              <span :style="{ color: citationColor(paper.citations) }">被引次数: {{ paper.citations }}</span>
+              
+              <span :style="{ color: citationColor(paper.citations) }">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16"><path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/></svg>
+                被引次数: {{ paper.citations }}
+              </span>
             </div>
           </div>
           <div class="paper-authors">
@@ -56,7 +60,7 @@
 
           <div class="action-buttons" >
             <button @click="collectPaper(paper)" class="action-btn"> <el-icon :size="18"><Star /></el-icon></button>
-            <button @click="quotePaper(paper)" class="action-btn"><el-icon :size="18"><Share /></el-icon></button>
+            <button @click="quotePaper(paper)" class="action-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16"><path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/></svg></button>
             <button @click="downloadPaper(paper)" class="action-btn"><el-icon :size="18"><Download /></el-icon></button>
           </div>
         </div>
@@ -231,7 +235,7 @@ onMounted(() => {
 
 .paper-title {
   font-size: 20px;
-  margin: 0 0 10px;
+  margin: 5px 0 10px 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--gray-color);
 }
@@ -243,9 +247,11 @@ onMounted(() => {
 }
 
 .paper-date-journal {
+  font-size: 15px;
   display: flex;
   align-items: center;
   color: var(--dark-color);
+  margin-left:10px;
 }
 
 .separator {
@@ -259,7 +265,8 @@ onMounted(() => {
 }
 
 .paper-authors {
-  margin-top: 10px;
+  margin-top:-10px;
+  margin-left:10px;
 }
 
 .author {
