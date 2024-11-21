@@ -1,5 +1,4 @@
 <template>
-  <div style="line-height: 160px; background-color: lightgray; text-align: center;">顶部组件</div>
   <div class="search-container">
     <el-affix class="search-filters">
       <p>检索条件组件</p>

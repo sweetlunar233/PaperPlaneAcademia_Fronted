@@ -1,5 +1,4 @@
 <template>
-    <div style="line-height: 160px; background-color: lightgray; text-align: center;">顶部组件</div>
     <div class="search-container">
         <h1 style="color:var(--text-color);">学者搜索结果</h1>
   
