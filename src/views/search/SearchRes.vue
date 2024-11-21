@@ -49,7 +49,8 @@
           </div>
           <div class="paper-keywords">
             <span v-for="(keyword, idx) in paper.keywords" :key="idx" class="keyword">
-              <i class="keyword-icon">#</i> {{ keyword }}
+              <!-- <i class="keyword-icon">#</i>  -->
+              {{ keyword }}
             </span>
           </div>
 
@@ -229,7 +230,7 @@ onMounted(() => {
 }
 
 .paper-title {
-  font-size: 22px;
+  font-size: 20px;
   margin: 0 0 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--gray-color);
