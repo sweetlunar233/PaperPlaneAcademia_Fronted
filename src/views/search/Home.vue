@@ -1,7 +1,5 @@
 <!-- 首页 -->
 <script setup>
-import PageHeader from "../../components/PageHeader.vue";
-import Articles from "../../components/Articles.vue";
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -11,20 +9,49 @@ import { GetTopArticles, GetRecommendedArticles } from '../../api/home.js'
 const searchValue = ref("");
 const topOrRec = ref("hot-gate-artiles");
 const top_articles = ref([
-    {
-
-    }
+  {
+    authors: [
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+    ],
+    paperId: "123456",
+    paperTitle: "ABCDE",
+    year: "2024-11-21",
+    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
+    collectNum: 25,
+    citationNum: 35,
+  }
 ]);
 const recommended_articles = ref([
-    {
-
-    }
+  {
+    authors: [
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+    ],
+    paperId: "123456",
+    paperTitle: "ABCDE",
+    year: "2024-11-21",
+    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
+    collectNum: 25,
+    citationNum: 35,
+  }
 ]);
 
-const userId = ref("");
 const internalInstance = getCurrentInstance()
 const internalData = internalInstance.appContext.config.globalProperties
-userId.value = internalData.$cookies.get('userId') // 后面的为之前设置的cookies的名字
+const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
 
 const goSearch = () => {
     router.push({
@@ -36,8 +63,8 @@ const goSearch = () => {
 }
 
 const initHome = (userId) => {
-    top_articles.value = [];
-    recommended_articles.value = [];
+    // top_articles.value = [];
+    // recommended_articles.value = [];
     var promise = GetTopArticles(userId);
     promise.then((result)=>{
         result.data.forEach(element => {
@@ -61,10 +88,10 @@ initHome(userId.value);
 <div class="home">
     <!-- 背景图 -->
     <div class="background">
-        <img src="" alt="" class="background-img">
+        <img src="@/assets/images/bg.png" alt="" class="background-img">
     </div>
     <!-- 导航栏 -->
-    <PageHeader></PageHeader>
+    <!-- <PageHeader></PageHeader> -->
     <!-- 搜索框 -->
     <div class="main">
         <div class="title-and-input">
@@ -154,10 +181,62 @@ initHome(userId.value);
         <div class="recommend">
             <el-tabs v-model="topOrRec">
                 <el-tab-pane label="热门文献" name="hot-gate-articles" style="text-align: left">
-                <Articles :articles="top_articles"></Articles>
+                    <div class="articles">
+                        <div class="articles-body">
+                            <div v-for="(article, index) in top_articles" v-bind:key="index">
+                                <div style="text-align: left">
+                                    <div style="margin-bottom: 10px">
+                                        <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
+                                    </div>
+                                    <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
+                                        <span @click="gotoScholar(author.userId)">{{ author.userName }}</span>
+                                        <span v-if="index1 < article.authors.length-1"></span>
+                                    </span>
+                                    <span class="publish-year"> · {{ article.year }}</span>
+                                </div>
+
+                                <div style="text-align:left;margin-top:10px;">
+                                    <span class="abstract">{{ FormatString(article.abstract) }}</span>
+                                </div>
+
+                                <div class="citation-count">
+                                    <span>{{ article.collectNum }}&nbsp;被收藏</span>
+                                    <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
+                                </div>
+
+                                <el-divider v-if="index<articles.length - 1"></el-divider>
+                            </div>
+                        </div>
+                    </div>
                 </el-tab-pane>
                 <el-tab-pane label="推荐文献" name="push-bitch-articles" style="text-align: left">
-                <Articles :articles="recommended_articles"></Articles>
+                  <div class="articles">
+                        <div class="articles-body">
+                            <div v-for="(article, index) in recommended_articles" v-bind:key="index">
+                                <div style="text-align: left">
+                                    <div style="margin-bottom: 10px">
+                                        <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
+                                    </div>
+                                    <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
+                                        <span @click="gotoScholar(author.userId)">{{ author.userName }}</span>
+                                        <span v-if="index1 < article.authors.length-1"></span>
+                                    </span>
+                                    <span class="publish-year"> · {{ article.year }}</span>
+                                </div>
+
+                                <div style="text-align:left;margin-top:10px;">
+                                    <span class="abstract">{{ FormatString(article.abstract) }}</span>
+                                </div>
+
+                                <div class="citation-count">
+                                    <span>{{ article.collectNum }}&nbsp;被收藏</span>
+                                    <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
+                                </div>
+
+                                <el-divider v-if="index<articles.length - 1"></el-divider>
+                            </div>
+                        </div>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -187,35 +266,6 @@ initHome(userId.value);
 
 .home .input-box {
   margin-top: 60px;
-}
-
-.home .input-box >>> .el-input.is-active .el-input__inner, .el-input__inner:focus {
-  border: 5px solid #409EFF;
-}
-
-.home .input-box >>> .el-input__inner {
-  height: 50px;
-}
-
-.home .input-box >>> .el-input-group__append {
-  background-color: #409EFF;
-  color: white;
-  vertical-align: middle;
-  display: table-cell;
-  position: relative;
-  border: none;
-  border-radius: 0 6px 6px 0;
-  padding: 0 20px;
-  width: 1px;
-  white-space: nowrap;
-}
-
-.home .input-box >>> .el-input-group__append:hover {
-  background-color: #52a9ff;
-}
-
-.home .input-box >>> .el-input-group--prepend {
-  border-radius: 6px 0 0 6px;
 }
 
 .home .title-and-input .input-box button {
@@ -260,22 +310,6 @@ initHome(userId.value);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04)
 }
 
-.home >>> .el-tabs__item{
-  padding-left: 20px;
-  height: 45px;
-  font-size: medium;
-}
-
-.home >>> .el-tabs__item.is-active{
-  color: #00b1fd;
-  font-weight: 650;
-}
-
-.home >>> .el-tabs__active-bar{
-  transition: all 0.3s;
-  background-color: #00b1fd;
-}
-
 .home .main .el-col {
   border-radius: 4px ;
 }
@@ -311,4 +345,40 @@ initHome(userId.value);
   transition: all 1s ease 0s;
 }
 
+
+.author-name {
+    color: #2d94d4;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    cursor: pointer;
+    font-family: Tahoma,fantasy;
+}
+
+.abstract {
+    cursor: pointer;
+    font-family: Georgia, Lato-Regular,Lato,sans-serif;
+    font-size: 15px;
+    line-height: 22px;
+    color: #262625;
+}
+
+.citation-count {
+    margin-top: 10px;
+    font-family: "Trebuchet MS", fantasy;
+    font-size: 13px;
+    font-weight: 400;
+    color: #73716f;
+    line-height: 22px;
+}
+
+.publish-year {
+    color:grey;
+    font-size: 14px;
+}
 </style>
