@@ -1,7 +1,33 @@
 <template>
   <div class="search-container">
     <el-affix class="search-filters">
-      <p>检索条件组件</p>
+      <div class="block">
+        <div class="filter-title">关键词</div>
+        <div class="filter-selections">
+        <el-checkbox-group v-model="selectedKeywords" fill="var(--button-color)">
+          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="var(--button-color)"></el-checkbox>
+        </el-checkbox-group></div>
+      </div>
+
+      <div class="block"> 
+        <div class="filter-title">发表年份</div>
+        <div class="filter-selections">
+        <el-date-picker
+          v-model="selectedYears"
+          type="years"
+          placeholder="选择一个或多个年份"
+          @clear="selectedYears=[]"
+        /></div>
+      </div>
+
+      <div class="block">
+        <div class="filter-title">作者单位</div>
+        <div class="filter-selections">
+        <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)">
+          <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
+        </el-checkbox-group>
+      </div>
+      </div>
     </el-affix>
 
     <div class="results-section">
@@ -26,7 +52,7 @@
       </div>
 
         <div 
-          v-for="(paper, index) in results" 
+          v-for="(paper, index) in showRes" 
           :key="index" 
           class="result-item"
           @click="viewPaper(paper)"
@@ -39,7 +65,11 @@
               <span class="paper-journal"><i>{{ paper.journal }}</i></span>
             </div>
             <div class="paper-citations">
-              <span :style="{ color: citationColor(paper.citations) }">被引次数: {{ paper.citations }}</span>
+              
+              <span :style="{ color: citationColor(paper.citations) }">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16"><path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/></svg>
+                被引次数: {{ paper.citations }}
+              </span>
             </div>
           </div>
           <div class="paper-authors">
@@ -49,13 +79,14 @@
           </div>
           <div class="paper-keywords">
             <span v-for="(keyword, idx) in paper.keywords" :key="idx" class="keyword">
-              <i class="keyword-icon">#</i> {{ keyword }}
+              <!-- <i class="keyword-icon">#</i>  -->
+              {{ keyword }}
             </span>
           </div>
 
           <div class="action-buttons" >
             <button @click="collectPaper(paper)" class="action-btn"> <el-icon :size="18"><Star /></el-icon></button>
-            <button @click="quotePaper(paper)" class="action-btn"><el-icon :size="18"><Share /></el-icon></button>
+            <button @click="quotePaper(paper)" class="action-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16"><path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/></svg></button>
             <button @click="downloadPaper(paper)" class="action-btn"><el-icon :size="18"><Download /></el-icon></button>
           </div>
         </div>
@@ -76,11 +107,20 @@
 import { ref, onMounted, watch } from 'vue';
 
 const results = ref([]);
+const showRes = ref([]);
 const loading = ref(false);
 const currentPage = ref(1);
 const totalPages = ref(1);
+
 const sortBy = ref(0);
 const sortDown = ref(0);
+
+const allKeywords = ref([]);
+const allAuthorOrganizations = ref([]);
+
+const selectedKeywords = ref([]);
+const selectedYears = ref([]);
+const selectedAuthors = ref([]);
 
 const citationColor = (citations) => {
   if (citations >= 50) {
@@ -98,29 +138,71 @@ const fetchResults = async () => {
   loading.value = true;
 
   const response = await new Promise((resolve) =>
-    setTimeout(() => {
-      const mockData = {
-        totalResults: 20,
-        papers: Array.from({ length: 10 }, (_, index) => ({
-          title: `长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题 ${index + 1 + (currentPage.value - 1) * 10}`,
-          date: `2023-08-${index + 1}`,
-          journal: '期刊名',
-          citations: Math.floor(Math.random() * 100),
+  setTimeout(() => {
+    const mockData = {
+      //测试数据，均为随机生成
+      totalResults: 25,
+      papers: Array.from({ length: 10 }, (_, index) => {
+        let year = 2022 + (index % 5);
+        let month = String(index % 12 + 1).padStart(2, '0');
+        let date = `${year}-${month}-01`;
+
+        let citations = Math.floor(Math.random() * 100);
+
+        let organizations = [
+          '北京航空航天大学',
+          '清华大学',
+          '中国科学院',
+          '上海交通大学',
+          '复旦大学',
+        ];
+        let randomOrg = organizations[index % organizations.length];
+
+        let keywords = [
+          '人工智能', '深度学习', '自然语言处理', '机器学习', '数据分析',
+          '大数据', '计算机视觉', '图像处理', '算法优化', '自动化',
+        ];
+        let selectedKeywords = [
+          keywords[index % keywords.length],
+          keywords[(index + 1) % keywords.length],
+        ];
+
+        return {
+          title: `长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题 ${index + 1}`,
+          date: date,
+          journal: `期刊名${index + 1}`,
+          citations: citations,
           authors: [
-            { id: index, name: `作者` },
-            { id: index + 1, name: `长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长作者作者 ${index + 2}` },
+            { id: index, name: `作者 ${index + 1}`, organization: randomOrg },
+            { id: index + 1, name: `作者 ${index + 2}`, organization: randomOrg },
           ],
-          keywords: ['关键词', '关键', '关键111111111'],
-        })),
-      };
+          keywords: selectedKeywords,
+        };
+      }),
+    };
 
       resolve(mockData);
     }, 1000)
   );
 
   results.value = response.papers;
+  showRes.value = response.papers;
   totalPages.value = Math.ceil(response.totalResults / 10);
+  allKeywords.value = Array.from(new Set(response.papers.flatMap(paper => paper.keywords)));
+  allAuthorOrganizations.value = Array.from(new Set(response.papers.flatMap(paper => paper.authors.map(author => author.organization))));
   loading.value = false;
+};
+
+const filterResults = () => {
+  showRes.value = results.value.filter(paper => {
+    let years = selectedYears.value.map(date => date.getFullYear());
+    let paperYear = parseInt(paper.date.slice(0, 4), 10);
+    const keywordMatch = selectedKeywords.value.length === 0 || paper.keywords.some(keyword => selectedKeywords.value.includes(keyword));
+    const yearMatch = selectedYears.value.length === 0 || years.includes(paperYear);
+    const authorMatch = selectedAuthors.value.length === 0 || paper.authors.some(author => selectedAuthors.value.includes(author.organization));
+
+    return keywordMatch && yearMatch && authorMatch;
+  });
 };
 
 const goToPage = (page) => {
@@ -151,6 +233,17 @@ watch([sortBy], () => {
   fetchResults();
 });
 
+watch([selectedKeywords, selectedYears, selectedAuthors], () => {
+  filterResults();
+  console.log('selectedKeywords:', selectedKeywords.value);
+  console.log('selectedYears:', selectedYears.value);
+  console.log('selectedAuthors:', selectedAuthors.value);
+
+  currentPage.value = 1
+  fetchResults
+
+});
+
 onMounted(() => {
   fetchResults();
 });
@@ -160,16 +253,17 @@ onMounted(() => {
 
 :root {
   --theme-color: #3f389d;
+  --mid-color:#665fc7;
   --light-color: #e9e5fe;
-  --back-color: #fefaff;
+  --back-color: #ffffff;
   --button-color:#bfb5f0;
   --shadow-color:rgba(121, 68, 183, 0.185);
   --deep-shadow:rgba(108, 65, 156, 0.311);
   --gray-color:#cbc7db;
   --dark-color: #8d86a8;
-  --secondary-color: #ecfbff;
-  --second-text:#0c4bd4;
-  --text-color: #251c57;
+  --secondary-color: #ecfffb;
+  --second-text:#000000aa;
+  --text-color: #282829;
   --light-text-color: #4f4454;
 }
 
@@ -181,9 +275,10 @@ onMounted(() => {
 .search-filters {
   width: 250px;
   min-width: 250px;
-  padding-right: 20px;
+  max-width: 250px;
   border-right: 2px solid var(--gray-color);
   position: sticky;
+
 }
 
 .results-section {
@@ -216,7 +311,7 @@ onMounted(() => {
   margin-bottom: 15px;
   border-radius: 5px;
   background-color: var(--back-color);
-  width: 96%;
+  width: 96.5%;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 5px var(--shadow-color);
@@ -224,13 +319,14 @@ onMounted(() => {
 }
 
 .result-item:hover {
-  transform: scale(1.015, 1.05);
+  transform: scale(1.015, 1.02);
   box-shadow: 0 2px 10px var(--deep-shadow);
 }
 
 .paper-title {
-  font-size: 22px;
-  margin: 0 0 10px;
+  font-size: 20px;
+  margin: 5px 0 10px 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--gray-color);
 }
 
@@ -241,9 +337,11 @@ onMounted(() => {
 }
 
 .paper-date-journal {
+  font-size: 15px;
   display: flex;
   align-items: center;
-  color: var(--dark-color);
+  color: var(--mid-color);
+  margin-left:10px;
 }
 
 .separator {
@@ -257,7 +355,8 @@ onMounted(() => {
 }
 
 .paper-authors {
-  margin-top: 10px;
+  margin-top:-10px;
+  margin-left:10px;
 }
 
 .author {
@@ -352,5 +451,22 @@ onMounted(() => {
 
 .pagination span {
   align-self: center;
+}
+
+.block{
+  padding-top:20px;
+}
+
+.filter-title{
+  background-color: var(--button-color);
+  padding:10px 10px 10px 10px;
+  margin-bottom: 10px;
+  margin-right: 15px;
+  border-radius: 5px;
+  color: var(--back-color);
+}
+.filter-selections{
+  padding-left:10px;
+  margin-right: 20px;
 }
 </style>
