@@ -1,9 +1,7 @@
 <template>
   <el-container class="min-h-screen">
     <!-- 导航栏 -->
-    <el-header class="bg-white shadow-md">
-      <h1 style="font-size: 20px; font-weight: bold; margin: 0;">导航栏</h1>
-    </el-header>
+
 
     <el-main>
       <!-- 文章详情 -->
