@@ -158,4 +158,11 @@ export default {
   line-height: 1.8; /* 使按钮更扁 */
   padding: 6px 10px;
 }
+
+html {
+  /*防止滚动条导致页面滚动，勿删*/
+  overflow-y: scroll;
+}
+
+
 </style>
