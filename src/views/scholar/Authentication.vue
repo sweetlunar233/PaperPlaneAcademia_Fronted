@@ -317,16 +317,16 @@
   <style>
 
   :root {
-    --theme-color: #3f389d;
-    --mid-color:#665fc7;
-    --light-color: #e9e5fe;
-    --button-color:#bfb5f0;
+    --theme-color: #385b9d;
+    --mid-color:#5f96c7;
+    --light-color: #e5f1fe;
+    --button-color:#b5b7f0;
     --back-color: #fefaff;
-    --shadow-color:rgba(121, 68, 183, 0.185);
-    --deep-shadow:rgba(108, 65, 156, 0.311);
-    --gray-color:#cbc7db;
-    --dark-color: #8d86a8;
-    --secondary-color: #1c81e0;
+    --shadow-color:rgba(85, 68, 183, 0.185);
+    --deep-shadow:rgba(85, 65, 156, 0.311);
+    --gray-color:#c7c8db;
+    --dark-color: #8689a8;
+    --secondary-color: #741ce0;
     --text-color: #251c57;
     --light-text-color: #4f4454;
   }

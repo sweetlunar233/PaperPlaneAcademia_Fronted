@@ -252,16 +252,16 @@ onMounted(() => {
 <style>
 
 :root {
-  --theme-color: #3f389d;
-  --mid-color:#665fc7;
-  --light-color: #e9e5fe;
-  --back-color: #ffffff;
-  --button-color:#bfb5f0;
-  --shadow-color:rgba(121, 68, 183, 0.185);
-  --deep-shadow:rgba(108, 65, 156, 0.311);
-  --gray-color:#cbc7db;
-  --dark-color: #8d86a8;
-  --secondary-color: #ecfffb;
+  --theme-color: #385b9d;
+    --mid-color:#5f96c7;
+    --light-color: #e5f1fe;
+    --button-color:#b6b5f0;
+    --back-color: #fefaff;
+    --shadow-color:rgba(85, 68, 183, 0.185);
+    --deep-shadow:rgba(85, 65, 156, 0.311);
+    --gray-color:#c7c8db;
+    --dark-color: #8686a8;
+  --secondary-color: #f7ecff;
   --second-text:#000000aa;
   --text-color: #282829;
   --light-text-color: #4f4454;
