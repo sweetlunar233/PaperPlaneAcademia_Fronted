@@ -2,9 +2,14 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { getCurrentInstance } from 'vue';
 const router = useRouter();
 
-import { GetTopArticles, GetRecommendedArticles } from '../../api/home.js'
+import { GetTopArticles, GetRecommendedArticles, GetStatistics } from '../../api/home.js'
+
+import {
+    Search,
+} from '@element-plus/icons-vue'
 
 const searchValue = ref("");
 const topOrRec = ref("hot-gate-artiles");
@@ -49,8 +54,16 @@ const recommended_articles = ref([
   }
 ]);
 
-const internalInstance = getCurrentInstance()
-const internalData = internalInstance.appContext.config.globalProperties
+const statistic = ref({
+  authorCount: '280,050,502',
+  organizationsCount: '16,479',
+  fieldsCount: '714,856',
+  journalCount: '49,063',
+  paperCount: '269,451,039'
+})
+
+const internalInstance = getCurrentInstance();
+const internalData = internalInstance.appContext.config.globalProperties;
 const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
 
 const goSearch = () => {
@@ -62,21 +75,38 @@ const goSearch = () => {
   });
 }
 
+const FormatString = (value) => {
+  if (!value) return "";
+  if (value.length > 300) {
+    return value.slice(0,300) + "...";
+  }
+  return value;
+}
+
 const initHome = (userId) => {
     // top_articles.value = [];
     // recommended_articles.value = [];
-    var promise = GetTopArticles(userId);
+    var promise = GetTopArticles();
     promise.then((result)=>{
-        result.data.forEach(element => {
+        result.articles.forEach(element => {
             top_articles.value.push(element);
         });
     });
 
-    var promise = GetRecommendedArticles(userId);
+    var promise = GetRecommendedArticles();
     promise.then((result)=>{
-        result.data.forEach(element => {
+        result.articles.forEach(element => {
             recommended_articles.value.push(element);
         });
+    });
+
+    var promise = GetStatistics();
+    promise.then((result)=>{
+      statistic.value.authorCount = result.authorCount.toLocaleString();
+      statistic.value.organizationsCount = result.organizationsCount.toLocaleString();
+      statistic.value.fieldsCount = result.fieldsCount.toLocaleString();
+      statistic.value.journalCount = result.journalCount.toLocaleString();
+      statistic.value.paperCount = result.paperCount.toLocaleString();
     });
 }
 
@@ -86,16 +116,12 @@ initHome(userId.value);
 
 <template>
 <div class="home">
-    <!-- 背景图 -->
     <div class="background">
-        <img src="@/assets/images/bg.png" alt="" class="background-img">
+        <img src="" alt="" class="background-img">
     </div>
-    <!-- 导航栏 -->
-    <!-- <PageHeader></PageHeader> -->
-    <!-- 搜索框 -->
     <div class="main">
         <div class="title-and-input">
-            <div class="title">Paper Wing Acdemia ( 放洋屁 )</div>
+            <div class="title">Paper Wing Acdemia</div>
             <div class="input-box">
                 <el-input placeholder="请输入内容"
                     v-model="searchValue"
@@ -103,14 +129,16 @@ initHome(userId.value);
                     @keyup.enter.native="goSearch"
                     style="width: 750px; font-size: 17px"
                 >
-                <el-button slot="append" icon="el-icon-search" @click="goSearch"></el-button>
+                <template #append>
+                    <el-button :icon="Search" @click="goSearch"></el-button>
+                </template>
                 </el-input>
             </div>
         </div>
 
         <div class="logos">
-            <el-row gutter="0" justify="center" type="flex">
-                <el-col :span="5">
+            <!-- <el-row gutter="0" justify="center" type="flex">
+                <el-col :span="4">
                     <div class="grid-content bg-purple test_a">
                         <el-row>
                             <el-col :span="5" style="padding:10px; margin-right:20px">
@@ -118,12 +146,12 @@ initHome(userId.value);
                             </el-col>
                             <el-col :span="5" style="padding:10px; margin-left:20px">
                             <h3 class="sub-title">Authors</h3>
-                            <h2 class="sub-number">{{  }}</h2>
+                            <h2 class="sub-number">{{ statistic.authorCount }}</h2>
                             </el-col>
                         </el-row>
                     </div>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4">
                     <div class="grid-content bg-purple test_a">
                         <el-row>
                             <el-col :span="6" style="padding:10px; margin-right:20px">
@@ -131,12 +159,12 @@ initHome(userId.value);
                             </el-col>
                             <el-col :span="5" style="padding:10px; margin-left:20px">
                             <h3 class="sub-title">Papers</h3>
-                            <h2 class="sub-number">{{  }}</h2>
+                            <h2 class="sub-number">{{ statistic.paperCount }}</h2>
                             </el-col>
                         </el-row>
                     </div>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4">
                     <div class="grid-content bg-purple test_a">
                         <el-row>
                             <el-col :span="6" style="padding:10px; margin-right:20px">
@@ -144,12 +172,12 @@ initHome(userId.value);
                             </el-col>
                             <el-col :span="5" style="padding:10px; margin-left:20px">
                             <h3 class="sub-title">Journals</h3>
-                            <h2 class="sub-number">{{  }}</h2>
+                            <h2 class="sub-number">{{ statistic.journalCount }}</h2>
                             </el-col>
                         </el-row>
                     </div>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4">
                     <div class="grid-content bg-purple test_a">
                         <el-row>
                             <el-col :span="6" style="padding:10px; margin-right:20px">
@@ -157,12 +185,12 @@ initHome(userId.value);
                             </el-col>
                             <el-col :span="5" style="padding:10px; margin-left:20px">
                             <h3 class="sub-title">Organizations</h3>
-                            <h2 class="sub-number">{{  }}</h2>
+                            <h2 class="sub-number">{{ statistic.organizationsCount }}</h2>
                             </el-col>
                         </el-row>
                     </div>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4">
                     <div class="grid-content bg-purple test_a">
                         <el-row>
                             <el-col :span="6" style="padding:10px; margin-right:20px">
@@ -170,12 +198,73 @@ initHome(userId.value);
                             </el-col>
                             <el-col :span="5" style="padding:10px; margin-left:20px">
                             <h3 class="sub-title">Field</h3>
-                            <h2 class="sub-number">{{  }}</h2>
+                            <h2 class="sub-number">{{ statistic.fieldsCount }}</h2>
                             </el-col>
                         </el-row>
                     </div>
                 </el-col>
-            </el-row>
+            </el-row> -->
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="padding: 10px; margin-right: 20px;">
+                            <img class="image" src="" style="width: 70px;">
+                        </div>
+                        <div style="padding: 10px;">
+                            <h3 class="sub-title">Authors</h3>
+                            <h2 class="sub-number">{{ statistic.authorCount }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="padding: 10px; margin-right: 20px;">
+                            <img class="image" src="" style="width: 70px;">
+                        </div>
+                        <div style="padding: 10px;">
+                            <h3 class="sub-title">Papers</h3>
+                            <h2 class="sub-number">{{ statistic.paperCount }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="padding: 10px; margin-right: 20px;">
+                            <img class="image" src="" style="width: 70px;">
+                        </div>
+                        <div style="padding: 10px;">
+                            <h3 class="sub-title">Journals</h3>
+                            <h2 class="sub-number">{{ statistic.journalCount }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="padding: 10px; margin-right: 20px;">
+                            <img class="image" src="" style="width: 70px;">
+                        </div>
+                        <div style="padding: 10px;">
+                            <h3 class="sub-title">Organizations</h3>
+                            <h2 class="sub-number">{{ statistic.organizationsCount }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="padding: 10px; margin-right: 20px;">
+                            <img class="image" src="" style="width: 70px;">
+                        </div>
+                        <div style="padding: 10px;">
+                            <h3 class="sub-title">Field</h3>
+                            <h2 class="sub-number">{{ statistic.fieldsCount }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="recommend">
@@ -204,7 +293,7 @@ initHome(userId.value);
                                     <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
                                 </div>
 
-                                <el-divider v-if="index<articles.length - 1"></el-divider>
+                                <el-divider v-if="index < top_articles.length - 1"></el-divider>
                             </div>
                         </div>
                     </div>
@@ -233,7 +322,7 @@ initHome(userId.value);
                                     <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
                                 </div>
 
-                                <el-divider v-if="index<articles.length - 1"></el-divider>
+                                <el-divider v-if="index < recommended_articles.length - 1"></el-divider>
                             </div>
                         </div>
                     </div>
@@ -246,7 +335,9 @@ initHome(userId.value);
 
 <style scoped>
 .home {
-  min-width: 1100px;
+  background-color: #aaa;
+  min-width: 100%;
+  height: 100%;
 }
 
 .home .title-and-input {
@@ -273,7 +364,7 @@ initHome(userId.value);
 }
 
 .home .title {
-  font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif;
+  /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
   font-size: 60px;
   margin-top: 160px;
   color: white;
@@ -282,7 +373,7 @@ initHome(userId.value);
 
 .home .sub-title {
   display:block;
-  font-family: 'Courier New',serif;
+  /* font-family: 'Courier New',serif; */
   font-weight:bold;
   margin-bottom:0 !important;
   color:white;
@@ -290,7 +381,7 @@ initHome(userId.value);
 
 .home .sub-number {
   display:block;
-  font-family:'Courier New',serif;
+  /* font-family:'Courier New',serif; */
   margin-top:10px;
   color:white;
 }
@@ -299,7 +390,7 @@ initHome(userId.value);
   margin-top: 230px;
   padding-top: 0px;
   padding-left: 5%;
-  background-color: rgba(0, 0, 0, 0.2);
+  /* background-color: rgba(0, 0, 0, 0.2); */
 }
 
 .home .recommend {
@@ -308,10 +399,6 @@ initHome(userId.value);
   padding: 20px 40px 60px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04)
-}
-
-.home .main .el-col {
-  border-radius: 4px ;
 }
 
 .bg-purple {
@@ -325,9 +412,10 @@ initHome(userId.value);
 .home .grid-content {
   border-radius: 4px;
   min-height: 36px;
+  width: 25%;
 }
 
-.home .test_a {
+/* .home .test_a {
   display: block;
   margin: 0 auto;
   width:100%;
@@ -343,7 +431,7 @@ initHome(userId.value);
 .home .test_a:hover img {
   transform: scale(1.2);
   transition: all 1s ease 0s;
-}
+} */
 
 
 .author-name {
@@ -357,12 +445,12 @@ initHome(userId.value);
     font-weight: 700;
     line-height: 1.4;
     cursor: pointer;
-    font-family: Tahoma,fantasy;
+    /* font-family: Tahoma,fantasy; */
 }
 
 .abstract {
     cursor: pointer;
-    font-family: Georgia, Lato-Regular,Lato,sans-serif;
+    /* font-family: Georgia, Lato-Regular,Lato,sans-serif; */
     font-size: 15px;
     line-height: 22px;
     color: #262625;
@@ -370,7 +458,7 @@ initHome(userId.value);
 
 .citation-count {
     margin-top: 10px;
-    font-family: "Trebuchet MS", fantasy;
+    /* font-family: "Trebuchet MS", fantasy; */
     font-size: 13px;
     font-weight: 400;
     color: #73716f;
@@ -382,3 +470,4 @@ initHome(userId.value);
     font-size: 14px;
 }
 </style>
+

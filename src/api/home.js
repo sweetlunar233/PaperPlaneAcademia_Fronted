@@ -1,13 +1,16 @@
 import { post,get } from "./api"
 
-export function GetTopArticles(userId){
+export function GetTopArticles(){
     let data = {};
-    data.userid = userId;
-    return get("/home/top/"+userId);
+    return get("/home/top/");
 }
 
-export function GetRecommendedArticles(userId){
+export function GetRecommendedArticles(){
     let data = {};
-    data.userid = userId;
-    return get("/home/recommended/"+userId);
+    return get("/home/recommended/");
+}
+
+export function GetStatistics(){
+    let data = {};
+    return get("/home/statistics/");
 }
