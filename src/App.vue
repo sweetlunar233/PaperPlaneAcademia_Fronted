@@ -3,20 +3,24 @@
     <!-- 导航栏 -->
     <el-container class="navbar">
       <el-header>
-        <el-row gutter="0" type="flex" align="middle">
+        <el-row gutter="20" type="flex" align="middle">
           <!-- 左侧 Logo -->
           <el-col :span="6">
-            <el-button type="text" @click="goToHome" class="">
+            <el-button type="text" @click="goToHome">
               Academia
             </el-button>
           </el-col>
 
+          <!-- 高级搜索按钮 -->
+          <el-col :span="2" class="advanced-search">
+            <el-button type="info" @click="goToAdvSearch">高级搜索</el-button>
+          </el-col>
+
           <!-- 中间搜索框 -->
-          <el-col :span="15">
-            <el-input 
+          <el-col :span="10" class="search-box">
+            <el-input
               v-model="searchQuery"
               placeholder="搜索内容"
-              class=""
               clearable
             >
               <template #append>
@@ -26,11 +30,11 @@
           </el-col>
 
           <!-- 右侧按钮：动态显示 -->
-          <el-col :span="3">
+          <el-col :span="6" class="auth-buttons">
             <!-- 未登录状态 -->
             <template v-if="!loggedIn">
-              <el-button type="primary" @click="goToLogin">登录</el-button>
-              <el-button type="success" @click="goToRegister">注册</el-button>
+              <el-button type="primary" @click="goToLogin" class="login-button">登录</el-button>
+              <el-button type="success" @click="goToRegister" class="register-button">注册</el-button>
             </template>
 
             <!-- 已登录状态 -->
@@ -114,6 +118,9 @@ export default {
         alert("请输入搜索内容！");
       }
     },
+    goToAdvSearch() {
+      this.$router.push("/advsearch"); // 跳转到高级搜索页面
+    },
   },
   mounted() {
     this.checkLoginStatus(); // 组件加载时检查登录状态
@@ -122,5 +129,40 @@ export default {
 </script>
 
 <style scoped>
-/* 样式与之前一致 */
+.navbar {
+  background-color: #f5f5f5;
+  padding: 5px 20px; /* 压扁导航栏高度 */
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+}
+
+.advanced-search {
+  text-align: center;
+}
+
+.auth-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.auth-buttons .login-button,
+.auth-buttons .register-button {
+  margin-left: 10px;
+}
+
+/* 压扁按钮整体样式 */
+.el-button {
+  line-height: 1.8; /* 使按钮更扁 */
+  padding: 6px 10px;
+}
+
+html {
+  /*防止滚动条导致页面滚动，勿删*/
+  overflow-y: scroll;
+}
+
+
 </style>

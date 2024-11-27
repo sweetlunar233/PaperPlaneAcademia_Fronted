@@ -1,4 +1,5 @@
 <template>
+  <div>
   <h1 style="color:var(--text-color);font-size:24px;padding-left:20vh">学者身份认证</h1>
     <div class="authentication">
         
@@ -68,7 +69,14 @@
                     </div>
                     <div class="paper-info">
                         <div class="paper-title">{{ paper.title }}</div>
-                        <div class="paper-authors">{{ paper.authors }}</div>
+                        <div class="paper-other-info">
+                          <span class="paper-date"><i>{{ paper.date }}</i></span>
+                          <span >·</span>
+                          <span class="paper-journal"><i>{{ paper.journal }}</i></span>
+                          <span >·</span>
+                          <span class="paper-authors" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><i>{{ paper.authors }}</i></span>
+                        </div>
+                        
                     </div>
                 </div>
             </el-form-item>
@@ -184,6 +192,7 @@
         </div>
       </el-row>
     </div>
+  </div>
   </template>
   
   <script>
@@ -204,15 +213,15 @@
             ]
         },
         papersList: [
-            { title: "论文1标题", authors: "张三, 李四" },
-            { title: "论文2标题", authors: "王五, 赵六" },
-            { title: "长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题", authors: "李七, 周八，长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长作者" },
-            { title: "论文2标题", authors: "王五, 赵六" },
-            { title: "论文2标题", authors: "王五, 赵六" },
-            { title: "论文2标题", authors: "王五, 赵六" },
-            { title: "论文2标题", authors: "王五, 赵六" },
-            { title: "论文2标题", authors: "王五, 赵六" },
-            { title: "论文2标题", authors: "王五, 赵六" },
+            { title: "论文1标题", date: "2023-08-1",journal: "期刊名",authors: "张三, 李四" },
+            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
+            { title: "长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题",date: "2023-08-1",journal: "期刊名", authors: "李七, 周八，长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长作者" },
+            { title: "论文2标题",date: "2023-08-1",journal: "期刊名",authors: "王五, 赵六" },
+            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
         ],
         selectedPapers: [],
         manualUploadedPapers: [],
@@ -308,16 +317,16 @@
   <style>
 
   :root {
-    --theme-color: #3f389d;
-    --mid-color:#665fc7;
-    --light-color: #e9e5fe;
-    --button-color:#bfb5f0;
+    --theme-color: #385b9d;
+    --mid-color:#5f96c7;
+    --light-color: #e5f1fe;
+    --button-color:#b5b7f0;
     --back-color: #fefaff;
-    --shadow-color:rgba(121, 68, 183, 0.185);
-    --deep-shadow:rgba(108, 65, 156, 0.311);
-    --gray-color:#cbc7db;
-    --dark-color: #8d86a8;
-    --secondary-color: #1c81e0;
+    --shadow-color:rgba(85, 68, 183, 0.185);
+    --deep-shadow:rgba(85, 65, 156, 0.311);
+    --gray-color:#c7c8db;
+    --dark-color: #8689a8;
+    --secondary-color: #741ce0;
     --text-color: #251c57;
     --light-text-color: #4f4454;
   }
@@ -449,7 +458,8 @@
   }
   
   .paper-checkbox {
-    margin-right: 15px;
+    margin-right: 10px;
+    margin-left:20px;
     width: 40px;
     display: flex;
     justify-content: center;
@@ -457,34 +467,35 @@
   }
   
   .selected-icon {
-    margin-left: 25px;
     color: var(--theme-color);
   }
   
   .paper-info {
+    position: flex;
     min-width: 0;
-    width: 100%;  
-    margin-left: 10px;
-    margin-right: 10px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   
   .paper-title {
     font-size: 16px !important;
     font-weight: bold;
     color: var(--text-color);
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal !important;
+    word-break: break-all;
+    word-wrap: break-word;
+    line-height:1.25;
   }
-  
-  .paper-authors {
+
+  .paper-other-info{
     font-size: 14px;
     color: var(--light-text-color);
     max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    gap: 10px;
   }
   
   .paper-item:hover .paper-title {

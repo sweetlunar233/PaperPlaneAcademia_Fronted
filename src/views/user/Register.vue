@@ -1,7 +1,7 @@
 <template>
   <div class="register-container">
     <el-card class="register-card">
-      <h2>Register</h2>
+      <h2>注册</h2>
       <el-form
         :model="registerForm"
         :rules="rules"
@@ -9,38 +9,38 @@
         label-width="150px"
         class="register-form"
       >
-        <el-form-item label="Username" prop="username">
-          <el-input v-model="registerForm.username" placeholder="Enter your username"></el-input>
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="registerForm.username" placeholder="输入您的用户名"></el-input>
         </el-form-item>
-        <el-form-item label="Password" prop="password">
+        <el-form-item label="密码" prop="password">
           <el-input
             v-model="registerForm.password"
-            placeholder="Enter your password"
+            placeholder="输入您的密码"
             type="password"
           ></el-input>
         </el-form-item>
-        <el-form-item label="Confirm Password" prop="confirmPassword">
+        <el-form-item label="确认密码" prop="confirmPassword">
           <el-input
             v-model="registerForm.confirmPassword"
-            placeholder="Confirm your password"
+            placeholder="确认您的密码"
             type="password"
           ></el-input>
         </el-form-item>
-        <el-form-item label="Email" prop="email">
-          <el-input v-model="registerForm.email" placeholder="Enter your email"></el-input>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="registerForm.email" placeholder="输入您的邮箱"></el-input>
         </el-form-item>
-        <el-form-item label="Organization" prop="organization">
-          <el-input v-model="registerForm.organization" placeholder="Enter your organization"></el-input>
+        <el-form-item label="机构或组织" prop="organization">
+          <el-input v-model="registerForm.organization" placeholder="输入您的机构或组织"></el-input>
         </el-form-item>
-        <el-form-item label="User Type" prop="userType">
-          <el-select v-model="registerForm.userType" placeholder="Select your user type">
-            <el-option label="Researcher" value="researcher"></el-option>
-            <el-option label="Reviewer" value="reviewer"></el-option>
+        <el-form-item label="用户类型" prop="userType">
+          <el-select v-model="registerForm.userType" placeholder="选择您的用户类型">
+            <el-option label="科研人员" value="researcher"></el-option>
+            <el-option label="审核人员" value="reviewer"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitRegisterForm('registerForm')">Register</el-button>
-          <el-button type="text" @click="$router.push('/login')">Login</el-button>
+          <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
+          <el-button type="text" @click="$router.push('/login')">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>

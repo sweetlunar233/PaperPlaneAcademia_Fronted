@@ -142,17 +142,18 @@
   
   <style>
   :root {
-    --theme-color: #3f389d;
-    --light-color: #e9e5fe;
+    --theme-color: #385b9d;
+    --mid-color:#5f96c7;
+    --light-color: #e5f1fe;
+    --button-color:#b6b5f0;
     --back-color: #fefaff;
-    --button-color:#bfb5f0;
-    --shadow-color:rgba(121, 68, 183, 0.185);
-    --deep-shadow:rgba(108, 65, 156, 0.311);
-    --gray-color:#cbc7db;
-    --dark-color: #8d86a8;
-    --secondary-color: #ecfbff;
-    --second-text:#0c4bd4;
-    --text-color: #251c57;
+    --shadow-color:rgba(85, 68, 183, 0.185);
+    --deep-shadow:rgba(85, 65, 156, 0.311);
+    --gray-color:#c7c8db;
+    --dark-color: #8686a8;
+  --secondary-color: #f7ecff;
+    --second-text:#660cd4;
+    --text-color: #282829;
     --light-text-color: #4f4454;
   }
   
