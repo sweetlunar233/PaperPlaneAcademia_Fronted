@@ -1,6 +1,6 @@
 <!-- 首页 -->
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getCurrentInstance } from 'vue';
 const router = useRouter();
@@ -91,11 +91,11 @@ const recommended_articles = ref([
 ]);
 
 const statistic = ref({
-  authorCount: '280,050,502',
-  organizationsCount: '16,479',
-  fieldsCount: '714,856',
-  journalCount: '49,063',
-  paperCount: '269,451,039'
+  authorCount: 280502,
+  organizationsCount: 16479,
+  fieldsCount: 31486,
+  journalCount: 49063,
+  paperCount: 261039
 })
 
 const internalInstance = getCurrentInstance();
@@ -172,6 +172,54 @@ const initHome = (userId) => {
 
 initHome(userId.value);
 
+
+
+
+
+
+//动画
+// 目标数字数组
+const targetNumbers = [202233, 45322, 781120, 123456, 67890];
+targetNumbers.length = 0; // 清空原数组
+Object.values(statistic.value).forEach((value, index) => {
+  targetNumbers[index] = value;
+});
+const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
+
+// 动画设置
+const intervalTime = 50; // 每50毫秒更新一次
+const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
+
+// 动画函数
+const startCounting = () => {
+  const intervals = targetNumbers.map((target, index) => {
+    return setInterval(() => {
+        if(index == 0 || index == 4){
+            if (numbers.value[index] < target) {
+                numbers.value[index] += increment * 8;
+            } else {
+                numbers.value[index] = target;
+                clearInterval(intervals[index]); // 达到目标时停止
+            }
+        }
+        else{
+            if (numbers.value[index] < target) {
+                numbers.value[index] += increment;
+            } else {
+                numbers.value[index] = target;
+                clearInterval(intervals[index]); // 达到目标时停止
+            }
+        }
+      
+    }, intervalTime);
+  });
+};
+
+// 页面加载完成后开始动画
+onMounted(() => {
+  startCounting();
+});
+
 </script>
 
 <template>
@@ -181,7 +229,7 @@ initHome(userId.value);
     </div>
     <div class="main">
         <div class="title-and-input">
-            <div class="title">Paper Wing Academia</div>
+            <div class="bigtitle">Paper Wing Academia</div>
             <div class="input-box">
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
             </div>
@@ -196,7 +244,8 @@ initHome(userId.value);
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Authors</h3>
-                            <h2 class="sub-number">{{ statistic.authorCount }}</h2>
+                            <!-- <h2 class="sub-number">{{ statistic.authorCount }}</h2> -->
+                            <h2 class="sub-number">{{ numbers[0] }}</h2>
                         </div>
                     </div>
                 </div>
@@ -208,7 +257,7 @@ initHome(userId.value);
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Papers</h3>
-                            <h2 class="sub-number">{{ statistic.paperCount }}</h2>
+                            <h2 class="sub-number">{{ numbers[1] }}</h2>
                         </div>
                     </div>
                 </div>
@@ -220,7 +269,7 @@ initHome(userId.value);
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Journals</h3>
-                            <h2 class="sub-number">{{ statistic.journalCount }}</h2>
+                            <h2 class="sub-number">{{ numbers[2] }}</h2>
                         </div>
                     </div>
                 </div>
@@ -232,7 +281,7 @@ initHome(userId.value);
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Organizations</h3>
-                            <h2 class="sub-number">{{ statistic.organizationsCount }}</h2>
+                            <h2 class="sub-number">{{ numbers[3] }}</h2>
                         </div>
                     </div>
                 </div>
@@ -244,7 +293,7 @@ initHome(userId.value);
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Field</h3>
-                            <h2 class="sub-number">{{ statistic.fieldsCount }}</h2>
+                            <h2 class="sub-number">{{ numbers[4] }}</h2>
                         </div>
                     </div>
                 </div>
@@ -262,10 +311,10 @@ initHome(userId.value);
                                         <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                        <span @click="gotoScholar(author.userId)">{{ author.userName }}</span>
-                                        <span v-if="index1 < article.authors.length-1">&nbsp;</span>
+                                        <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
+                                        <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
-                                    <span class="publish-year"> · {{ article.year }}</span>
+                                    <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
                                 </div>
 
                                 <div style="text-align:left;margin-top:10px;">
@@ -291,10 +340,10 @@ initHome(userId.value);
                                         <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                        <span @click="gotoScholar(author.userId)">{{ author.userName }}</span>
-                                        <span v-if="index1 < article.authors.length-1">&nbsp;</span>
+                                        <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
+                                        <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
-                                    <span class="publish-year"> · {{ article.year }}</span>
+                                    <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
                                 </div>
 
                                 <div style="text-align:left;margin-top:10px;">
@@ -319,7 +368,7 @@ initHome(userId.value);
 
 <style scoped>
 .home {
-  background-color: #aaa;
+  background-color: white;
   min-width: 100%;
   height: 100%;
 }
@@ -342,19 +391,15 @@ initHome(userId.value);
 .home .input-box {
   font-size: 20px;
   margin-top: 60px;
-  color: white;
+  color: black;
   font-weight: 600;
 }
 
-.home .title-and-input .input-box button {
-  color: white;
-}
-
-.home .title {
+.home .bigtitle {
   /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
   font-size: 60px;
   margin-top: 60px;/*空白在这*/
-  color: white;
+  color: black;
   font-weight: 600;
 }
 
@@ -363,20 +408,21 @@ initHome(userId.value);
   /* font-family: 'Courier New',serif; */
   font-weight:bold;
   margin-bottom:0 !important;
-  color:white;
+  color:black;
 }
 
 .home .sub-number {
   display:block;
   /* font-family:'Courier New',serif; */
   margin-top:10px;
-  color:white;
+  color:black;
 }
 
 .home .logos {
-  margin-top: 230px;
+  margin-top: 130px;
   padding-top: 0px;
   padding-left: 5%;
+  padding-right: 5%;
   /* background-color: rgba(0, 0, 0, 0.2); */
 }
 
@@ -437,7 +483,7 @@ initHome(userId.value);
 }
 
 .abstract {
-    cursor: pointer;
+    /* cursor: pointer; */
     /* font-family: Georgia, Lato-Regular,Lato,sans-serif; */
     font-size: 15px;
     line-height: 22px;
