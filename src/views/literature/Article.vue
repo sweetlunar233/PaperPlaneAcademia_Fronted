@@ -191,6 +191,7 @@ export default{
     
     data(){
         return{
+            id:0,
             article:{
                 title:"Scalable Defect Detection via Traversal on Code Graph",
                 author:["Zhengyao Liu","Xitong Zhong","Xingjing Deng","Shuo Hong","Xiang Gao","Hailong Sun"],
@@ -359,7 +360,11 @@ export default{
         toField(id){
 
         },
-    }
+    },
+
+    mounted(){
+        
+    },
 }
 
 </script>
@@ -368,11 +373,10 @@ export default{
 
 .article .title-block {
     width: 60%;
-    padding-top: 50px;
+    padding-top: 9%;
     padding-left: 20px;
     margin-left: 12%;
     margin-right: 20%;
-    margin-top: 8%;
 }
 
 .article .title {
