@@ -102,14 +102,20 @@ const internalInstance = getCurrentInstance();
 const internalData = internalInstance.appContext.config.globalProperties;
 const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
 
-const goSearch = () => {
-    router.push({
-    path: '/???',
-    query: {
-      searchValue: searchValue.value
-    }
-  });
-}
+const quotes = [
+  "What's the difference between Harry Potter and Jewish? Harry Potter escaped the Chamber.",
+  "Success doesn't come from what you do occasionally, it comes from what you do consistently. Focus on your goals, stay disciplined, and be patient—your efforts will pay off in the end.",
+  "God is black. How do you know? Because everyone calls him Father but no one have seen him.",
+  "The road to success and the road to failure are almost exactly the same. The difference is persistence. Keep pushing, keep learning, and never let fear or failure hold you back from reaching your dreams.",
+  "Don’t be afraid of change. It’s hard at first, messy in the middle, and gorgeous at the end. Embrace the unknown, trust that everything happens for a reason, and know that new opportunities are waiting for you.",
+  "Success is not about the destination, but about the journey. It’s about how much you’ve learned, how much you’ve grown, and how many people you’ve helped along the way. Always keep growing, keep evolving, and never stop striving for the best version of yourself.",
+  "You are never too old to set another goal or to dream a new dream. No matter where you are in life, it's never too late to start anew. Keep your heart open to new possibilities, and don’t let age or past mistakes define you.",
+  "Believe in the power of positive thinking. Your thoughts shape your reality, and if you think positive, you’ll attract positive things into your life. Surround yourself with good energy, and let go of negativity.",
+  "The only limit to our realization of tomorrow is our doubts of today. Don’t let fear or uncertainty stop you from chasing your dreams. Every step forward, no matter how small, brings you closer to where you want to be.",
+  "The biggest adventure you can take is to live the life of your dreams. Don’t wait for the perfect moment to start—create the moment. Life is too short to live in the shadows of your fears; step into the light and shine with everything you’ve got."
+];
+
+const randomQuote = ref(quotes[Math.floor(Math.random() * quotes.length)]);
 
 const FormatString = (value) => {
   if (!value) return "";
@@ -117,6 +123,24 @@ const FormatString = (value) => {
     return value.slice(0,300) + "...";
   }
   return value;
+}
+
+const gotoPaper = (paperId) => {
+    router.push({
+    path: '/article',
+    query: {
+        paperId: paperId
+    }
+  });
+}
+
+const gotoScholar = (userId) => {
+    router.push({
+    path: '/gateway',
+    query: {
+        userId: userId
+    }
+  });
 }
 
 const initHome = (userId) => {
@@ -159,87 +183,11 @@ initHome(userId.value);
         <div class="title-and-input">
             <div class="title">Paper Wing Academia</div>
             <div class="input-box">
-                <el-input placeholder="请输入内容"
-                    v-model="searchValue"
-                    class="input"
-                    @keyup.enter.native="goSearch"
-                    style="width: 750px; font-size: 17px"
-                >
-                <template #append>
-                    <el-button :icon="Search" @click="goSearch"></el-button>
-                </template>
-                </el-input>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
             </div>
         </div>
 
         <div class="logos">
-            <!-- <el-row gutter="0" justify="center" type="flex">
-                <el-col :span="4">
-                    <div class="grid-content bg-purple test_a">
-                        <el-row>
-                            <el-col :span="5" style="padding:10px; margin-right:20px">
-                            <img class="image" src="" style="width:70px">
-                            </el-col>
-                            <el-col :span="5" style="padding:10px; margin-left:20px">
-                            <h3 class="sub-title">Authors</h3>
-                            <h2 class="sub-number">{{ statistic.authorCount }}</h2>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-                <el-col :span="4">
-                    <div class="grid-content bg-purple test_a">
-                        <el-row>
-                            <el-col :span="6" style="padding:10px; margin-right:20px">
-                            <img class="image" src="" style="width:70px">
-                            </el-col>
-                            <el-col :span="5" style="padding:10px; margin-left:20px">
-                            <h3 class="sub-title">Papers</h3>
-                            <h2 class="sub-number">{{ statistic.paperCount }}</h2>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-                <el-col :span="4">
-                    <div class="grid-content bg-purple test_a">
-                        <el-row>
-                            <el-col :span="6" style="padding:10px; margin-right:20px">
-                            <img class="image" src="" style="width:70px">
-                            </el-col>
-                            <el-col :span="5" style="padding:10px; margin-left:20px">
-                            <h3 class="sub-title">Journals</h3>
-                            <h2 class="sub-number">{{ statistic.journalCount }}</h2>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-                <el-col :span="4">
-                    <div class="grid-content bg-purple test_a">
-                        <el-row>
-                            <el-col :span="6" style="padding:10px; margin-right:20px">
-                            <img class="image" src="" style="width:70px">
-                            </el-col>
-                            <el-col :span="5" style="padding:10px; margin-left:20px">
-                            <h3 class="sub-title">Organizations</h3>
-                            <h2 class="sub-number">{{ statistic.organizationsCount }}</h2>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-                <el-col :span="4">
-                    <div class="grid-content bg-purple test_a">
-                        <el-row>
-                            <el-col :span="6" style="padding:10px; margin-right:20px">
-                            <img class="image" src="" style="width:70px">
-                            </el-col>
-                            <el-col :span="5" style="padding:10px; margin-left:20px">
-                            <h3 class="sub-title">Field</h3>
-                            <h2 class="sub-number">{{ statistic.fieldsCount }}</h2>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-            </el-row> -->
             <div style="display: flex; justify-content: center; gap: 20px;">
                 <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     <div style="display: flex; align-items: center;">
@@ -315,7 +263,7 @@ initHome(userId.value);
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
                                         <span @click="gotoScholar(author.userId)">{{ author.userName }}</span>
-                                        <span v-if="index1 < article.authors.length-1"></span>
+                                        <span v-if="index1 < article.authors.length-1">&nbsp;</span>
                                     </span>
                                     <span class="publish-year"> · {{ article.year }}</span>
                                 </div>
@@ -344,7 +292,7 @@ initHome(userId.value);
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
                                         <span @click="gotoScholar(author.userId)">{{ author.userName }}</span>
-                                        <span v-if="index1 < article.authors.length-1"></span>
+                                        <span v-if="index1 < article.authors.length-1">&nbsp;</span>
                                     </span>
                                     <span class="publish-year"> · {{ article.year }}</span>
                                 </div>
@@ -392,7 +340,10 @@ initHome(userId.value);
 }
 
 .home .input-box {
+  font-size: 20px;
   margin-top: 60px;
+  color: white;
+  font-weight: 600;
 }
 
 .home .title-and-input .input-box button {
@@ -402,7 +353,7 @@ initHome(userId.value);
 .home .title {
   /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
   font-size: 60px;
-  margin-top: 160px;
+  margin-top: 60px;/*空白在这*/
   color: white;
   font-weight: 600;
 }
@@ -476,11 +427,12 @@ initHome(userId.value);
     font-size: 14px;
 }
 
-.title {
+.articles .title {
     font-size: 20px;
     font-weight: 700;
     line-height: 1.4;
     cursor: pointer;
+    color: #262625;
     /* font-family: Tahoma,fantasy; */
 }
 
