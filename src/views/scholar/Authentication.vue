@@ -81,7 +81,7 @@
                 </div>
             </el-form-item>
 
-            <div  class="manual-upload-link">
+            <!-- <div  class="manual-upload-link">
                 系统中没有录入我的作品？<span @click="dialogFormVisible = true" class="manual-upload">手动上传</span>
             </div>
             <div class="papers" v-if="formData.newPapers.length > 0">
@@ -105,10 +105,14 @@
                         </div>
                     </div>
                 </ul>
-            </div>
+            </div> -->
+
+            <!-- <el-dialog v-model="dialogFormVisible" title="用户反馈" class="manual-upload-popup" >
+
+            </el-dialog> -->
         </el-form>
 
-        <el-dialog v-model="dialogFormVisible" title="添加论文" class="manual-upload-popup" >
+        <!-- <el-dialog v-model="dialogFormVisible" title="添加论文" class="manual-upload-popup" >
             <el-form :model="newPaperFormData" key="newPaperForm" l>
                 <div class="popup-content">
                   <el-form-item label="论文标题" :label-width="100" >
@@ -137,7 +141,7 @@
                 </div>
               
             </el-form>
-        </el-dialog>
+        </el-dialog> -->
         <!-- <el-form :model="formData" ref="form" label-width="100px" v-if="step === 2" style="position: absolute; width: 100%; margin: 15% 15% 100px 10%;">
           <el-form-item label="论文标题" prop="paperTitle">
             <el-input v-model="formData.paperTitle" placeholder="请输入论文标题"></el-input>
@@ -208,9 +212,10 @@
             workPlace: '',
             field: '',
             claimedPapers: [],
-            newPapers: [
-                { title: '手动上传示例', publishDate: '', file: null },
-            ]
+            // newPapers: [
+            //     { title: '手动上传示例', publishDate: '', file: null },
+            // ]
+
         },
         papersList: [
             { title: "论文1标题", date: "2023-08-1",journal: "期刊名",authors: "张三, 李四" },
@@ -326,7 +331,7 @@
     --deep-shadow:rgba(85, 65, 156, 0.311);
     --gray-color:#c7c8db;
     --dark-color: #8689a8;
-    --secondary-color: #741ce0;
+    --secondary-color: #6095df;
     --text-color: #251c57;
     --light-text-color: #4f4454;
   }
