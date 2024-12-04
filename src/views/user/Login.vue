@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-card class="login-card">
-      <h2>Login</h2>
+      <h2>登录</h2>
       <el-form
         :model="loginForm"
         :rules="rules"
@@ -9,19 +9,19 @@
         label-width="120px"
         class="login-form"
       >
-        <el-form-item label="Username" prop="username">
-          <el-input v-model="loginForm.username" placeholder="Enter your username"></el-input>
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="Password" prop="password">
+        <el-form-item label="密码" prop="password">
           <el-input
             v-model="loginForm.password"
-            placeholder="Enter your password"
+            placeholder="请输入密码"
             type="password"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitLoginForm('loginForm')">Login</el-button>
-          <el-button type="text" @click="$router.push('/register')">Register</el-button>
+          <el-button type="primary" @click="submitLoginForm('loginForm')">登录</el-button>
+          <el-button type="text" @click="$router.push('/register')">注册</el-button>
         </el-form-item>
       </el-form>
     </el-card>

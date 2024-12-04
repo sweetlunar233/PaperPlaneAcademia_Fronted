@@ -1,6 +1,5 @@
 import axios from "axios";
 
-//const serveAddress = "http://8.140.247.134:8001";
 const serveAddress = "http://127.0.0.1:8000";
 
 export function post(url,data){

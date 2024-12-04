@@ -145,15 +145,15 @@
     --theme-color: #385b9d;
     --mid-color:#5f96c7;
     --light-color: #e5f1fe;
-    --button-color:#b6b5f0;
-    --back-color: #fefaff;
+    --button-color:#b5d1f0;
+    --back-color: #fafbff;
     --shadow-color:rgba(85, 68, 183, 0.185);
     --deep-shadow:rgba(85, 65, 156, 0.311);
-    --gray-color:#c7c8db;
-    --dark-color: #8686a8;
-  --secondary-color: #f7ecff;
-    --second-text:#660cd4;
-    --text-color: #282829;
+    --gray-color:#c7d6db;
+    --dark-color: #868ea8;
+  --secondary-color: #ecfbff;
+    --second-text:#09255e;
+    --text-color: #393942;
     --light-text-color: #4f4454;
   }
   
@@ -237,7 +237,7 @@
   }
   
   .collaborator a:hover {
-    color: var(--second-text);
+    color: var(--mid-color);
     text-decoration: underline;
   }
   
