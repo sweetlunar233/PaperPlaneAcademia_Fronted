@@ -51,6 +51,42 @@ const recommended_articles = ref([
     abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
     collectNum: 25,
     citationNum: 35,
+  },
+  {
+    authors: [
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+    ],
+    paperId: "123456",
+    paperTitle: "ABCDE",
+    year: "2024-11-21",
+    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
+    collectNum: 25,
+    citationNum: 35,
+  },
+  {
+    authors: [
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+    ],
+    paperId: "123456",
+    paperTitle: "ABCDE",
+    year: "2024-11-21",
+    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
+    collectNum: 25,
+    citationNum: 35,
   }
 ]);
 
@@ -121,7 +157,7 @@ initHome(userId.value);
     </div>
     <div class="main">
         <div class="title-and-input">
-            <div class="title">Paper Wing Acdemia</div>
+            <div class="title">Paper Wing Academia</div>
             <div class="input-box">
                 <el-input placeholder="请输入内容"
                     v-model="searchValue"
