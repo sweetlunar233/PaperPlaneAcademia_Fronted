@@ -81,8 +81,8 @@
                 </div>
             </el-form-item>
 
-            <!-- <div  class="manual-upload-link">
-                系统中没有录入我的作品？<span @click="dialogFormVisible = true" class="manual-upload">手动上传</span>
+            <div  class="manual-upload-link">
+              系统中没有录入我的作品？<span @click="dialogFormVisible = true" class="manual-upload">手动上传</span>
             </div>
             <div class="papers" v-if="formData.newPapers.length > 0">
                 <p style="margin-bottom:-5px; padding-left:20px; color:var(--text-color);">已手动上传的作品：</p>
@@ -97,22 +97,16 @@
                                 :style="{ color: hoverIconIndex === index ? 'red' : 'black' }"
                                 @mouseover="hoverIconIndex = index"
                                 @mouseleave="hoverIconIndex = null"
-                            >
-                                <Close />
-                            </el-icon>
-                                <div  class="paper-title">{{ paper.title }}</div>
-                            
+                            ><Close /></el-icon>
+                            <div class="paper-title" @click="edit(paper)">{{ paper.title }}</div>
                         </div>
                     </div>
                 </ul>
-            </div> -->
-
-            <!-- <el-dialog v-model="dialogFormVisible" title="用户反馈" class="manual-upload-popup" >
-
-            </el-dialog> -->
+            </div>
+            
         </el-form>
 
-        <!-- <el-dialog v-model="dialogFormVisible" title="添加论文" class="manual-upload-popup" >
+        <el-dialog v-model="dialogFormVisible" title="添加论文" class="manual-upload-popup" >
             <el-form :model="newPaperFormData" key="newPaperForm" l>
                 <div class="popup-content">
                   <el-form-item label="论文标题" :label-width="100" >
@@ -120,6 +114,9 @@
                   </el-form-item>
                   <el-form-item label="发表日期" :label-width="100">
                     <el-date-picker v-model="newPaperFormData.publishDate" type="date" placeholder="选择日期" />
+                  </el-form-item>
+                  <el-form-item label="期刊名称" prop="journalName">
+                    <el-input v-model="newPaperFormData.journalName" placeholder="请输入期刊名称"></el-input>
                   </el-form-item>
                   <el-form-item label="上传文件" :label-width="100">
                     <el-upload
@@ -141,7 +138,8 @@
                 </div>
               
             </el-form>
-        </el-dialog> -->
+        </el-dialog>
+
         <!-- <el-form :model="formData" ref="form" label-width="100px" v-if="step === 2" style="position: absolute; width: 100%; margin: 15% 15% 100px 10%;">
           <el-form-item label="论文标题" prop="paperTitle">
             <el-input v-model="formData.paperTitle" placeholder="请输入论文标题"></el-input>
@@ -182,7 +180,7 @@
                 sub-title="认证审核将在1-3个工作日内完成，并将结果发送至您的邮箱"
               >
                 <template #extra>
-                    <el-button @click="goHome">返回主页</el-button>
+                    <el-button @click="goHome()">返回主页</el-button>
                 </template>
                 </el-result>
             </el-col>
@@ -212,21 +210,18 @@
             workPlace: '',
             field: '',
             claimedPapers: [],
-            // newPapers: [
-            //     { title: '手动上传示例', publishDate: '', file: null },
-            // ]
+            newPapers: [
+                { title: '手动上传论文示例', publishDate: '', journalName:'Science', file: null },
+            ]
 
         },
         papersList: [
-            { title: "论文1标题", date: "2023-08-1",journal: "期刊名",authors: "张三, 李四" },
-            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文1标题", date: "2023-08-1", journal: "期刊名",authors: "张三, 李四" },
+            { title: "论文2标题", date: "2023-08-1", journal: "期刊名", authors: "王五, 赵六" },
             { title: "长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题",date: "2023-08-1",journal: "期刊名", authors: "李七, 周八，长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长作者" },
-            { title: "论文2标题",date: "2023-08-1",journal: "期刊名",authors: "王五, 赵六" },
-            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
-            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
-            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
-            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
-            { title: "论文2标题",date: "2023-08-1",journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文3标题", date: "2023-08-1", journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文4标题", date: "2023-08-1", journal: "期刊名", authors: "王五, 赵六" },
+            { title: "论文5标题", date: "2023-08-1", journal: "期刊名", authors: "王五, 赵六" },
         ],
         selectedPapers: [],
         manualUploadedPapers: [],
@@ -307,10 +302,11 @@
         removePaper(index) {
             this.formData.newPapers.splice(index, 1);
         }, 
+        goHome() {
+          this.$router.push("/home");
+      },
     },
-    goHome() {
-        this.$router.push("/home");
-    },
+
 
   created() {
     this.fetchPapersByAuthor();
