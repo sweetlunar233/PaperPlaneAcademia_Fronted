@@ -7,8 +7,12 @@
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
-        <p><strong>简介：</strong>{{ userInfo.description }}</p>
-        <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}</p>
+          <p><strong>简介：</strong>{{ userInfo.description }}
+            <button class="edit-btn" @click="editDescription">修改</button>
+          </p>
+          <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
+            <button class="edit-btn" @click="editResearchFields">修改</button>
+          </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
@@ -309,6 +313,23 @@ export default {
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
     },
+    editDescription() {
+      // 这里可以弹出编辑框，或者直接改变 userInfo.description
+      console.log('修改简介');
+      // 比如：prompt() 可以让用户修改简介
+      const newDescription = prompt('请输入新的简介', this.userInfo.description);
+      if (newDescription !== null) {
+        this.userInfo.description = newDescription;
+      }
+    },
+    editResearchFields() {
+      // 这里可以弹出编辑框，或者直接改变 userInfo.researchFields
+      console.log('修改研究领域');
+      const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
+      if (newResearchFields !== null) {
+        this.userInfo.researchFields = newResearchFields.split(',').map(field => field.trim());
+      }
+    }
   },
 };
 </script>
@@ -410,7 +431,7 @@ html, body {
 
 .sidebar {
   position: fixed;
-  top: 300px; /* 定位在页面上方 */
+  top: 350px; /* 定位在页面上方 */
   width: 200px;
   background-color: #ffffff; /* 白色背景 */
   padding: 20px;
@@ -539,7 +560,7 @@ html, body {
 /* 用户信息卡片样式 */
 .user-info-card {
   position: fixed;
-  top: 400px; /* 定位在页面上方 */
+  top: 450px; /* 定位在页面上方 */
   right: 30px;
   background-color: #ffffff;
   border-radius: 10px;
@@ -572,7 +593,7 @@ html, body {
 
 .follow-card {
   position: fixed;
-  top: 300px; /* 定位在页面上方 */
+  top: 350px; /* 定位在页面上方 */
   right: 30px;
   background-color: #ffffff;
   border-radius: 10px;
@@ -669,4 +690,20 @@ html, body {
 .comment-footer p {
   font-weight: bold;
 }
+.edit-btn {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  border-radius: 3px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.edit-btn:hover {
+  background-color: #45a049;
+}
+
+
 </style>
