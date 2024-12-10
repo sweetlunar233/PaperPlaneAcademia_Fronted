@@ -163,176 +163,113 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       activeTab: "我的文章", // 默认激活动态选项卡
       isFollowed: false, // 是否关注用户
       userInfo: {
-        name: '张伟',
-        photoUrl: 'https://pic3.zhimg.com/v2-85e74dd29d9bed4c991774f2c3822152_b.jpg', // 用户头像链接
-        description: ' Hello World ',
-        researchFields: ['人工智能', '机器学习', '自然语言处理'],
-        registerTime: '2019-02-01',
-        institution: "BUyAA",
-        status: "正常",
-        papersCount: 5,
-        email: '111@111.com',
-        phoneNumber: '123-456-7890',
-        followingCount: 14, // 假设的关注人数
-        followerCount: 20000, // 假设的粉丝人数
+        name: '',
+        photoUrl: '',
+        description: '',
+        researchFields: [],
+        registerTime: '',
+        institution: '',
+        status: '',
+        papersCount: 0,
+        email: '',
+        phoneNumber: '',
+        followingCount: 0,
+        followerCount: 0,
       },
-      favoriteArticles: [
-        {
-          title: 'Vue.js 实战指南',
-          authors: '张三',
-          institutions: '技术学院',
-          journal: '前端开发期刊',
-          publishTime: '2024-10-10',
-          doi: 'https://doi.org/10.12345/vue-guide',
-          citationCount: 120,
-          favoriteCount: 150,
-        },
-        {
-          title: 'JavaScript 深入理解',
-          authors: '李四',
-          institutions: '计算机学院',
-          journal: '编程语言期刊',
-          publishTime: '2024-09-15',
-          doi: 'https://doi.org/10.67890/js-deep-dive',
-          citationCount: 200,
-          favoriteCount: 180,
-        },
-        // 更多收藏的文章
-      ],
-      comments: [
-        {
-          commenter: '张伟',
-          paperId: '论文123',
-          time: '2024-11-20 10:30',
-          content: '这篇论文非常有意义，提供了很多新的视角。',
-          likeCount: 10
-        },
-        {
-          commenter: '张伟',
-          paperId: '论文456',
-          time: '2024-11-21 12:45',
-          content: '这篇论文的研究方法很好，值得借鉴。',
-          likeCount: 5
-        }
-      ],
-      articles: [
-        {
-          title: "人工智能在医疗诊断中的应用与挑战",
-          authors: "张伟, 李明, 王芳",
-          institutions: "清华大学, 北京协和医院",
-          journal: "中国医学工程杂志",
-          publishTime: "2022-03-15",
-          doi: "https://doi.org/10.12345/ai.med.2022.001",
-          citationCount: 85,
-          favoriteCount: 50,
-        },
-        {
-          title: "区块链技术对金融安全的影响",
-          authors: "张伟, 刘洋, 陈强",
-          institutions: "北京大学, 中国人民银行",
-          journal: "国际区块链研究",
-          publishTime: "2021-11-20",
-          doi: "https://doi.org/10.98765/blockchain.fin.2021.005",
-          citationCount: 120,
-          favoriteCount: 80,
-        },
-        {
-          title: "机器学习在自然语言处理中的应用",
-          authors: "张伟, 王小明, 李小红",
-          institutions: "上海交通大学",
-          journal: "自然语言计算",
-          publishTime: "2023-05-10",
-          doi: "https://doi.org/10.54321/ml.nlp.2023.002",
-          citationCount: 45,
-          favoriteCount: 25,
-        },
-        {
-          title: "新能源材料的最新研究进展",
-          authors: "张伟, 孙丽, 赵伟",
-          institutions: "中科院物理所, 华中科技大学",
-          journal: "能源与环境材料",
-          publishTime: "2020-07-18",
-          doi: "https://doi.org/10.67890/energy.mat.2020.003",
-          citationCount: 300,
-          favoriteCount: 150,
-        },
-        {
-          title: "自动驾驶汽车的伦理与技术挑战",
-          authors: "张伟, 张强, 王刚",
-          institutions: "浙江大学, 中国科技大学",
-          journal: "人工智能与社会",
-          publishTime: "2022-01-12",
-          doi: "https://doi.org/10.13579/ai.auto.2022.006",
-          citationCount: 200,
-          favoriteCount: 110,
-        },
-        {
-          title: "边缘计算在智能物联网中的应用",
-          authors: "张伟, 陈敏, 黄涛",
-          institutions: "武汉大学",
-          journal: "物联网技术",
-          publishTime: "2023-02-05",
-          doi: "https://doi.org/10.11223/edge.iot.2023.004",
-          citationCount: 60,
-          favoriteCount: 35,
-        },
-        {
-          title: "深度学习与生物信息学的结合研究",
-          authors: "张伟, 李佳, 王珊珊",
-          institutions: "复旦大学",
-          journal: "生物信息学前沿",
-          publishTime: "2021-09-15",
-          doi: "https://doi.org/10.14234/dl.bio.2021.007",
-          citationCount: 75,
-          favoriteCount: 40,
-        },
-        {
-          title: "量子计算的未来发展趋势",
-          authors: "张伟, 赵明, 张莉",
-          institutions: "南京大学",
-          journal: "量子物理与计算",
-          publishTime: "2020-06-10",
-          doi: "https://doi.org/10.98734/quantum.future.2020.009",
-          citationCount: 90,
-          favoriteCount: 60,
-        },
-      ],
-
+      favoriteArticles: [],
+      comments: [],
+      articles: [],
     };
   },
   methods: {
+    // 设置选项卡
     setTab(tab) {
-      this.activeTab = tab; // 切换选项卡
+      this.activeTab = tab;
     },
+
+    // 切换关注状态
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
+      // 调用后端接口来更新关注状态
+      axios.post('/user/follow', { userId: this.userInfo.id, follow: this.isFollowed })
+          .then(response => {
+            console.log('关注状态更新成功', response.data);
+          })
+          .catch(error => {
+            console.error('关注状态更新失败', error);
+          });
     },
+
+    // 修改简介
     editDescription() {
-      // 这里可以弹出编辑框，或者直接改变 userInfo.description
-      console.log('修改简介');
-      // 比如：prompt() 可以让用户修改简介
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
       if (newDescription !== null) {
-        this.userInfo.description = newDescription;
+        axios.put('/user/updateDescription', { userId: this.userInfo.id, description: newDescription })
+            .then(response => {
+              this.userInfo.description = newDescription;
+              console.log('简介更新成功', response.data);
+            })
+            .catch(error => {
+              console.error('简介更新失败', error);
+            });
       }
     },
+
+    // 修改研究领域
     editResearchFields() {
-      // 这里可以弹出编辑框，或者直接改变 userInfo.researchFields
-      console.log('修改研究领域');
       const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
       if (newResearchFields !== null) {
-        this.userInfo.researchFields = newResearchFields.split(',').map(field => field.trim());
+        const updatedFields = newResearchFields.split(',').map(field => field.trim());
+        axios.put('/api/updateResearchFields', { userId: this.userInfo.id, researchFields: updatedFields })
+            .then(response => {
+              this.userInfo.researchFields = updatedFields;
+              console.log('研究领域更新成功', response.data);
+            })
+            .catch(error => {
+              console.error('研究领域更新失败', error);
+            });
       }
-    }
+    },
+
+    // 集中处理所有数据获取请求
+    fetchUserData() {
+      const userId = this.userInfo.id;
+      axios({
+        method: 'get',
+        url: '/user/userData',
+        params: { userId },
+      })
+          .then(response => {
+            // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
+            const { userInfo, favoriteArticles, comments, articles } = response.data;
+            // 更新数据
+            this.userInfo = userInfo;
+            this.favoriteArticles = favoriteArticles;
+            this.comments = comments;
+            this.articles = articles;
+          })
+          .catch(error => {
+            console.error('获取数据失败', error);
+          });
+    },
+  },
+
+  mounted() {
+    // 页面加载时获取所有数据
+    this.fetchUserData();
   },
 };
 </script>
+
+
 
 <style>
 /* 页面整体样式 */
