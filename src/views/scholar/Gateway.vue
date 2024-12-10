@@ -241,7 +241,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchUserData() {
-      const userId = this.userInfo.id;
+      const userId = this.$route.query.userId;
       axios({
         method: 'get',
         url: '/user/userData',
