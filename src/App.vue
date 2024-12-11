@@ -54,7 +54,7 @@ export default {
       searchQuery: "", // 搜索框内容
       loggedIn: true, // 登录状态
       username: "", // 用户名
-      OnlineUser: 1,//用户Id
+      OnlineUser: 1, //用户Id
     };
   },
   methods: {

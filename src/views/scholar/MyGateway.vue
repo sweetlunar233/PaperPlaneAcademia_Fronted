@@ -194,7 +194,7 @@ export default {
     editDescription() {
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
       if (newDescription !== null) {
-        axios.put('/user/updateDescription', { userId: this.$root.UserId, description: newDescription })
+        axios.put('/user/updateDescription', { userId: this.$root.OnlineUser, description: newDescription })
             .then(response => {
               this.userInfo.description = newDescription;
               console.log('简介更新成功', response.data);
