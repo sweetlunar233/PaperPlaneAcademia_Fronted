@@ -93,7 +93,7 @@ export default {
           const newUser = { ...this.registerForm };
           delete newUser.confirmPassword; // 确认密码不需要发送到后端
           try {
-            const response = await axios.post("/api/user/register", newUser);
+            const response = await axios.post("/user/register/", newUser);
             if (response.data.status === "success") {
               alert("注册成功！将为您跳转到登录界面");
               this.$router.push("/login");

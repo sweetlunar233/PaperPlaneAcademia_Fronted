@@ -54,16 +54,16 @@ export default {
       searchQuery: "", // 搜索框内容
       loggedIn: true, // 登录状态
       username: "", // 用户名
-      UserId: 1,//用户Id
+      OnlineUser: 1,//用户Id
     };
   },
   methods: {
     async checkLoginStatus() {
       try {
-        const response = await axios.get("/api/auth/status"); // 假设后端提供登录状态接口
-        if (response.data.success) {
+        const response = await axios.get("/user/userData"); // 假设后端提供登录状态接口
+        if (response != null) {
           this.loggedIn = true;
-          this.username = response.data.username; // 获取用户名
+          this.username = response.UserInfo.name; // 获取用户名
         } else {
           this.loggedIn = false;
         }
@@ -92,7 +92,7 @@ export default {
     async onSearch() {
       if (this.searchQuery.trim() !== "") {
         try {
-          const response = await axios.post("/api/search", {
+          const response = await axios.post("/search", {
             query: this.searchQuery, // 发送的搜索内容
           });
           if (response.data.success) {
@@ -114,6 +114,7 @@ export default {
     },
   },
   mounted() {
+    this.$root = this;
     this.checkLoginStatus(); // 组件加载时检查登录状态
   },
 };
