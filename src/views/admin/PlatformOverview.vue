@@ -30,7 +30,7 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get("/api/admin/platform-overview");
+      const response = await axios.get("/user/platform-overview/");
       if (response.status === 200 && response.data) {
         this.statistics[0].value = response.data.totalUsers || 0;
         this.statistics[1].value = response.data.totalPapers || 0;
