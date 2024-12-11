@@ -194,7 +194,7 @@ export default {
     editDescription() {
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
       if (newDescription !== null) {
-        axios.put('/user/updateDescription', { userId: this.$route.query.userId, description: newDescription })
+        axios.put('/user/updateDescription', { userId: this.$root.UserId, description: newDescription })
             .then(response => {
               this.userInfo.description = newDescription;
               console.log('简介更新成功', response.data);
@@ -210,7 +210,7 @@ export default {
       const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
       if (newResearchFields !== null) {
         const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        axios.put('/api/updateResearchFields', { userId: this.$route.query.userId, researchFields: updatedFields })
+        axios.put('/api/updateResearchFields', { userId: this.$root.UserId, researchFields: updatedFields })
             .then(response => {
               this.userInfo.researchFields = updatedFields;
               console.log('研究领域更新成功', response.data);
