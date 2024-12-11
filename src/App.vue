@@ -86,7 +86,7 @@ export default {
     },
     async logout() {
       try {
-        const response = await axios.post("/api/auth/logout"); // 假设后端提供注销接口
+        const response = await axios.post("/user/logout/"); // 假设后端提供注销接口
         if (response.data.success) {
           this.loggedIn = false;
           this.username = "";
