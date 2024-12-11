@@ -27,9 +27,9 @@
     <div class="main-content">
       <div class="sidebar">
         <ul>
-          <li @click="setTab('我的文章')" :class="{ active: activeTab === '我的文章' }">我的文章</li>
-          <li @click="setTab('我的收藏')" :class="{ active: activeTab === '我的收藏' }">收藏</li>
-          <li @click="setTab('我的评论')" :class="{ active: activeTab === '我的评论' }">评论</li>
+          <li @click="setTab('TA的文章')" :class="{ active: activeTab === 'TA的文章' }">TA的文章</li>
+          <li @click="setTab('TA的收藏')" :class="{ active: activeTab === 'TA的收藏' }">TA的收藏</li>
+          <li @click="setTab('TA的评论')" :class="{ active: activeTab === 'TA的评论' }">TA的评论</li>
         </ul>
       </div>
       <div class = "left">
