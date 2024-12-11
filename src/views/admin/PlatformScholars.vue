@@ -52,7 +52,7 @@ export default {
     // 获取平台入驻学者总数和分页数据
     async fetchScholars(page = 1) {
       try {
-        const response = await axios.get("/api/admin/scholars", {
+        const response = await axios.get("/user/scholars/", {
           params: {
             page: page, // 当前页
             size: this.pagination.pageSize, // 每页显示条数
