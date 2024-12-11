@@ -8,7 +8,7 @@
       <el-table-column prop="content" label="认领内容" min-width="300"></el-table-column>
       <el-table-column label="操作" align="center" min-width="150">
         <template #default="{ row }">
-          <el-button type="success" @click="approveClaim(row.id)">通过</el-button>
+          <el-button type="success" @click="approveClaim(row.claimId)">通过</el-button>
           <el-button type="danger" @click="rejectClaim(row)">驳回</el-button>
         </template>
       </el-table-column>
@@ -45,7 +45,7 @@ export default {
       totalClaims: 0,
       rejectDialogVisible: false,
       rejectReason: "",
-      selectedClaimId: null,
+      selectedClaimId: null, // 当前选择的申请ID
     };
   },
   computed: {
@@ -56,6 +56,7 @@ export default {
     },
   },
   methods: {
+    // 获取认领申请列表
     async fetchClaims() {
       try {
         const response = await axios.get(`/claims/`);
@@ -65,25 +66,29 @@ export default {
         console.error("获取认领申请失败:", error);
       }
     },
+    // 页码变化时触发
     handlePageChange(page) {
       this.currentPage = page;
     },
-    async approveClaim(id) {
+    // 通过申请
+    async approveClaim(claimId) {
       try {
-        await axios.post(`/claims/${id}/approve`);
+        await axios.post(`/claims/${claimId}/approve`);  // 使用claimId
         alert("认领申请已通过");
         this.fetchClaims();
       } catch (error) {
         console.error("审批失败:", error);
       }
     },
+    // 驳回申请
     rejectClaim(row) {
-      this.selectedClaimId = row.id;
+      this.selectedClaimId = row.claimId;  // 存储当前选中申请的claimId
       this.rejectDialogVisible = true;
     },
+    // 提交驳回理由
     async submitRejection() {
       try {
-        await axios.post(`/claims/${this.selectedClaimId}/reject/`, {
+        await axios.post(`/claims/${this.selectedClaimId}/reject/`, { // 使用选中的claimId
           reason: this.rejectReason,
         });
         alert("认领申请已驳回");
