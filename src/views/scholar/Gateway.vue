@@ -27,16 +27,16 @@
     <div class="main-content">
       <div class="sidebar">
         <ul>
-          <li @click="setTab('我的文章')" :class="{ active: activeTab === '我的文章' }">我的文章</li>
-          <li @click="setTab('我的收藏')" :class="{ active: activeTab === '我的收藏' }">收藏</li>
-          <li @click="setTab('我的评论')" :class="{ active: activeTab === '我的评论' }">评论</li>
+          <li @click="setTab('TA的文章')" :class="{ active: activeTab === 'TA的文章' }">TA的文章</li>
+          <li @click="setTab('TA的收藏')" :class="{ active: activeTab === 'TA的收藏' }">TA的收藏</li>
+          <li @click="setTab('TA的评论')" :class="{ active: activeTab === 'TA的评论' }">TA的评论</li>
         </ul>
       </div>
       <div class = "left">
       </div>
       <div class="content">
-        <div v-if="activeTab === '我的文章'">
-          <h2>我的文章</h2>
+        <div v-if="activeTab === 'TA的文章'">
+          <h2>TA的文章</h2>
           <div v-if="articles.length > 0">
             <div v-for="(article, index) in articles" :key="index" class="article-item">
               <div class="article-card">
@@ -66,8 +66,8 @@
             <p>您还没有发表任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === '我的收藏'">
-          <h2>我的收藏</h2>
+        <div v-if="activeTab === 'TA的收藏'">
+          <h2>TA的收藏</h2>
           <div v-if="favoriteArticles.length > 0">
             <div v-for="(article, index) in favoriteArticles" :key="index" class="article-item">
               <div class="article-card">
@@ -97,8 +97,8 @@
             <p>您还没有收藏任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === '我的评论'">
-          <h2 class="tab-title">我的评论</h2>
+        <div v-if="activeTab === 'TA的评论'">
+          <h2 class="tab-title">TA的评论</h2>
           <div v-if="comments.length > 0" class="comments-list">
             <div v-for="(comment, index) in comments" :key="index" class="comment-item">
               <div class="comment-card">
@@ -197,7 +197,7 @@ export default {
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
       // 调用后端接口来更新关注状态
-      axios.post('/user/follow', { userId: this.userInfo.id, follow: this.isFollowed })
+      axios.post('/user/follow', { userId: this.$route.query.userId, follow: this.isFollowed })
           .then(response => {
             console.log('关注状态更新成功', response.data);
           })
@@ -212,7 +212,7 @@ export default {
       axios({
         method: 'get',
         url: '/user/userData',
-        params: { userId },
+        params: userId,
       })
           .then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
