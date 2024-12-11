@@ -54,6 +54,7 @@ export default {
       searchQuery: "", // 搜索框内容
       loggedIn: true, // 登录状态
       username: "", // 用户名
+      UserId: 1,//用户Id
     };
   },
   methods: {
@@ -80,7 +81,7 @@ export default {
       this.$router.push("/register"); // 跳转到注册页面
     },
     goToMyGateway() {
-      this.$router.push("/MyGateway"); // 跳转到注册页面
+      this.$router.push("/MyGateway"); // 跳转到个人主页
     },
     async logout() {
       this.loggedIn = false;

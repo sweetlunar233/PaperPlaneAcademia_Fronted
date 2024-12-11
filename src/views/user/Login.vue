@@ -54,6 +54,7 @@ export default {
             if (response.data.status === "success") {
               alert("登录成功！");
               this.$root.loggedIn = true; // 修改根组件的登录状态
+              this.$root.OnlineUser = response.data.UserId; // 修改根组件的当前在线用户Id
               this.$router.push("/dashboard"); // 登录成功跳转到主页面
             } else {
               alert(response.data.message);
