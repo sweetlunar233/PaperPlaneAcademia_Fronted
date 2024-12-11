@@ -19,7 +19,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
 
-app.use(router).use(ElementPlus,{locale: zhCn})
+app.use(router).use(ElementPlus,{locale: zhCn}).use(VueCookies);
 
 app.mount('#app')
 
