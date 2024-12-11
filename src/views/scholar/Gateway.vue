@@ -197,7 +197,7 @@ export default {
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
       // 调用后端接口来更新关注状态
-      axios.post('/user/follow', { userId: this.userInfo.id, follow: this.isFollowed })
+      axios.post('/user/follow', { userId: this.$route.query.userId, follow: this.isFollowed })
           .then(response => {
             console.log('关注状态更新成功', response.data);
           })
@@ -212,7 +212,7 @@ export default {
       axios({
         method: 'get',
         url: '/user/userData',
-        params: { userId },
+        params: userId,
       })
           .then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles

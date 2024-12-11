@@ -189,24 +189,12 @@ export default {
       this.activeTab = tab;
     },
 
-    // 切换关注状态
-    toggleFollow() {
-      this.isFollowed = !this.isFollowed;
-      // 调用后端接口来更新关注状态
-      axios.post('/user/follow', { userId: this.userInfo.id, follow: this.isFollowed })
-          .then(response => {
-            console.log('关注状态更新成功', response.data);
-          })
-          .catch(error => {
-            console.error('关注状态更新失败', error);
-          });
-    },
 
     // 修改简介
     editDescription() {
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
       if (newDescription !== null) {
-        axios.put('/user/updateDescription', { userId: this.userInfo.id, description: newDescription })
+        axios.put('/user/updateDescription', { userId: this.$route.query.userId, description: newDescription })
             .then(response => {
               this.userInfo.description = newDescription;
               console.log('简介更新成功', response.data);
@@ -222,7 +210,7 @@ export default {
       const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
       if (newResearchFields !== null) {
         const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        axios.put('/api/updateResearchFields', { userId: this.userInfo.id, researchFields: updatedFields })
+        axios.put('/api/updateResearchFields', { userId: this.$route.query.userId, researchFields: updatedFields })
             .then(response => {
               this.userInfo.researchFields = updatedFields;
               console.log('研究领域更新成功', response.data);
@@ -239,7 +227,7 @@ export default {
       axios({
         method: 'get',
         url: '/user/userData',
-        params: { userId },
+        params: userId,
       })
           .then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
