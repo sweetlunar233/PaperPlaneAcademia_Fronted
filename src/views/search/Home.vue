@@ -7,12 +7,7 @@ const router = useRouter();
 
 import { GetTopArticles, GetRecommendedArticles, GetStatistics } from '../../api/home.js'
 
-import {
-    Search,
-} from '@element-plus/icons-vue'
-
-const searchValue = ref("");
-const topOrRec = ref("hot-gate-artiles");
+const topOrRec = ref("hot-gate-articles");
 const top_articles = ref([
   {
     authors: [
@@ -24,6 +19,58 @@ const top_articles = ref([
         userId: "3323123",
         userName: "Sergei Belousov"
       },
+    ],
+    users: [
+      {
+        userId: "123456",
+        userName: "WAACJIJI"
+      }
+    ],
+    paperId: "123456",
+    paperTitle: "ABCDE",
+    year: "2024-11-21",
+    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
+    collectNum: 25,
+    citationNum: 35,
+  },
+  {
+    authors: [
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+      {
+        userId: "3323123",
+        userName: "Sergei Belousov"
+      },
+    ],
+    users: [
+      {
+        userId: "123456",
+        userName: "WAACJIJI"
+      }
+    ],
+    paperId: "123456",
+    paperTitle: "ABCDE",
+    year: "2024-11-21",
+    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
+    collectNum: 25,
+    citationNum: 35,
+  },
+  {
+    authors: [
+      {
+        userName: "Sergei Belousov"
+      },
+      {
+        userName: "Sergei Belousov"
+      },
+    ],
+    users: [
+      {
+        userId: "123456",
+        userName: "WAACJIJI"
+      }
     ],
     paperId: "123456",
     paperTitle: "ABCDE",
@@ -41,9 +88,15 @@ const recommended_articles = ref([
         userName: "Sergei Belousov"
       },
       {
-        userId: "3323123",
+        userId: "-1",
         userName: "Sergei Belousov"
       },
+    ],
+    users: [
+      {
+        userId: "123456",
+        userName: "WAACJIJI"
+      }
     ],
     paperId: "123456",
     paperTitle: "ABCDE",
@@ -63,6 +116,12 @@ const recommended_articles = ref([
         userName: "Sergei Belousov"
       },
     ],
+    users: [
+      {
+        userId: "123456",
+        userName: "WAACJIJI"
+      }
+    ],
     paperId: "123456",
     paperTitle: "ABCDE",
     year: "2024-11-21",
@@ -73,13 +132,17 @@ const recommended_articles = ref([
   {
     authors: [
       {
-        userId: "3323123",
         userName: "Sergei Belousov"
       },
       {
-        userId: "3323123",
         userName: "Sergei Belousov"
       },
+    ],
+    users: [
+      {
+        userId: "123456",
+        userName: "WAACJIJI"
+      }
     ],
     paperId: "123456",
     paperTitle: "ABCDE",
@@ -91,11 +154,11 @@ const recommended_articles = ref([
 ]);
 
 const statistic = ref({
-  authorCount: 280502,
+  authorCount: 20502,
   organizationsCount: 16479,
   fieldsCount: 31486,
-  journalCount: 49063,
-  paperCount: 261039
+  journalCount: 29063,
+  paperCount: 26039
 })
 
 const internalInstance = getCurrentInstance();
@@ -116,6 +179,10 @@ const quotes = [
 ];
 
 const randomQuote = ref(quotes[Math.floor(Math.random() * quotes.length)]);
+
+const updateQuote = () => {
+  randomQuote.value = quotes[Math.floor(Math.random() * quotes.length)];
+};
 
 const FormatString = (value) => {
   if (!value) return "";
@@ -174,9 +241,6 @@ initHome(userId.value);
 
 
 
-
-
-
 //动画
 // 目标数字数组
 const targetNumbers = [202233, 45322, 781120, 123456, 67890];
@@ -194,23 +258,28 @@ const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小
 const startCounting = () => {
   const intervals = targetNumbers.map((target, index) => {
     return setInterval(() => {
-        if(index == 0 || index == 4){
-            if (numbers.value[index] < target) {
-                numbers.value[index] += increment * 8;
-            } else {
-                numbers.value[index] = target;
-                clearInterval(intervals[index]); // 达到目标时停止
-            }
+        // if(index == 0 || index == 4){
+        //     if (numbers.value[index] < target) {
+        //         numbers.value[index] += increment * 8;
+        //     } else {
+        //         numbers.value[index] = target;
+        //         clearInterval(intervals[index]); // 达到目标时停止
+        //     }
+        // }
+        // else{
+        //     if (numbers.value[index] < target) {
+        //         numbers.value[index] += increment;
+        //     } else {
+        //         numbers.value[index] = target;
+        //         clearInterval(intervals[index]); // 达到目标时停止
+        //     }
+        // }
+        if (numbers.value[index] < target) {
+            numbers.value[index] += increment;
+        } else {
+            numbers.value[index] = target;
+            clearInterval(intervals[index]); // 达到目标时停止
         }
-        else{
-            if (numbers.value[index] < target) {
-                numbers.value[index] += increment;
-            } else {
-                numbers.value[index] = target;
-                clearInterval(intervals[index]); // 达到目标时停止
-            }
-        }
-      
     }, intervalTime);
   });
 };
@@ -224,14 +293,14 @@ onMounted(() => {
 
 <template>
 <div class="home">
-    <div class="background">
-        <img src="" alt="" class="background-img">
-    </div>
+    <!-- <div class="background">
+        <img src="../../assets/images/home/bg.jpg" alt="" class="background-img">
+    </div> -->
     <div class="main">
         <div class="title-and-input">
             <div class="bigtitle">Paper Wing Academia</div>
             <div class="input-box">
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
+                <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
             </div>
         </div>
 
@@ -240,7 +309,7 @@ onMounted(() => {
                 <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     <div style="display: flex; align-items: center;">
                         <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="" style="width: 70px;">
+                            <img class="image" src="../../assets/images/home/author.png" style="width: 70px;">
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Authors</h3>
@@ -253,7 +322,7 @@ onMounted(() => {
                 <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     <div style="display: flex; align-items: center;">
                         <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="" style="width: 70px;">
+                            <img class="image" src="../../assets/images/home/paper.png" style="width: 70px;">
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Papers</h3>
@@ -265,7 +334,7 @@ onMounted(() => {
                 <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     <div style="display: flex; align-items: center;">
                         <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="" style="width: 70px;">
+                            <img class="image" src="../../assets/images/home/journal.png" style="width: 70px;">
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Journals</h3>
@@ -277,10 +346,10 @@ onMounted(() => {
                 <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     <div style="display: flex; align-items: center;">
                         <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="" style="width: 70px;">
+                            <img class="image" src="../../assets/images/home/organization.png" style="width: 70px;">
                         </div>
                         <div style="padding: 10px;">
-                            <h3 class="sub-title">Organizations</h3>
+                            <h3 class="sub-title">Groups</h3>
                             <h2 class="sub-number">{{ numbers[3] }}</h2>
                         </div>
                     </div>
@@ -289,7 +358,7 @@ onMounted(() => {
                 <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     <div style="display: flex; align-items: center;">
                         <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="" style="width: 70px;">
+                            <img class="image" src="../../assets/images/home/field.png" style="width: 70px;">
                         </div>
                         <div style="padding: 10px;">
                             <h3 class="sub-title">Field</h3>
@@ -311,10 +380,18 @@ onMounted(() => {
                                         <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                        <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
+                                        <span style="color: gray; cursor: default;"><u>{{ author.userName }}</u></span>
                                         <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
+                                </div>
+
+                                <div style="text-align: left; margin-top: 10px;">
+                                    <span v-for="(user, index2) in article.users" :key="user" class="author-name">
+                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
+                                        <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
+                                        <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
+                                    </span>
                                 </div>
 
                                 <div style="text-align:left;margin-top:10px;">
@@ -340,10 +417,18 @@ onMounted(() => {
                                         <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                        <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
-                                        <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
+                                      <span style="color: gray; cursor: default;"><u>{{ author.userName }}</u></span>
+                                      <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
+                                </div>
+
+                                <div style="text-align: left; margin-top: 10px;">
+                                    <span v-for="(user, index2) in article.users" :key="user" class="author-name">
+                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
+                                        <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
+                                        <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
+                                    </span>
                                 </div>
 
                                 <div style="text-align:left;margin-top:10px;">
@@ -368,14 +453,14 @@ onMounted(() => {
 
 <style scoped>
 .home {
-  background-color: white;
+  background-color: #f0f7ff;
   min-width: 100%;
   height: 100%;
 }
 
 .home .title-and-input {
   padding-left: 7%;
-  padding-right: 10%;
+  padding-right: 7%;
   text-align: left;
 }
 
@@ -389,7 +474,7 @@ onMounted(() => {
 }
 
 .home .input-box {
-  font-size: 20px;
+  font-size: 22px;
   margin-top: 60px;
   color: black;
   font-weight: 600;
@@ -398,7 +483,7 @@ onMounted(() => {
 .home .bigtitle {
   /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
   font-size: 60px;
-  margin-top: 60px;/*空白在这*/
+  padding-top: 60px;/*空白在这*/
   color: black;
   font-weight: 600;
 }
@@ -419,7 +504,7 @@ onMounted(() => {
 }
 
 .home .logos {
-  margin-top: 130px;
+  margin-top: 80px;
   padding-top: 0px;
   padding-left: 5%;
   padding-right: 5%;
@@ -429,13 +514,14 @@ onMounted(() => {
 .home .recommend {
   min-width: 900px;
   margin: 50px 12%;
-  padding: 20px 40px 60px;
+  margin-top: 80px;
+  padding: 20px 40px 40px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04)
 }
 
 .bg-purple {
-  background: #f5f5f5;
+  background: white;
   /* #efeefd */
   padding:20px;
   border-radius: 14px ;
@@ -446,6 +532,11 @@ onMounted(() => {
   border-radius: 4px;
   min-height: 36px;
   width: 25%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.grid-content:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* 鼠标悬停时加上阴影效果 */
 }
 
 /* .home .test_a {
