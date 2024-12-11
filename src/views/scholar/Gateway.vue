@@ -35,8 +35,8 @@
       <div class = "left">
       </div>
       <div class="content">
-        <div v-if="activeTab === '我的文章'">
-          <h2>我的文章</h2>
+        <div v-if="activeTab === 'TA的文章'">
+          <h2>TA的文章</h2>
           <div v-if="articles.length > 0">
             <div v-for="(article, index) in articles" :key="index" class="article-item">
               <div class="article-card">
@@ -66,8 +66,8 @@
             <p>您还没有发表任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === '我的收藏'">
-          <h2>我的收藏</h2>
+        <div v-if="activeTab === 'TA的收藏'">
+          <h2>TA的收藏</h2>
           <div v-if="favoriteArticles.length > 0">
             <div v-for="(article, index) in favoriteArticles" :key="index" class="article-item">
               <div class="article-card">
@@ -97,8 +97,8 @@
             <p>您还没有收藏任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === '我的评论'">
-          <h2 class="tab-title">我的评论</h2>
+        <div v-if="activeTab === 'TA的评论'">
+          <h2 class="tab-title">TA的评论</h2>
           <div v-if="comments.length > 0" class="comments-list">
             <div v-for="(comment, index) in comments" :key="index" class="comment-item">
               <div class="comment-card">
