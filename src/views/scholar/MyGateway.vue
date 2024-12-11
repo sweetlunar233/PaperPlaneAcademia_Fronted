@@ -7,19 +7,15 @@
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
-          <p><strong>简介：</strong>{{ userInfo.description }}
-          </p>
-          <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
-          </p>
+        <p><strong>简介：</strong>{{ userInfo.description }}
+          <button class="edit-btn" @click="editDescription">修改</button>
+        </p>
+        <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
+          <button class="edit-btn" @click="editResearchFields">修改</button>
+        </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
-      </div>
-      <div class="button-container">
-        <button @click="sendMessage" class="message-button">发私信</button>
-        <button @click="toggleFollow" class="follow-button">
-          {{ isFollowed ? '✔ 已关注' : '+ 关注' }}
-        </button>
       </div>
     </div>
 
@@ -166,7 +162,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      activeTab: "TA的文章", // 默认激活动态选项卡
+      activeTab: "我的文章", // 默认激活动态选项卡
       isFollowed: false, // 是否关注用户
       userInfo: {
         name: '',
@@ -204,6 +200,37 @@ export default {
           .catch(error => {
             console.error('关注状态更新失败', error);
           });
+    },
+
+    // 修改简介
+    editDescription() {
+      const newDescription = prompt('请输入新的简介', this.userInfo.description);
+      if (newDescription !== null) {
+        axios.put('/user/updateDescription', { userId: this.userInfo.id, description: newDescription })
+            .then(response => {
+              this.userInfo.description = newDescription;
+              console.log('简介更新成功', response.data);
+            })
+            .catch(error => {
+              console.error('简介更新失败', error);
+            });
+      }
+    },
+
+    // 修改研究领域
+    editResearchFields() {
+      const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
+      if (newResearchFields !== null) {
+        const updatedFields = newResearchFields.split(',').map(field => field.trim());
+        axios.put('/api/updateResearchFields', { userId: this.userInfo.id, researchFields: updatedFields })
+            .then(response => {
+              this.userInfo.researchFields = updatedFields;
+              console.log('研究领域更新成功', response.data);
+            })
+            .catch(error => {
+              console.error('研究领域更新失败', error);
+            });
+      }
     },
 
     // 集中处理所有数据获取请求

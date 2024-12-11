@@ -70,6 +70,11 @@ const router = createRouter({
       path:'/register',
       name:'register',
       component: () => import('../views/user/Register.vue')
+    },
+    {
+      path:'/myGateway',
+      name:'myGateway',
+      component: () => import('../views/scholar/MyGateway.vue')
     }
   ]
 })
