@@ -58,7 +58,7 @@ export default {
   methods: {
     async fetchClaims() {
       try {
-        const response = await axios.get(`/user/claims`);
+        const response = await axios.get(`/claims/`);
         this.claims = response.data.data;
         this.totalClaims = this.claims.length;
       } catch (error) {
@@ -70,7 +70,7 @@ export default {
     },
     async approveClaim(id) {
       try {
-        await axios.post(`/user/claims/${id}/approve`);
+        await axios.post(`/claims/${id}/approve`);
         alert("认领申请已通过");
         this.fetchClaims();
       } catch (error) {
@@ -83,7 +83,7 @@ export default {
     },
     async submitRejection() {
       try {
-        await axios.post(`/user/claims/${this.selectedClaimId}/reject/`, {
+        await axios.post(`/claims/${this.selectedClaimId}/reject/`, {
           reason: this.rejectReason,
         });
         alert("认领申请已驳回");

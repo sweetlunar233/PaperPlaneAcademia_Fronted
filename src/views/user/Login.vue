@@ -50,12 +50,12 @@ export default {
         if (valid) {
           const userCredentials = { ...this.loginForm };
           try {
-            const response = await axios.post("/api/user/login", userCredentials);
+            const response = await axios.post("/user/login/", userCredentials);
             if (response.data.status === "success") {
               alert("登录成功！");
               this.$root.loggedIn = true; // 修改根组件的登录状态
               this.$root.OnlineUser = response.data.UserId; // 修改根组件的当前在线用户Id
-              this.$router.push("/dashboard"); // 登录成功跳转到主页面
+              this.$router.push("/Home"); // 登录成功跳转到主页面
             } else {
               alert(response.data.message);
             }
