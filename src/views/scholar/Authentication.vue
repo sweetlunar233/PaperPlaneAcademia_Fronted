@@ -82,7 +82,7 @@
             </el-form-item>
 
             <div  class="manual-upload-link">
-              系统中没有录入我的作品？<span @click="dialogFormVisible = true" class="manual-upload">手动上传</span>
+              系统中没有录入我的作品？<span @click="edit(null)" class="manual-upload">手动上传</span>
             </div>
             <div class="papers" v-if="formData.newPapers.length > 0">
                 <p style="margin-bottom:-5px; padding-left:20px; color:var(--text-color);">已手动上传的作品：</p>
@@ -103,74 +103,48 @@
                     </div>
                 </ul>
             </div>
-            
         </el-form>
 
-        <el-dialog v-model="dialogFormVisible" title="添加论文" class="manual-upload-popup" >
-            <el-form :model="newPaperFormData" key="newPaperForm" l>
+        <el-dialog v-model="dialogFormVisible" :title="editIdx==-1?'添加论文':'编辑论文'" class="manual-upload-popup" >
+            <el-form v-model="newPaperFormData" key="newPaperForm" >
                 <div class="popup-content">
                   <el-form-item label="论文标题" :label-width="100" >
-                    <el-input v-model="newPaperFormData.paperTitle" placeholder="请输入论文标题" style="max-width: 80%;"></el-input>
+                    <el-input v-model="newPaperFormData.title" placeholder="请输入论文标题" style="max-width: 80%;"></el-input>
                   </el-form-item>
                   <el-form-item label="发表日期" :label-width="100">
-                    <el-date-picker v-model="newPaperFormData.publishDate" type="date" placeholder="选择日期" />
+                    <el-date-picker v-model="newPaperFormData.date" type="date" placeholder="选择日期" />
                   </el-form-item>
-                  <el-form-item label="期刊名称" prop="journalName">
-                    <el-input v-model="newPaperFormData.journalName" placeholder="请输入期刊名称"></el-input>
+                  <el-form-item label="期刊名称" :label-width="100">
+                    <el-input v-model="newPaperFormData.journal" placeholder="请输入期刊名称" style="max-width: 80%;"></el-input>
+                  </el-form-item>
+                  <el-form-item label="合著作者" :label-width="100">
+                    <el-input v-model="newPaperFormData.coauthor" placeholder="除您以外的其他作者，多个作者名请用;隔开" style="max-width: 80%;"></el-input>
+                  </el-form-item>
+                  <el-form-item label="关键词" :label-width="100">
+                    <el-input v-model="newPaperFormData.key" placeholder="多个关键词请用;隔开" style="max-width: 80%;"></el-input>
                   </el-form-item>
                   <el-form-item label="上传文件" :label-width="100">
                     <el-upload
                       action="https://jsonplaceholder.typicode.com/posts/"
+                      ref="upload"
                       :file-list="newPaperFormData.fileList"
                       :on-remove="handleRemove"
                       :before-upload="beforeUpload"
-                      :limit="3"
+                      :limit="1"
                       :on-exceed="handleExceed"
+                      :auto-upload="false"
                       :on-change="handleChange"
                     >
                       <el-button type="primary"><el-icon class="el-icon--right"><Upload /></el-icon>上传文件</el-button>
                     </el-upload>
                   </el-form-item>
                   <div class="popup-buttons">
-                    <el-button @click="submitManualUpload" type="primary">提交</el-button>
+                    <el-button @click="submitManualUpload()" type="primary">提交</el-button>
                     <el-button @click="dialogFormVisible = false">取消</el-button>
                   </div>
                 </div>
-              
             </el-form>
         </el-dialog>
-
-        <!-- <el-form :model="formData" ref="form" label-width="100px" v-if="step === 2" style="position: absolute; width: 100%; margin: 15% 15% 100px 10%;">
-          <el-form-item label="论文标题" prop="paperTitle">
-            <el-input v-model="formData.paperTitle" placeholder="请输入论文标题"></el-input>
-          </el-form-item>
-          <el-form-item label="发表日期" prop="publishDate">
-            <el-date-picker v-model="formData.publishDate" type="date" placeholder="选择日期" />
-          </el-form-item>
-          <el-form-item label="期刊名称" prop="journalName">
-            <el-input v-model="formData.journalName" placeholder="请输入期刊名称"></el-input>
-          </el-form-item>
-          <el-form-item label="证明材料" prop="proof">
-            <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :file-list="fileList"
-                :on-remove="handleRemove"
-                :before-upload="beforeUpload"
-                :limit="5"
-                :on-exceed="handleExceed"
-                :on-change="handleChange"
-                >
-                <el-button type="primary">上传文件<el-icon class="el-icon--right"><Upload /></el-icon></el-button>
-                </el-upload>
-          </el-form-item>
-        </el-form> -->
-  
-        <!-- <el-row v-if="step === 3" justify="center" class="message">
-            <el-col :span="12" class="centered-text">
-              <p style="color: #333;">申请已提交，请等待审核!</p>
-              <el-button @click="goHome" size="large">返回主页</el-button>
-            </el-col>
-        </el-row> -->
 
         <el-row v-if="step === 3" justify="center" style="position: absolute; padding-top:20%">
             <el-col :span="16" class="centered-text">
@@ -210,9 +184,15 @@
             workPlace: '',
             field: '',
             claimedPapers: [],
-            newPapers: [
-                { title: '手动上传论文示例', publishDate: '', journalName:'Science', file: null },
-            ]
+            newPapers: [{ 
+                  idx:0, 
+                  title: '手动上传论文示例', 
+                  date: '', 
+                  journal:'Science', 
+                  coauthor:'路人甲',
+                  key:'人工智能', 
+                  fileList: null 
+                },]
 
         },
         papersList: [
@@ -228,10 +208,14 @@
         dialogFormVisible: false,
         hoverIconIndex: null,
         newPaperFormData: {
-            paperTitle: '',
-            publishDate: null,
-            fileList: []
-        }
+          title: '',
+          date: null,
+          journal:'',
+          coauthor:'',
+          key:'',
+          fileList: null,
+        },
+        editIdx: -1,
       };
     },
     methods: {
@@ -272,7 +256,9 @@
         },
 
         handleExceed(file, fileList) {
-            this.$message.warning('上传文件超过限制');
+          this.$refs.upload.clearFiles();
+          this.$refs.upload.handleStart(file);
+          
         },
         
         toggleSelection(index) {
@@ -284,27 +270,48 @@
         },
 
         submitManualUpload() {
-            // 提交手动上传的论文
-            const { paperTitle, publishDate, fileList } = this.newPaperFormData;
-            if (paperTitle && publishDate) {
-                // 提交手动上传的论文
-                this.formData.newPapers.push({
-                    title: paperTitle,
-                    publishDate: publishDate,
-                    fileList: fileList,
-                });
-                this.dialogFormVisible = false; // 关闭弹窗
-                this.newPaperFormData = { paperTitle: '', publishDate: null, fileList: [] }; // 重置表单
-            } else {
-                this.$message.error('请填写完整的论文信息');
+            // 提交或编辑手动上传的论文
+            if(this.editIdx != -1){
+              this.formData.newPapers.splice(this.editIdx, 1, this.newPaperFormData);
+              this.editIdx = -1;
+            }else{
+                this.formData.newPapers.push(this.newPaperFormData);
             }
+            this.dialogFormVisible = false;
         },
+
         removePaper(index) {
             this.formData.newPapers.splice(index, 1);
-        }, 
+        },
+
         goHome() {
           this.$router.push("/home");
-      },
+        },
+
+      edit(paper){
+        if(paper == null){
+          this.editIdx = -1;
+          this.newPaperFormData = { 
+            title: '',
+            date: null,
+            journal:'',
+            coauthor:'',
+            key:'',
+            fileList: []
+          };
+          this.dialogFormVisible = true;
+        } else {
+          this.editIdx = paper.idx;
+          console.log(paper);
+          this.dialogFormVisible = true;
+          this.newPaperFormData.title = paper.title;
+          this.newPaperFormData.date = paper.date;
+          this.newPaperFormData.journal = paper.journal;
+          this.newPaperFormData.coauthor = paper.coauthor;
+          this.newPaperFormData.key = paper.key;
+          this.newPaperFormData.fileList = paper.fileList;
+        }
+      }
     },
 
 
