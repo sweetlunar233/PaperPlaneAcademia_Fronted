@@ -104,52 +104,6 @@ const recommended_articles = ref([
     abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
     collectNum: 25,
     citationNum: 35,
-  },
-  {
-    authors: [
-      {
-        userId: "3323123",
-        userName: "Sergei Belousov"
-      },
-      {
-        userId: "3323123",
-        userName: "Sergei Belousov"
-      },
-    ],
-    users: [
-      {
-        userId: "123456",
-        userName: "WAACJIJI"
-      }
-    ],
-    paperId: "123456",
-    paperTitle: "ABCDE",
-    year: "2024-11-21",
-    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
-    collectNum: 25,
-    citationNum: 35,
-  },
-  {
-    authors: [
-      {
-        userName: "Sergei Belousov"
-      },
-      {
-        userName: "Sergei Belousov"
-      },
-    ],
-    users: [
-      {
-        userId: "123456",
-        userName: "WAACJIJI"
-      }
-    ],
-    paperId: "123456",
-    paperTitle: "ABCDE",
-    year: "2024-11-21",
-    abstract: "ref(value: { authors: { userId: string; userName: string; }[];",
-    collectNum: 25,
-    citationNum: 35,
   }
 ]);
 
@@ -207,6 +161,12 @@ const gotoScholar = (userId) => {
     query: {
         userId: userId
     }
+  });
+}
+
+const gotoError = (userId) => {
+    router.push({
+    path: '/error',
   });
 }
 
@@ -299,6 +259,7 @@ onMounted(() => {
     <div class="main">
         <div class="title-and-input">
             <div class="bigtitle">Paper Wing Academia</div>
+            <div class="loader" @click="gotoError"></div>
             <div class="input-box">
                 <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
             </div>
@@ -452,6 +413,53 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+.loader {
+  width: 44.8px;
+  height: 44.8px;
+  color: #554cb5;
+  position: relative;
+  background: radial-gradient(11.2px,currentColor 94%,#0000);
+
+  display: inline-block;
+  margin-left: 20px;
+  /* cursor: pointer; */
+}
+
+.loader:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(10.08px at bottom right,#0000 94%,currentColor) top    left,
+          radial-gradient(10.08px at bottom left ,#0000 94%,currentColor) top    right,
+          radial-gradient(10.08px at top    right,#0000 94%,currentColor) bottom left,
+          radial-gradient(10.08px at top    left ,#0000 94%,currentColor) bottom right;
+  background-size: 22.4px 22.4px;
+  background-repeat: no-repeat;
+  animation: loader 1.5s infinite cubic-bezier(0.3,1,0,1);
+}
+
+@keyframes loader {
+  33% {
+    inset: -11.2px;
+    transform: rotate(0deg);
+  }
+
+  66% {
+    inset: -11.2px;
+    transform: rotate(90deg);
+  }
+
+  100% {
+    inset: 0;
+    transform: rotate(90deg);
+  }
+}
+
+
+
+
 .home {
   background-color: #f0f7ff;
   min-width: 100%;
@@ -478,6 +486,7 @@ onMounted(() => {
   margin-top: 60px;
   color: black;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .home .bigtitle {
@@ -486,6 +495,8 @@ onMounted(() => {
   padding-top: 60px;/*空白在这*/
   color: black;
   font-weight: 600;
+
+  display: inline-block;
 }
 
 .home .sub-title {
