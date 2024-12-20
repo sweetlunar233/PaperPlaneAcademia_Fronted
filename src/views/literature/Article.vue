@@ -9,7 +9,14 @@
                 </div>
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
-                        <span class="hyperlink">{{ author }}</span>
+                        <span>{{ author }}</span>
+                        <span v-if="index != article.author.length">&ensp;, </span>
+                    </span>
+                </div>
+                <div class="subtitle">
+                    <span>去作者空间：</span>
+                    <span v-for="(author,index) in article.scholarAuthor">
+                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.name }}</span>
                         <span v-if="index != article.author.length">&ensp;, </span>
                     </span>
                 </div>
@@ -67,7 +74,7 @@
                 </div>
                 <div class="articleDetail">
                     <el-tabs v-model="activeTab" @tab-click="toComment">
-                        <el-tab-pane label="参考文献" name="first">
+                        <!-- <el-tab-pane label="参考文献" name="first">
                             <div class="tab-tip">
                                 共 {{ article.reference.length }} 条
                             </div>
@@ -97,12 +104,12 @@
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                         <el-tab-pane label="引证文献" name="second">
                             <div class="tab-tip">
                                 共 {{ article.citation.length }} 条
                             </div>
-                            <div class="tab-tip" v-if="article.reference.length>0">
+                            <div class="tab-tip" v-if="article.citation.length>0">
                                 由于版权限制，此处可能仅展示部分相关论文
                             </div>
                             <el-scrollbar height="350px">
@@ -140,16 +147,16 @@
             
             <el-col :span="6" class="otherInfo">
                 <el-row style="text-align: center;">
-                    <el-col :span="6">
+                    <!-- <el-col :span="6">
                         <el-statistic title="引用量" :value="article.quoteCnt" value-style="color:#409EFF"/>
-                    </el-col>
-                    <el-col :span="6">
+                    </el-col> -->
+                    <el-col :span="8">
                         <el-statistic title="被引量" :value="article.citedCnt" value-style="color:#67C23A"/>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <el-statistic title="收藏数" :value="article.starCnt" value-style="color:#E6A23C;"/>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <el-statistic title="评论数" :value="article.cmtCnt" value-style="color:#F56C6C;"/>
                     </el-col>
                 </el-row>
@@ -208,53 +215,53 @@ export default{
                     first_page:"5784",
                     last_page:"5784",
                 },
-                reference: [
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
-                                    articleId: 1,
-                                    articleTitle: "Securing and sharing Elasticsearch resources with Read-onlyREST",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                ],
+                // reference: [
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
+                //                     articleId: 1,
+                //                     articleTitle: "Securing and sharing Elasticsearch resources with Read-onlyREST",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                // ],
                 citation: [
                                 {
                                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
@@ -287,7 +294,7 @@ export default{
                                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
                                 },
                 ],
-                quoteCnt:36,
+                // quoteCnt:36,
                 citedCnt:5112,
                 starCnt:2,
                 cmtCnt:1,
@@ -325,15 +332,17 @@ export default{
                         authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
                     },
                 ],
+                download:"https://www.baidu.com/",
             },
+            quotation:"",// 论文的引用
             isFold:true,
-            activeTab:"first",
+            activeTab:"second",
             router:useRouter(),
         }
     },
     methods: {
         download(){
-
+            window.open(this.article.download, '_blank');
         },
 
         star(){
@@ -371,11 +380,46 @@ export default{
 
         toGateway(id){
             this.router.push({path:'/gateway',query:{id:id} });
+        },
+
+        formatGB7714() {
+            let tmp = "[1] ";
+
+            // 拼接作者信息
+            tmp += this.formatAuthors() + '. ';
+
+            // 拼接文章标题
+            tmp += `${this.article.title}[J]. `;
+
+            // 拼接期刊信息
+            tmp += `${this.article.journal.name}, ${this.article.year}, ${this.article.journal.volume}(${this.article.journal.first_page}): ${this.article.journal.first_page}-${this.article.journal.last_page}. `;
+
+            // 拼接DOI信息
+            if (this.article.DOI) {
+                tmp += `DOI: ${this.article.DOI}.`;
+            }
+
+            console.log(tmp);
+
+            return tmp;
+        },
+
+        // 格式化作者信息
+        formatAuthors() {
+            if (this.article.author.length === 1) {
+                return this.article.author[0];
+            } else if (this.article.author.length === 2) {
+                return this.article.author.join(' 和 ');
+            } else {
+                // 超过两个作者，取前三个，并在末尾加上“等”
+                return this.article.author.slice(0, 3).join('、') + ' 等';
+            }
         }
     },
 
     mounted(){
         this.id = this.$route.query.paperId;
+        this.quotation = this.formatGB7714();
     },
 }
 
