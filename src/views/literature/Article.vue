@@ -191,6 +191,16 @@
         </el-row>
     </div>
 </div>
+
+<el-dialog v-model="quoteDialog" width="500" align-center title="引用" style="font-weight: bold;">
+    <div>GB/T 7714-2015 格式引文</div>
+    <template #footer>
+        <div class="dialog-footer">
+
+        </div>
+    </template>
+</el-dialog>
+
 </template>
 
 <script>
@@ -338,6 +348,7 @@ export default{
             isFold:true,
             activeTab:"second",
             router:useRouter(),
+            quoteDialog:false,
         }
     },
     methods: {
@@ -354,7 +365,7 @@ export default{
         },
 
         quote(){
-
+            this.quoteDialog = true;
         },
 
         changeFoldState(){
