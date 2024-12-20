@@ -12,11 +12,9 @@ const top_articles = ref([
   {
     authors: [
       {
-        userId: "3323123",
         userName: "Sergei Belousov"
       },
       {
-        userId: "3323123",
         userName: "Sergei Belousov"
       },
     ],
@@ -36,11 +34,9 @@ const top_articles = ref([
   {
     authors: [
       {
-        userId: "3323123",
         userName: "Sergei Belousov"
       },
       {
-        userId: "3323123",
         userName: "Sergei Belousov"
       },
     ],
@@ -84,11 +80,9 @@ const recommended_articles = ref([
   {
     authors: [
       {
-        userId: "3323123",
         userName: "Sergei Belousov"
       },
       {
-        userId: "-1",
         userName: "Sergei Belousov"
       },
     ],
@@ -120,16 +114,14 @@ const internalData = internalInstance.appContext.config.globalProperties;
 const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
 
 const quotes = [
-  "What's the difference between Harry Potter and Jewish? Harry Potter escaped the Chamber.",
-  "Success doesn't come from what you do occasionally, it comes from what you do consistently. Focus on your goals, stay disciplined, and be patient—your efforts will pay off in the end.",
-  "God is black. How do you know? Because everyone calls him Father but no one have seen him.",
-  "The road to success and the road to failure are almost exactly the same. The difference is persistence. Keep pushing, keep learning, and never let fear or failure hold you back from reaching your dreams.",
-  "Don’t be afraid of change. It’s hard at first, messy in the middle, and gorgeous at the end. Embrace the unknown, trust that everything happens for a reason, and know that new opportunities are waiting for you.",
-  "Success is not about the destination, but about the journey. It’s about how much you’ve learned, how much you’ve grown, and how many people you’ve helped along the way. Always keep growing, keep evolving, and never stop striving for the best version of yourself.",
-  "You are never too old to set another goal or to dream a new dream. No matter where you are in life, it's never too late to start anew. Keep your heart open to new possibilities, and don’t let age or past mistakes define you.",
-  "Believe in the power of positive thinking. Your thoughts shape your reality, and if you think positive, you’ll attract positive things into your life. Surround yourself with good energy, and let go of negativity.",
-  "The only limit to our realization of tomorrow is our doubts of today. Don’t let fear or uncertainty stop you from chasing your dreams. Every step forward, no matter how small, brings you closer to where you want to be.",
-  "The biggest adventure you can take is to live the life of your dreams. Don’t wait for the perfect moment to start—create the moment. Life is too short to live in the shadows of your fears; step into the light and shine with everything you’ve got."
+  "Success isn't something that happens just because of a few isolated efforts or random bursts of hard work. It’s the result of daily commitment, discipline, and persistence. It comes from choosing to focus on your goals consistently, even when things are tough or progress seems slow. It’s about showing up day after day, putting in the work even when no one is watching. Over time, these small, consistent efforts will build upon each other, and eventually, the fruits of your hard work will emerge, even if it takes longer than you expected.",
+  "The path to success and the road to failure may appear remarkably similar at times. Both roads are filled with obstacles, setbacks, and moments when you question your ability to continue. The key difference, however, is persistence. Those who succeed are often those who refuse to give up, who keep pushing forward in the face of adversity. They don’t let fear or failure define them. Instead, they use each challenge as an opportunity to learn, grow, and become more resilient.",
+  "Change can be one of the most daunting experiences in life, but it is also one of the most necessary. At the beginning, change feels overwhelming and challenging, as if you’re stepping into the unknown with no clear direction. In the middle, it may become messy and chaotic, as the old systems or habits begin to break down. But in the end, change often brings beauty, growth, and new opportunities that you could never have imagined at the start. Life is full of surprises.",
+  "Success is not simply about achieving a goal or reaching a specific destination. It’s about the journey that gets you there—the lessons learned along the way, the obstacles overcome, and the people you meet who inspire you to grow. True success lies in how much you’ve grown as a person through the process, how much wisdom you’ve gained, and how many others you’ve helped or inspired along your path. The pursuit of success is a continuous evolution, not a static point.",
+  "No matter how old you are or how far along you think you are in life, it’s never too late to set a new goal or pursue a new dream. Life is a journey with endless opportunities for reinvention and growth. Every new chapter offers a chance to discover something different about yourself, to pursue passions you’ve never had the time or courage to explore before. Don’t let age, past mistakes, or disappointments hold you back from the possibilities that lie ahead.Just do what you want.",
+  "The power of positive thinking isn’t just about having a good attitude—it’s about truly believing in the possibility of good things happening in your life. Your thoughts are incredibly powerful; they shape your perceptions, your actions, and ultimately your reality. When you focus on positive thoughts and energy, you open yourself up to more opportunities, more success, and more joy. The people you surround yourself with and the energy you invite into your life can either lift you up or bring you down.",
+  "The only real limit to our potential is the doubts and fears we carry with us today. If we allow our uncertainties to dictate our actions, we will never reach the heights we’re capable of. Fear of failure, fear of the unknown, and self-doubt are natural, but they should not control your path. Every step forward, even if it’s small or seems insignificant, is still progress. With each step you take, you move closer to your dreams.Believe in yourself and eventually you'll reach your goal.",
+  "The greatest adventure you can ever embark on is living a life that truly fulfills your dreams and aspirations. It’s not about waiting for the perfect moment to start—it’s about creating the moments that will lead you to where you want to be. Life is far too short to live in fear or to hide from the things that excite and inspire you. The more you embrace who you are, pursue what excites you, and take risks toward what you truly want, the more vibrant and meaningful your life will become."
 ];
 
 const randomQuote = ref(quotes[Math.floor(Math.random() * quotes.length)]);
@@ -257,77 +249,79 @@ onMounted(() => {
         <img src="../../assets/images/home/bg.jpg" alt="" class="background-img">
     </div> -->
     <div class="main">
-        <div class="title-and-input">
-            <div class="bigtitle">Paper Wing Academia</div>
-            <div class="loader" @click="gotoError"></div>
-            <div class="input-box">
-                <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
-            </div>
-        </div>
+        <div class="uphalf">
+          <div class="title-and-input">
+              <div class="bigtitle">Paper Wing Academia</div>
+              <div class="loader" @click="gotoError"></div>
+              <div class="input-box">
+                  <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
+              </div>
+          </div>
 
-        <div class="logos">
-            <div style="display: flex; justify-content: center; gap: 20px;">
-                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    <div style="display: flex; align-items: center;">
-                        <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="../../assets/images/home/author.png" style="width: 70px;">
-                        </div>
-                        <div style="padding: 10px;">
-                            <h3 class="sub-title">Authors</h3>
-                            <!-- <h2 class="sub-number">{{ statistic.authorCount }}</h2> -->
-                            <h2 class="sub-number">{{ numbers[0] }}</h2>
-                        </div>
-                    </div>
-                </div>
+          <div class="logos">
+              <div style="display: flex; justify-content: center; gap: 20px;">
+                  <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                      <div style="display: flex; align-items: center;">
+                          <div style="padding: 10px; margin-right: 20px;">
+                              <img class="image" src="../../assets/images/home/author.png" style="width: 70px;">
+                          </div>
+                          <div style="padding: 10px;">
+                              <h3 class="sub-title">Authors</h3>
+                              <!-- <h2 class="sub-number">{{ statistic.authorCount }}</h2> -->
+                              <h2 class="sub-number">{{ numbers[0] }}</h2>
+                          </div>
+                      </div>
+                  </div>
 
-                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    <div style="display: flex; align-items: center;">
-                        <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="../../assets/images/home/paper.png" style="width: 70px;">
-                        </div>
-                        <div style="padding: 10px;">
-                            <h3 class="sub-title">Papers</h3>
-                            <h2 class="sub-number">{{ numbers[1] }}</h2>
-                        </div>
-                    </div>
-                </div>
+                  <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                      <div style="display: flex; align-items: center;">
+                          <div style="padding: 10px; margin-right: 20px;">
+                              <img class="image" src="../../assets/images/home/paper.png" style="width: 70px;">
+                          </div>
+                          <div style="padding: 10px;">
+                              <h3 class="sub-title">Papers</h3>
+                              <h2 class="sub-number">{{ numbers[1] }}</h2>
+                          </div>
+                      </div>
+                  </div>
 
-                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    <div style="display: flex; align-items: center;">
-                        <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="../../assets/images/home/journal.png" style="width: 70px;">
-                        </div>
-                        <div style="padding: 10px;">
-                            <h3 class="sub-title">Journals</h3>
-                            <h2 class="sub-number">{{ numbers[2] }}</h2>
-                        </div>
-                    </div>
-                </div>
+                  <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                      <div style="display: flex; align-items: center;">
+                          <div style="padding: 10px; margin-right: 20px;">
+                              <img class="image" src="../../assets/images/home/journal.png" style="width: 70px;">
+                          </div>
+                          <div style="padding: 10px;">
+                              <h3 class="sub-title">Journals</h3>
+                              <h2 class="sub-number">{{ numbers[2] }}</h2>
+                          </div>
+                      </div>
+                  </div>
 
-                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    <div style="display: flex; align-items: center;">
-                        <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="../../assets/images/home/organization.png" style="width: 70px;">
-                        </div>
-                        <div style="padding: 10px;">
-                            <h3 class="sub-title">Groups</h3>
-                            <h2 class="sub-number">{{ numbers[3] }}</h2>
-                        </div>
-                    </div>
-                </div>
+                  <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                      <div style="display: flex; align-items: center;">
+                          <div style="padding: 10px; margin-right: 20px;">
+                              <img class="image" src="../../assets/images/home/organization.png" style="width: 70px;">
+                          </div>
+                          <div style="padding: 10px;">
+                              <h3 class="sub-title">Groups</h3>
+                              <h2 class="sub-number">{{ numbers[3] }}</h2>
+                          </div>
+                      </div>
+                  </div>
 
-                <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    <div style="display: flex; align-items: center;">
-                        <div style="padding: 10px; margin-right: 20px;">
-                            <img class="image" src="../../assets/images/home/field.png" style="width: 70px;">
-                        </div>
-                        <div style="padding: 10px;">
-                            <h3 class="sub-title">Field</h3>
-                            <h2 class="sub-number">{{ numbers[4] }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                  <div class="grid-content bg-purple test_a" style="flex: 1; padding: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                      <div style="display: flex; align-items: center;">
+                          <div style="padding: 10px; margin-right: 20px;">
+                              <img class="image" src="../../assets/images/home/field.png" style="width: 70px;">
+                          </div>
+                          <div style="padding: 10px;">
+                              <h3 class="sub-title">Field</h3>
+                              <h2 class="sub-number">{{ numbers[4] }}</h2>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </div>
 
         <div class="recommend">
@@ -417,7 +411,7 @@ onMounted(() => {
 .loader {
   width: 44.8px;
   height: 44.8px;
-  color: #554cb5;
+  color: #c2bcff;
   position: relative;
   background: radial-gradient(11.2px,currentColor 94%,#0000);
 
@@ -466,25 +460,22 @@ onMounted(() => {
   height: 100%;
 }
 
+.home .uphalf {
+  padding-bottom: 60px;
+  background: url("../../assets/images/bg.png") no-repeat;
+  background-size: cover;
+}
+
 .home .title-and-input {
   padding-left: 7%;
   padding-right: 7%;
   text-align: left;
 }
 
-.home .background {
-  position:absolute;
-  width:100%;
-  height:100%;
-  left:0;
-  z-index:-1;
-  object-fit: cover;
-}
-
 .home .input-box {
   font-size: 22px;
   margin-top: 60px;
-  color: black;
+  color: white;
   font-weight: 600;
   cursor: pointer;
 }
@@ -492,8 +483,8 @@ onMounted(() => {
 .home .bigtitle {
   /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
   font-size: 60px;
-  padding-top: 60px;/*空白在这*/
-  color: black;
+  padding-top: 100px;/*空白在这*/
+  color: white;
   font-weight: 600;
 
   display: inline-block;
@@ -515,7 +506,7 @@ onMounted(() => {
 }
 
 .home .logos {
-  margin-top: 80px;
+  margin-top: 60px;
   padding-top: 0px;
   padding-left: 5%;
   padding-right: 5%;
@@ -525,7 +516,7 @@ onMounted(() => {
 .home .recommend {
   min-width: 900px;
   margin: 50px 12%;
-  margin-top: 80px;
+  margin-top: 20px;
   padding: 20px 40px 40px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04)
