@@ -423,6 +423,7 @@ onMounted(() => {
 
   display: inline-block;
   margin-left: 20px;
+  /* cursor: pointer; */
 }
 
 .loader:before {
@@ -485,6 +486,7 @@ onMounted(() => {
   margin-top: 60px;
   color: black;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .home .bigtitle {
