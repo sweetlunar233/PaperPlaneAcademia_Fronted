@@ -2,6 +2,7 @@
 <template >
     <div style="background-color:#EBEEF5">
     <div class="article">
+        {{ id }}
         <el-row class="title-block">
             <el-col :span="12">
                 <div class="title">
@@ -187,6 +188,8 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+const router = useRouter();
 export default{
     
     data(){
@@ -327,7 +330,6 @@ export default{
             activeTab:"first",
         }
     },
-
     methods: {
         download(){
 
@@ -350,20 +352,26 @@ export default{
         },
 
         toArticle(id){
-
+            router.push({path: '/article',query: {paperId: id}});
         },
 
         toComment(){
-
+            router.push({ path: '/comment'});
         },
 
         toField(id){
-
+            
         },
+
+        toGateway(id){
+            router.push({path:'/gateway',query:{id:id} });
+        }
     },
 
     mounted(){
-        
+        this.id = this.$route.query.paperId;
+        console.log("TIEZHuDing");
+        console.log(this.id);
     },
 }
 
