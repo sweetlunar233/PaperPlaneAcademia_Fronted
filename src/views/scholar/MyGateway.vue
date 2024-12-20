@@ -210,7 +210,7 @@ export default {
       const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
       if (newResearchFields !== null) {
         const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        axios.put('/api/updateResearchFields', { userId: this.$root.UserId, researchFields: updatedFields })
+        axios.put('/user/updateResearchFields', { userId: this.$root.OnlineUser, researchFields: updatedFields })
             .then(response => {
               this.userInfo.researchFields = updatedFields;
               console.log('研究领域更新成功', response.data);
@@ -223,10 +223,10 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchUserData() {
-      const userId = this.$route.query.userId;
+      const userId = this.$root.OnlineUser;
       axios({
         method: 'get',
-        url: '/user/userData',
+        url: '/users/userData',
         params: userId,
       })
           .then(response => {
