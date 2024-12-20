@@ -114,7 +114,6 @@ export default {
     },
   },
   mounted() {
-    this.$root = this;
     this.checkLoginStatus(); // 组件加载时检查登录状态
   },
 };
