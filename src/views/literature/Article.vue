@@ -2,7 +2,6 @@
 <template >
     <div style="background-color:#EBEEF5">
     <div class="article">
-        {{ id }}
         <el-row class="title-block">
             <el-col :span="12">
                 <div class="title">
@@ -67,7 +66,7 @@
                     </span>
                 </div>
                 <div class="articleDetail">
-                    <el-tabs v-model="activeTab">
+                    <el-tabs v-model="activeTab" @tab-click="toComment">
                         <el-tab-pane label="参考文献" name="first">
                             <div class="tab-tip">
                                 共 {{ article.reference.length }} 条
@@ -130,7 +129,7 @@
                                 </el-row>
                             </el-scrollbar>
                         </el-tab-pane>
-                        <el-tab-pane label="文章评论" name="third" @click="toComment">
+                        <el-tab-pane label="文章评论" name="third">
                             <div class="tab-tip">
                                 请前往弹出网页
                             </div>
@@ -189,7 +188,7 @@
 
 <script>
 import { useRouter } from 'vue-router';
-const router = useRouter();
+
 export default{
     
     data(){
@@ -198,6 +197,7 @@ export default{
             article:{
                 title:"Scalable Defect Detection via Traversal on Code Graph",
                 author:["Zhengyao Liu","Xitong Zhong","Xingjing Deng","Shuo Hong","Xiang Gao","Hailong Sun"],
+                scholarAuthor:[{name:"Zhengyao Liu",id:1},{name:"Xitong Zhong",id:2},{name:"Xingjing Deng",id:3},{name:"Shuo Hong",id:4},{name:"Xiang Gao",id:5},{name:"Hailong Sun",id:5}],
                 institution:"Beihang University",
                 year:"2021",
                 DOI:"10.1007/978-3-030-87358-5_40",
@@ -328,6 +328,7 @@ export default{
             },
             isFold:true,
             activeTab:"first",
+            router:useRouter(),
         }
     },
     methods: {
@@ -352,11 +353,16 @@ export default{
         },
 
         toArticle(id){
-            router.push({path: '/article',query: {paperId: id}});
+            this.router.push({path: '/article',query: {paperId: id}});
         },
 
-        toComment(){
-            router.push({ path: '/comment'});
+        toComment(tab){
+            if(tab.props.name === "third"){
+                // 获取目标 URL
+                const targetUrl = this.router.resolve({ path: '/comment', query: { paperId: this.id } }).href;
+                // 使用 window.open 打开新窗口
+                window.open(targetUrl, '_blank');
+            }
         },
 
         toField(id){
@@ -364,14 +370,12 @@ export default{
         },
 
         toGateway(id){
-            router.push({path:'/gateway',query:{id:id} });
+            this.router.push({path:'/gateway',query:{id:id} });
         }
     },
 
     mounted(){
         this.id = this.$route.query.paperId;
-        console.log("TIEZHuDing");
-        console.log(this.id);
     },
 }
 
