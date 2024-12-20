@@ -211,7 +211,7 @@ export default {
       const userId = this.$route.query.userId;
       axios({
         method: 'get',
-        url: '/user/userData',
+        url: '/users/userData',
         params: userId,
       })
           .then(response => {
