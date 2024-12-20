@@ -47,6 +47,11 @@ const router = createRouter({
       component: () => import('../views/search/Home.vue')
     },
     {
+      path:'/',
+      name:'homeroot',
+      component: () => import('../views/search/Home.vue')
+    },
+    {
       path:'/searchRes',
       name:'searchRes',
       component: () => import('../views/search/SearchRes.vue')
@@ -70,6 +75,11 @@ const router = createRouter({
       path:'/register',
       name:'register',
       component: () => import('../views/user/Register.vue')
+    },
+    {
+      path:'/myGateway',
+      name:'myGateway',
+      component: () => import('../views/scholar/MyGateway.vue')
     }
   ]
 })

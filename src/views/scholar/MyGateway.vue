@@ -7,19 +7,15 @@
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
-          <p><strong>简介：</strong>{{ userInfo.description }}
-          </p>
-          <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
-          </p>
+        <p><strong>简介：</strong>{{ userInfo.description }}
+          <button class="edit-btn" @click="editDescription">修改</button>
+        </p>
+        <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
+          <button class="edit-btn" @click="editResearchFields">修改</button>
+        </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
-      </div>
-      <div class="button-container">
-        <button @click="sendMessage" class="message-button">发私信</button>
-        <button @click="toggleFollow" class="follow-button">
-          {{ isFollowed ? '✔ 已关注' : '+ 关注' }}
-        </button>
       </div>
     </div>
 
@@ -27,16 +23,16 @@
     <div class="main-content">
       <div class="sidebar">
         <ul>
-          <li @click="setTab('TA的文章')" :class="{ active: activeTab === 'TA的文章' }">TA的文章</li>
-          <li @click="setTab('TA的收藏')" :class="{ active: activeTab === 'TA的收藏' }">TA的收藏</li>
-          <li @click="setTab('TA的评论')" :class="{ active: activeTab === 'TA的评论' }">TA的评论</li>
+          <li @click="setTab('我的文章')" :class="{ active: activeTab === '我的文章' }">我的文章</li>
+          <li @click="setTab('我的收藏')" :class="{ active: activeTab === '我的收藏' }">收藏</li>
+          <li @click="setTab('我的评论')" :class="{ active: activeTab === '我的评论' }">评论</li>
         </ul>
       </div>
       <div class = "left">
       </div>
       <div class="content">
-        <div v-if="activeTab === 'TA的文章'">
-          <h2>TA的文章</h2>
+        <div v-if="activeTab === '我的文章'">
+          <h2>我的文章</h2>
           <div v-if="articles.length > 0">
             <div v-for="(article, index) in articles" :key="index" class="article-item">
               <div class="article-card">
@@ -66,8 +62,8 @@
             <p>您还没有发表任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === 'TA的收藏'">
-          <h2>TA的收藏</h2>
+        <div v-if="activeTab === '我的收藏'">
+          <h2>我的收藏</h2>
           <div v-if="favoriteArticles.length > 0">
             <div v-for="(article, index) in favoriteArticles" :key="index" class="article-item">
               <div class="article-card">
@@ -97,8 +93,8 @@
             <p>您还没有收藏任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === 'TA的评论'">
-          <h2 class="tab-title">TA的评论</h2>
+        <div v-if="activeTab === '我的评论'">
+          <h2 class="tab-title">我的评论</h2>
           <div v-if="comments.length > 0" class="comments-list">
             <div v-for="(comment, index) in comments" :key="index" class="comment-item">
               <div class="comment-card">
@@ -166,7 +162,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      activeTab: "TA的文章", // 默认激活动态选项卡
+      activeTab: "我的文章", // 默认激活动态选项卡
       isFollowed: false, // 是否关注用户
       userInfo: {
         name: '',
@@ -193,17 +189,36 @@ export default {
       this.activeTab = tab;
     },
 
-    // 切换关注状态
-    toggleFollow() {
-      this.isFollowed = !this.isFollowed;
-      // 调用后端接口来更新关注状态
-      axios.post('/user/follow', { userId: this.$route.query.userId, follow: this.isFollowed })
-          .then(response => {
-            console.log('关注状态更新成功', response.data);
-          })
-          .catch(error => {
-            console.error('关注状态更新失败', error);
-          });
+
+    // 修改简介
+    editDescription() {
+      const newDescription = prompt('请输入新的简介', this.userInfo.description);
+      if (newDescription !== null) {
+        axios.put('/user/updateDescription', { userId: this.$root.OnlineUser, description: newDescription })
+            .then(response => {
+              this.userInfo.description = newDescription;
+              console.log('简介更新成功', response.data);
+            })
+            .catch(error => {
+              console.error('简介更新失败', error);
+            });
+      }
+    },
+
+    // 修改研究领域
+    editResearchFields() {
+      const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
+      if (newResearchFields !== null) {
+        const updatedFields = newResearchFields.split(',').map(field => field.trim());
+        axios.put('/api/updateResearchFields', { userId: this.$root.UserId, researchFields: updatedFields })
+            .then(response => {
+              this.userInfo.researchFields = updatedFields;
+              console.log('研究领域更新成功', response.data);
+            })
+            .catch(error => {
+              console.error('研究领域更新失败', error);
+            });
+      }
     },
 
     // 集中处理所有数据获取请求
