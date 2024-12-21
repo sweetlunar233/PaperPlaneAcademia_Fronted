@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="userInfo.photoUrl || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" @click="showAvatarDialog = true"  />
+        <img :src="userInfo.photoUrl || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" @click="showAvatarDialog = true" class="profile-photo-img"  />
       </div>
       <el-dialog
           title="选择头像"
@@ -334,12 +334,47 @@ html, body {
   border-bottom: 1px solid #b3cde0; /* 灰色边框 */
 }
 
-.profile-photo img {
+.profile-photo {
+  position: relative;
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  margin-right: 20px;
+  overflow: hidden; /* 确保超出部分被隐藏 */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.profile-photo:hover {
+  transform: scale(1.05); /* 放大效果 */
+}
+
+.profile-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片按比例填充 */
+  transition: opacity 0.3s ease;
+}
+
+.profile-photo:hover .profile-photo-img {
+  opacity: 0.8; /* 悬停时图片透明度变化 */
+}
+
+.profile-photo:hover::after {
+  content: '点击更换头像';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background: rgba(0, 123, 255, 0.7); /* 半透明蓝色背景 */
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 48px;
+  pointer-events: none; /* 防止覆盖点击 */
+}
+
 
 .user-info {
   display: flex;
