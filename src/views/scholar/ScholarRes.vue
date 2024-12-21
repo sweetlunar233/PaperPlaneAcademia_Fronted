@@ -105,6 +105,17 @@ export default {
       }
     },
 
+    async getTotalPages() {
+      try {
+        const response = await axios.post('/users/getpage', {
+          searchConditions: this.searchConditions
+        });
+        this.totalPages = response.data.totalPages || 1;
+      } catch (error) {
+        console.error("Error getting total pages:", error);
+      }
+    },
+
     async fetchResults() {
       this.loading = true;
 
