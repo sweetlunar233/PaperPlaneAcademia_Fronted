@@ -37,8 +37,11 @@
                     <el-tooltip class="item" effect="light" content="下载" placement="bottom">
                         <el-button type="primary" icon="Download" circle @click="download"></el-button>
                     </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="收藏" placement="bottom">
+                    <el-tooltip class="item" effect="light" content="收藏" placement="bottom" v-if="!isStar">
                         <el-button type="warning" icon="Star" circle @click="star"></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="light" content="收藏" placement="bottom" v-else>
+                        <el-button type="warning" icon="Star-Filled" circle @click="undoStar"></el-button>
                     </el-tooltip>
                     <el-tooltip class="item" effect="light" content="分享" placement="bottom">
                         <el-button type="danger" icon="Share" circle @click="share"></el-button>
@@ -192,14 +195,12 @@
     </div>
 </div>
 
-<el-dialog v-model="quoteDialog" width="500" align-center title="引用" style="font-weight: bold;">
-    <div>GB/T 7714-2015 格式引文</div>
-    <template #footer>
-        <div class="dialog-footer">
-
-        </div>
-    </template>
-</el-dialog>
+<!-- <el-dialog v-model="quoteDialog" width="800" align-center title="引用" style="font-weight: bold;">
+    <div style="color:black;padding-top: 1%;font-size: 15px;font-weight: normal">
+        <div class="">GB/T 7714-2015 格式引文</div>
+        <div>{{ quotation }}</div>
+    </div>
+</el-dialog> -->
 
 </template>
 
@@ -348,7 +349,8 @@ export default{
             isFold:true,
             activeTab:"second",
             router:useRouter(),
-            quoteDialog:false,
+            // quoteDialog:false,
+            isStar:false,
         }
     },
     methods: {
@@ -357,15 +359,45 @@ export default{
         },
 
         star(){
-
+            this.isStar = true;
         },
 
-        share(){
-
+        undoStar(){
+            this.isStar = false;
         },
 
-        quote(){
-            this.quoteDialog = true;
+        async share(){
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                ElMessage({
+                    message: '分享链接已复制到剪切板',
+                    type: 'success',
+                    plain: true,
+                });
+            } catch (err) {
+                ElMessage({
+                    message: '文本复制失败：',
+                    type: 'error',
+                    plain: true,
+                });
+            }
+        },
+
+        async quote(){
+            try {
+                await navigator.clipboard.writeText(this.quotation);
+                ElMessage({
+                    message: '引用格式已复制到剪切板',
+                    type: 'success',
+                    plain: true,
+                });
+            } catch (err) {
+                ElMessage({
+                    message: '文本复制失败：',
+                    type: 'error',
+                    plain: true,
+                });
+            }
         },
 
         changeFoldState(){
