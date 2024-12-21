@@ -13,5 +13,3 @@ export function GetOtherUserData(currentUserId,targetUserId){
     data.userId = targetUserId;
     return post("/users/otherUserData/",data);
 }
-
-export function CheckLoginStatus()
