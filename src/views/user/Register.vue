@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { Register } from "@/api/user";
 import axios from "axios";
 
 export default {
@@ -87,19 +88,43 @@ export default {
     };
   },
   methods: {
-    async submitRegisterForm(formName) {
+    // async submitRegisterForm(formName) {
+    //   this.$refs[formName].validate(async (valid) => {
+    //     if (valid) {
+    //       const newUser = { ...this.registerForm };
+    //       delete newUser.confirmPassword; // 确认密码不需要发送到后端
+    //       try {
+    //         const response = await axios.post("/user/register/", newUser);
+    //         if (response.data.status === "success") {
+    //           alert("注册成功！将为您跳转到登录界面");
+    //           this.$router.push("/login");
+    //         } else {
+    //           alert(response.data.message);
+    //         }
+    //       } catch (error) {
+    //         console.error("注册失败:", error);
+    //         alert("注册失败，请检查网络连接或稍后重试。");
+    //       }
+    //     } else {
+    //       console.log("error submit!!");
+    //     }
+    //   });
+    // },
+
+    submitRegisterForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          const newUser = { ...this.registerForm };
-          delete newUser.confirmPassword; // 确认密码不需要发送到后端
           try {
-            const response = await axios.post("/user/register/", newUser);
-            if (response.data.status === "success") {
-              alert("注册成功！将为您跳转到登录界面");
-              this.$router.push("/login");
-            } else {
-              alert(response.data.message);
-            }
+            var promise = Register(this.registerForm.username,this.registerForm.password,this.registerForm.email,this.registerForm.organization,this.registerForm.userType);
+            promise.then((result) => {
+              if (result && result.status === "success") {
+                alert("注册成功！将为您跳转到登录界面");
+                this.$router.push("/login");
+              } else {
+                alert(result);
+              }
+            })
+            
           } catch (error) {
             console.error("注册失败:", error);
             alert("注册失败，请检查网络连接或稍后重试。");
