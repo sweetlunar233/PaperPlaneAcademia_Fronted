@@ -4,9 +4,9 @@
     <el-container class="navbar">
       <el-header>
         <!-- 左侧 Logo -->
-        <el-button type="text" @click="goToHome">
-          <strong>Academia</strong>
-        </el-button>
+        <div class="logo" @click="goToHome">
+          Academia
+        </div>
 
         <!-- 高级搜索按钮 -->
         <div class="advanced-search">
@@ -25,7 +25,6 @@
             </template>
           </el-input>
         </div>
-
 
         <!-- 右侧按钮 -->
         <div class="auth-buttons">
@@ -46,15 +45,14 @@
   </div>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
       searchQuery: "", // 搜索框内容
-      loggedIn: true, // 登录状态
+      loggedIn: false, // 登录状态
       username: "", // 用户名
-      OnlineUser: 1, //用户Id
+      OnlineUser: 1, // 用户Id
     };
   },
   methods: {
@@ -123,6 +121,8 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap'); /* 引入 Montserrat 字体 */
+
 .navbar {
   background-color: #333; /* 深灰色背景 */
   color: #fff; /* 白色字体 */
@@ -136,6 +136,14 @@ export default {
   justify-content: space-between; /* 左右均匀分布 */
 }
 
+.logo {
+  color: white; /* 设置文字为白色 */
+  font-size: 32px; /* 设置字体大小 */
+  font-family: 'Montserrat', sans-serif; /* 使用 Montserrat 字体 */
+  cursor: pointer; /* 鼠标悬停时显示为点击样式 */
+  font-weight: bold; /* 设置为加粗 */
+}
+
 .el-button {
   color: #fff; /* 按钮文字为白色 */
   border: 1px solid #555; /* 灰色边框 */
@@ -147,11 +155,6 @@ export default {
   align-items: center; /* 垂直居中 */
   justify-content: center; /* 水平居中 */
   height: 36px; /* 固定按钮高度，确保居中 */
-}
-
-.el-button:hover {
-  background-color: #555; /* hover 时背景更亮 */
-  border-color: #666; /* hover 时边框更亮 */
 }
 
 .search-box {
@@ -188,5 +191,3 @@ html {
   overflow-y: scroll; /* 防止滚动条跳动 */
 }
 </style>
-
-
