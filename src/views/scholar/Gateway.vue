@@ -87,7 +87,7 @@
                   </div>
                 </div>
                 <div class="article-footer">
-                  <button @click="viewDetails(article)" class="view-button">查看详情</button>
+                  <button @click="viewDetails(article.id)" class="view-button">查看详情</button>
                 </div>
               </div>
             </div>
@@ -161,6 +161,7 @@
 
 <script>
 import axios from 'axios';
+import router from "@/router/index.js";
 
 export default {
   data() {
@@ -232,6 +233,14 @@ export default {
             console.error('获取数据失败', error);
           });
     },
+    viewDetails(id){
+      router.push({
+        path: '/article',
+        query:{
+          paperId: id
+        }
+      })
+    }
   },
   mounted() {
     // 页面加载时获取所有数据
