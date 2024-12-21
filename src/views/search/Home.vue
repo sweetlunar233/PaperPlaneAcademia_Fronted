@@ -173,7 +173,7 @@ const initHome = (userId) => {
       fieldsCount: 0,
       journalCount: 0,
       paperCount: 0
-    };
+    }; 
     
     var promise = GetTopArticles();
     promise.then((result)=>{
@@ -351,13 +351,13 @@ onMounted(() => {
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
                                 </div>
 
-                                <div style="text-align: left; margin-top: 10px;">
+                                <!-- <div style="text-align: left; margin-top: 10px;">
                                     <span v-for="(user, index2) in article.users" :key="user" class="author-name">
-                                        <!-- <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span> -->
+                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
                                         <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
                                         <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
-                                </div>
+                                </div> -->
 
                                 <div style="text-align:left;margin-top:10px;">
                                     <span class="abstract">{{ FormatString(article.abstract) }}</span>
@@ -388,13 +388,13 @@ onMounted(() => {
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
                                 </div>
 
-                                <div style="text-align: left; margin-top: 10px;">
+                                <!-- <div style="text-align: left; margin-top: 10px;">
                                     <span v-for="(user, index2) in article.users" :key="user" class="author-name">
-                                        <!-- <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span> -->
+                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
                                         <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
                                         <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
-                                </div>
+                                </div> -->
 
                                 <div style="text-align:left;margin-top:10px;">
                                     <span class="abstract">{{ FormatString(article.abstract) }}</span>
