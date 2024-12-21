@@ -272,7 +272,11 @@ html, body {
   display: flex;
   align-items: flex-start;
   padding: 20px;
-  background-color: #e6f7ff; /* 浅蓝色背景 */
+  /* background-color: #e6f7ff;  浅蓝色背景 */
+  background-image: url('https://img.zcool.cn/community/015b315c73bb4ba801203d22796b80.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-bottom: 1px solid #b3cde0; /* 灰色边框 */
 }
 
@@ -293,52 +297,22 @@ html, body {
 .right{
   width: 20%;
 }
-.button-container {
-  display: flex;
-  margin-top: 20px; /* 使按钮与其它信息之间有间距 */
-  align-self: flex-end; /* 将按钮放到右侧 */
-  margin-left: 45%;
-  gap: 30px;
-}
 
-.message-button,
-.follow-button {
-  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
-  color: #ffffff;
-  font-size: 18px; /* 增加字体大小 */
-  font-weight: bold;
-  padding: 15px 30px; /* 增大按钮的内边距 */
-  border: none;
-  border-radius: 30px; /* 增加圆角 */
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
 
-.message-button:hover,
-.follow-button:hover {
-  background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
-
-.message-button:active,
-.follow-button:active {
-  transform: scale(0.98);
-}
 
 .username {
   font-size: 24px;
   margin: 0;
-  color: #003366; /* 深蓝色字体 */
+  color: #ffffff; /* 深蓝色字体 */
 }
 
 .user-info p {
   margin: 5px 0;
-  color: #666; /* 灰色文字 */
+  color: #ffffff; /* 灰色文字 */
 }
 
 .user-info strong {
-  color: #003366; /* 深蓝色 */
+  color: #ffffff; /* 深蓝色 */
 }
 
 /* 主体内容样式 */

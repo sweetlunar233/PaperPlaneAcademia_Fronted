@@ -257,7 +257,11 @@ html, body {
   display: flex;
   align-items: flex-start;
   padding: 20px;
-  background-color: #e6f7ff; /* 浅蓝色背景 */
+  /* background-color: #e6f7ff;  浅蓝色背景 */
+  background-image: url('https://img.zcool.cn/community/015b315c73bb4ba801203d22796b80.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-bottom: 1px solid #b3cde0; /* 灰色边框 */
 }
 
@@ -314,16 +318,16 @@ html, body {
 .username {
   font-size: 24px;
   margin: 0;
-  color: #003366; /* 深蓝色字体 */
+  color: #ffffff; /* 白色字体 */
 }
 
 .user-info p {
   margin: 5px 0;
-  color: #666; /* 灰色文字 */
+  color: #ffffff; /* 白色文字 */
 }
 
 .user-info strong {
-  color: #003366; /* 深蓝色 */
+  color: #ffffff; /* 白色 */
 }
 
 /* 主体内容样式 */
