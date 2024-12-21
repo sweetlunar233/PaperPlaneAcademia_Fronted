@@ -40,37 +40,12 @@ export default {
         password: "",
       },
       rules: {
-        username: [{ required: true, message: "Username is required", trigger: "blur" }],
-        password: [{ required: true, message: "Password is required", trigger: "blur" }],
+        username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
     };
   },
   methods: {
-    // async submitLoginForm(formName) {
-    //   this.$refs[formName].validate(async (valid) => {
-    //     if (valid) {
-    //       const userCredentials = { ...this.loginForm };
-    //       try {
-    //         const response = await axios.post("/user/login/", userCredentials);
-    //         if (response.data.status === "success") {
-    //           alert("登录成功！");
-    //           this.$root.loggedIn = true; // 修改根组件的登录状态
-    //           this.$root.OnlineUser = response.data.UserId; // 修改根组件的当前在线用户Id
-    //           $cookies.set("userId", response.data.UserId);
-    //           this.$router.push("/Home"); // 登录成功跳转到主页面
-    //         } else {
-    //           alert(response.data.message);
-    //         }
-    //       } catch (error) {
-    //         console.error("登录失败:", error);
-    //         alert("登录失败，请检查网络连接或稍后重试。");
-    //       }
-    //     } else {
-    //       console.log("error submit!!");
-    //     }
-    //   });
-    // },
-
     submitLoginForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
@@ -106,11 +81,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
-  background: #f5f5f5;
+  height: 100vh; /* 设置为视口高度 */
+  background: url("../../assets/images/bg3.png") no-repeat center center; /* 背景图片 */
+  background-size: cover; /* 使背景图自适应容器 */
+  background-attachment: fixed; /* 保持背景固定 */
+  overflow: hidden; /* 防止出现滚动条 */
 }
+
 .login-card {
   width: 450px;
   padding: 20px;
+  background: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+  border-radius: 8px; /* 圆角 */
 }
+
 </style>
