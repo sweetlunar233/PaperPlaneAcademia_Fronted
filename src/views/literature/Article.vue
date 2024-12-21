@@ -353,7 +353,7 @@ export default{
             router:useRouter(),
             // quoteDialog:false,
             isStar:false,
-            isLoading:true,
+            isLoading:false,
             OnlineUser:0,
         }
     },
@@ -411,7 +411,10 @@ export default{
         },
 
         toArticle(id){
-            this.router.push({path: '/article',query: {paperId: id}});
+            // 获取目标 URL
+            const targetUrl = this.router.resolve({ path: '/article', query: { paperId: this.id } }).href;
+            // 使用 window.open 打开新窗口
+            window.open(targetUrl, '_blank');
         },
 
         toComment(tab){
@@ -428,7 +431,10 @@ export default{
         },
 
         toGateway(id){
-            this.router.push({path:'/gateway',query:{id:id} });
+            // 获取目标 URL
+            const targetUrl = this.router.resolve({ path: '/gateway', query:{id:id} }).href;
+            // 使用 window.open 打开新窗口
+            window.open(targetUrl, '_blank');
         },
 
         formatGB7714() {
