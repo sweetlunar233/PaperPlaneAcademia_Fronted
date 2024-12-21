@@ -9,7 +9,7 @@
         <h1 class="username">{{ userInfo.name }}</h1>
           <p><strong>简介：</strong>{{ userInfo.description }}
           </p>
-          <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
+          <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
           </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
@@ -218,7 +218,7 @@ export default {
       var promise = GetOtherUserData(currentUserId, targetUserId);
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-          const { userInfo, favoriteArticles, comments, articles, isFollowed } = response.data;
+          const { userInfo, favoriteArticles, comments, articles, isFollowed } = response;
           // 更新数据
           this.userInfo = userInfo;
           this.favoriteArticles = favoriteArticles;
