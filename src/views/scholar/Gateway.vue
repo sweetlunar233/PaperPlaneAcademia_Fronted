@@ -162,6 +162,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
+import {GetOtherUserData, Login} from "@/api/user.js";
 
 export default {
   data() {
@@ -214,24 +215,19 @@ export default {
     fetchUserData() {
       const currentUserId = this.$root.OnlineUser;
       const targetUserId = this.$route.query.userId;
-      axios({
-        method: 'get',
-        url: '/users/otherUserData',
-        params:
-          currentUserId, targetUserId,
-      })
-          .then(response => {
-            // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-            const { userInfo, favoriteArticles, comments, articles } = response.data;
-            // 更新数据
-            this.userInfo = userInfo;
-            this.favoriteArticles = favoriteArticles;
-            this.comments = comments;
-            this.articles = articles;
-          })
-          .catch(error => {
-            console.error('获取数据失败', error);
-          });
+      var promise = GetOtherUserData(currentUserId, targetUserId);
+      promise.then(response => {
+          // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
+          const { userInfo, favoriteArticles, comments, articles } = response.data;
+          // 更新数据
+          this.userInfo = userInfo;
+          this.favoriteArticles = favoriteArticles;
+          this.comments = comments;
+          this.articles = articles;
+        })
+        .catch(error => {
+          console.error('获取数据失败', error);
+        });
     },
     viewDetails(id){
       router.push({
