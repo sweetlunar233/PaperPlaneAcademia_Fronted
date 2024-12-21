@@ -109,9 +109,10 @@ const statistic = ref({
   paperCount: 26039
 })
 
-const internalInstance = getCurrentInstance();
-const internalData = internalInstance.appContext.config.globalProperties;
-const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
+// const internalInstance = getCurrentInstance();
+// const internalData = internalInstance.appContext.config.globalProperties;
+// const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
+const userId = ref(this.$root.OnlineUser);
 
 const quotes = [
   "Success isn't something that happens just because of a few isolated efforts or random bursts of hard work. It’s the result of daily commitment, discipline, and persistence. It comes from choosing to focus on your goals consistently, even when things are tough or progress seems slow. It’s about showing up day after day, putting in the work even when no one is watching. Over time, these small, consistent efforts will build upon each other, and eventually, the fruits of your hard work will emerge, even if it takes longer than you expected.",
@@ -343,7 +344,7 @@ onMounted(() => {
 
                                 <div style="text-align: left; margin-top: 10px;">
                                     <span v-for="(user, index2) in article.users" :key="user" class="author-name">
-                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
+                                        <!-- <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span> -->
                                         <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
                                         <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
@@ -380,7 +381,7 @@ onMounted(() => {
 
                                 <div style="text-align: left; margin-top: 10px;">
                                     <span v-for="(user, index2) in article.users" :key="user" class="author-name">
-                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
+                                        <!-- <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span> -->
                                         <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
                                         <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
