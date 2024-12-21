@@ -15,6 +15,7 @@ export function post(url,data){
     });
 }
 
+// param 请求类型的 api
 export function get(url,param){
     return new Promise((resolve,reject) => {
         axios

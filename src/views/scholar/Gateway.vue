@@ -16,7 +16,6 @@
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
       </div>
       <div class="button-container">
-        <button @click="sendMessage" class="message-button">发私信</button>
         <button @click="toggleFollow" class="follow-button">
           {{ isFollowed ? '✔ 已关注' : '+ 关注' }}
         </button>
@@ -88,7 +87,7 @@
                   </div>
                 </div>
                 <div class="article-footer">
-                  <button @click="viewDetails(article)" class="view-button">查看详情</button>
+                  <button @click="viewDetails(article.id)" class="view-button">查看详情</button>
                 </div>
               </div>
             </div>
@@ -162,12 +161,13 @@
 
 <script>
 import axios from 'axios';
+import router from "@/router/index.js";
 
 export default {
   data() {
     return {
       activeTab: "TA的文章", // 默认激活动态选项卡
-      isFollowed: false, // 是否关注用户
+      isFollowed: null,
       userInfo: {
         name: '',
         photoUrl: '',
@@ -196,8 +196,12 @@ export default {
     // 切换关注状态
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
+
       // 调用后端接口来更新关注状态
-      axios.post('/user/follow', { userId: this.$route.query.userId, follow: this.isFollowed })
+      axios.post('/user/follow', {
+        currentUserId: this.$root.OnlineUser, // 当前用户 ID
+        targetUserId: this.$route.query.userId, // 目标用户 ID
+      })
           .then(response => {
             console.log('关注状态更新成功', response.data);
           })
@@ -208,11 +212,13 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchUserData() {
-      const userId = this.$route.query.userId;
+      const currentUserId = this.$root.OnlineUser;
+      const targetUserId = this.$route.query.userId;
       axios({
         method: 'get',
-        url: '/users/userData',
-        params: userId,
+        url: '/users/otherUserData',
+        params:
+          currentUserId, targetUserId,
       })
           .then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
@@ -227,8 +233,15 @@ export default {
             console.error('获取数据失败', error);
           });
     },
+    viewDetails(id){
+      router.push({
+        path: '/article',
+        query:{
+          paperId: id
+        }
+      })
+    }
   },
-
   mounted() {
     // 页面加载时获取所有数据
     this.fetchUserData();
@@ -257,7 +270,11 @@ html, body {
   display: flex;
   align-items: flex-start;
   padding: 20px;
-  background-color: #e6f7ff; /* 浅蓝色背景 */
+  /* background-color: #e6f7ff;  浅蓝色背景 */
+  background-image: url('https://img.zcool.cn/community/015b315c73bb4ba801203d22796b80.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-bottom: 1px solid #b3cde0; /* 灰色边框 */
 }
 
@@ -314,16 +331,16 @@ html, body {
 .username {
   font-size: 24px;
   margin: 0;
-  color: #003366; /* 深蓝色字体 */
+  color: #ffffff; /* 白色字体 */
 }
 
 .user-info p {
   margin: 5px 0;
-  color: #666; /* 灰色文字 */
+  color: #ffffff; /* 白色文字 */
 }
 
 .user-info strong {
-  color: #003366; /* 深蓝色 */
+  color: #ffffff; /* 白色 */
 }
 
 /* 主体内容样式 */
