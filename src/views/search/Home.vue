@@ -254,7 +254,7 @@ onMounted(() => {
               <div class="bigtitle">Paper Wing Academia</div>
               <div class="loader" @click="gotoError"></div>
               <div class="input-box">
-                  <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
+                  <!-- <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p> -->
               </div>
           </div>
 
@@ -411,7 +411,7 @@ onMounted(() => {
 .loader {
   width: 44.8px;
   height: 44.8px;
-  color: #c2bcff;
+  color: #ffffff;
   position: relative;
   background: radial-gradient(11.2px,currentColor 94%,#0000);
 
@@ -462,7 +462,7 @@ onMounted(() => {
 
 .home .uphalf {
   padding-bottom: 60px;
-  background: url("../../assets/images/bg.png") no-repeat;
+  background: url("../../assets/images/bg2.png") no-repeat;
   background-size: cover;
 }
 
@@ -506,7 +506,7 @@ onMounted(() => {
 }
 
 .home .logos {
-  margin-top: 60px;
+  margin-top: 160px;
   padding-top: 0px;
   padding-left: 5%;
   padding-right: 5%;
