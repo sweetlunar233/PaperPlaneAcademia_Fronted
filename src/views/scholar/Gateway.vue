@@ -16,7 +16,6 @@
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
       </div>
       <div class="button-container">
-        <button @click="sendMessage" class="message-button">发私信</button>
         <button @click="toggleFollow" class="follow-button">
           {{ isFollowed ? '✔ 已关注' : '+ 关注' }}
         </button>
@@ -167,7 +166,7 @@ export default {
   data() {
     return {
       activeTab: "TA的文章", // 默认激活动态选项卡
-      isFollowed: false, // 是否关注用户
+      isFollowed: null,
       userInfo: {
         name: '',
         photoUrl: '',
@@ -197,12 +196,9 @@ export default {
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
 
-      // 当前登录用户的 ID（假设已通过 Vuex 或其他方法获取）
-      const currentUserId = this.$root.OnlineUserId; // 假设在 Vuex 中存储了当前用户信息
-
       // 调用后端接口来更新关注状态
       axios.post('/user/follow', {
-        currentUserId: currentUserId, // 当前用户 ID
+        currentUserId: this.$root.OnlineUser, // 当前用户 ID
         targetUserId: this.$route.query.userId, // 目标用户 ID
       })
           .then(response => {
@@ -213,36 +209,30 @@ export default {
           });
     },
 
-
     // 集中处理所有数据获取请求
     fetchUserData() {
-      const userId = this.$route.query.userId; // 目标用户 ID
-      const currentUserId = this.$root.OnlineUserId; // 当前登录用户 ID，假设从 Vuex 获取
-
+      const currentUserId = this.$root.OnlineUser;
+      const targetUserId = this.$route.query.userId;
       axios({
         method: 'get',
         url: '/users/otherUserData',
-        params: {
-          userId,        // 目标用户 ID
-          currentUserId, // 当前用户 ID
-        },
+        params:
+          currentUserId, targetUserId,
       })
           .then(response => {
-            // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles, isFollowed
-            const { userInfo, favoriteArticles, comments, articles, isFollowed } = response.data;
+            // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
+            const { userInfo, favoriteArticles, comments, articles } = response.data;
             // 更新数据
             this.userInfo = userInfo;
             this.favoriteArticles = favoriteArticles;
             this.comments = comments;
             this.articles = articles;
-            this.isFollowed = isFollowed; // 设置关注状态
           })
           .catch(error => {
             console.error('获取数据失败', error);
           });
     },
   },
-
   mounted() {
     // 页面加载时获取所有数据
     this.fetchUserData();

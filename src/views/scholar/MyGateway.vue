@@ -163,7 +163,6 @@ export default {
   data() {
     return {
       activeTab: "我的文章", // 默认激活动态选项卡
-      isFollowed: false, // 是否关注用户
       userInfo: {
         name: '',
         photoUrl: '',
@@ -226,7 +225,7 @@ export default {
       const userId = this.$root.OnlineUser;
       axios({
         method: 'get',
-        url: '/users/userData',
+        url: '/users/myUserData',
         params: userId,
       })
           .then(response => {
