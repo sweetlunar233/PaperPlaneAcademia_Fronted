@@ -35,13 +35,13 @@
 
       <div class="sort-controls">
         <el-radio-group v-model="sortBy" fill="var(--button-color)">
-          <el-radio-button :value=0 >按相关度排序</el-radio-button>
-          <el-radio-button :value=1>按时间排序</el-radio-button>
-          <el-radio-button :value=2>按被引次数排序</el-radio-button>
+          <el-radio-button :value=1 >按相关度排序</el-radio-button>
+          <el-radio-button :value=2 >按时间排序</el-radio-button>
+          <el-radio-button :value=3 >按被引次数排序</el-radio-button>
         </el-radio-group>
         <p style="width:25px;height:25px;border: 1px solid var(--gray-color);border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
-          <el-icon v-if="sortDown===0" @click="sortDown=1" size="20" color="var(--theme-color)"><SortDown /></el-icon>
-          <el-icon v-if="sortDown===1" @click="sortDown=0" size="20" color="var(--theme-color)"><SortUp /></el-icon>
+          <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="var(--theme-color)"><SortDown /></el-icon>
+          <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="var(--theme-color)"><SortUp /></el-icon>
         </p>
       </div>
 
@@ -123,8 +123,9 @@ export default {
       loading: false,
       currentPage: 1,
       totalPages: 1,
-      sortBy: 0,
-      sortDown: 0,
+      sortBy: 1,
+      sortDown: 1,
+
       allKeywords: ['人工智能', '深度学习', '自然语言处理', '机器学习', '数据分析'],
       allAuthorOrganizations: ['北京航空航天大学', '清华大学', '中国科学院', '上海交通大学', '注意这是测试数据'],
 
@@ -147,140 +148,176 @@ export default {
   },
   methods: {
 
-  citationColor(citations) {
-    if (citations >= 50) {
-      return 'rgb(255, 99, 71)';
-    } else if (citations >= 20) {
-      return 'rgb(255, 165, 0)';
-    } else if (citations >= 10) {
-      return 'rgb(0, 128, 0)';
-    } else {
-      return 'rgb(169, 169, 169)';
-    }
-  },
-
-  async fetchFilters() {
-    try {
-      const response = await axios.post('/papers/filterdata', {
-        searchConditions: this.searchConditions,
-        dateRange: this.dateRange,
-      });
-      this.allKeywords = response.data.allKeys;
-      this.allAuthorOrganizations = response.data.allAuthorOrganization;
-    } catch (error) {
-      console.error("Error fetching filters:", error);
-    }
-  },
-
-  async getTotalPages() {
-    try {
-      const response = await axios.post('/papers/getpage', {
-        searchConditions: this.searchConditions,
-        dateRange: this.dateRange,
-        filter: {
-          keys: this.selectedKeywords,
-          years: this.selectedYears.map(year => year.toString()),
-          authorOrganizations: this.selectedAuthors
-        },
-        page: 1,
-        userId: this.userId
-      });
-      this.totalPages = response.data;
-    } catch (error) {
-      console.error("Error getting total pages:", error);
-      this.totalPages = Math.ceil(this.mockData.totalResults / 10);
-    }
-  },
-
-  async fetchResults() {
-    this.loading = true;
-
-    try {
-      const response = await axios.post('/papers/search', {
-        searchConditions: this.searchConditions,
-        dateRange: this.dateRange,
-        filter: {
-          keys: this.selectedKeywords,
-          years: this.selectedYears.map(year => year.toString()),
-          authorOrganizations: this.selectedAuthors
-        },
-        page: this.currentPage,
-        userId: this.userId
-      });
-
-      this.results = response.data.map(paper => ({
-        ...paper,
-        authors: paper.authors.map(author => ({ userName: author.userName, authorOrganization: author.authorOrganization }))
-      }));
-      this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
-    } catch (error) {
-      console.error("Error fetching results:", error);
-      this.showRes = [
-        { 
-          Id:'11',
-          title: '测试标题 1', 
-          isFavorite:true,
-          date: '2022-01-01', 
-          journal: '期刊名1', 
-          citations: 34, 
-          authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学' }, { userName: '作者 2', authorOrganization: '北京航空航天大学' }], 
-          keywords: ['人工智能', '深度学习'] 
-        },
-        { 
-          Id:'12',
-          title: '测试标题 2', 
-          isFavorite:false, 
-          date: '2022-02-01', 
-          journal: '期刊名2', 
-          citations: 78, 
-          authors: [{ userName: '作者 2', authorOrganization: '清华大学' }, { userName: '作者 3', authorOrganization: '清华大学' }], 
-          keywords: ['自然语言处理', '机器学习'] 
-        },
-      ]
-    } finally {
-      this.loading = false;
-    }
-  },
-  goToPage(page) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.fetchResults();
-    }
-  },
-  viewPaper(paper) {
-    console.log('查看全文:', paper);
-  },
-
-  async collectPaper(paper) {
-    try {
-      const response = await axios.post('/paper/postStar', {
-        id: this.userId,
-        paperId: paper.id,
-        isStar: paper.isFavorite
-      });
-
-      if (response.data.success) {
-        paper.isFavorite = !paper.isFavorite;
+    citationColor(citations) {
+      if (citations >= 50) {
+        return 'rgb(255, 99, 71)';
+      } else if (citations >= 20) {
+        return 'rgb(255, 165, 0)';
+      } else if (citations >= 10) {
+        return 'rgb(0, 128, 0)';
       } else {
-        console.error("Failed to update favorite status:", response.data.message);
+        return 'rgb(169, 169, 169)';
       }
-    } catch (error) {
-      console.error("Error updating favorite status:", error);
+    },
+
+    async fetchFilters() {
+      try {
+        const response = await axios.post('/papers/filterdata', {
+          searchConditions: this.searchConditions,
+          dateRange: this.dateRange,
+        });
+        this.allKeywords = response.data.allKeys;
+        this.allAuthorOrganizations = response.data.allAuthorOrganization;
+      } catch (error) {
+        console.error("Error fetching filters:", error);
+      }
+    },
+
+    async getTotalPages() {
+      try {
+        const response = await axios.post('/papers/getpage', {
+          searchConditions: this.searchConditions,
+          dateRange: this.dateRange,
+          filter: {
+            keys: this.selectedKeywords,
+            years: this.selectedYears.map(year => year.toString()),
+            authorOrganizations: this.selectedAuthors
+          }
+        });
+        this.totalPages = response.data;
+      } catch (error) {
+        console.error("Error getting total pages:", error);
+        this.totalPages = Math.ceil(this.mockData.totalResults / 10);
+      }
+    },
+
+    async fetchResults() {
+      this.loading = true;
+
+      try {
+        const response = await axios.post('/papers/search', {
+          searchConditions: this.searchConditions,
+          dateRange: this.dateRange,
+          filter: {
+            keys: this.selectedKeywords,
+            years: this.selectedYears.map(year => year.toString()),
+            authorOrganizations: this.selectedAuthors
+          },
+          sort: this.sortBy * this.sortDown,
+          page: this.currentPage,
+          userId: this.userId
+        });
+
+        this.showRes = response.data.map(paper => ({
+          ...paper,
+          authors: paper.authors.map(author => ({ userName: author.userName, authorOrganization: author.authorOrganization }))
+        }));
+      } catch (error) {
+        console.error("Error fetching results:", error);
+        this.showRes = [
+          { 
+            Id:'11',
+            title: '测试标题 1', 
+            isFavorite:true,
+            date: '2022-01-01', 
+            journal: '期刊名1', 
+            citations: 34, 
+            authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学' }, { userName: '作者 2', authorOrganization: '北京航空航天大学' }], 
+            keywords: ['人工智能', '深度学习'] ,
+            download:null,
+          },
+          { 
+            Id:'12',
+            title: '测试标题 2', 
+            isFavorite:false, 
+            date: '2022-02-01', 
+            journal: '期刊名2', 
+            citations: 78, 
+            authors: [{ userName: '作者 2', authorOrganization: '清华大学' }, { userName: '作者 3', authorOrganization: '清华大学' }], 
+            keywords: ['自然语言处理', '机器学习'],
+            download:null,
+          },
+        ]
+      } finally {
+        this.loading = false;
+      }
+    },
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+        this.fetchResults();
+      }
+    },
+    viewPaper(paper) {
+      console.log('查看全文:', paper);
+    },
+
+    async collectPaper(paper) {
+      try {
+        const response = await axios.post('/paper/postStar', {
+          id: this.userId,
+          paperId: paper.id,
+          isStar: paper.isFavorite
+        });
+
+        if (response.data.success) {
+          paper.isFavorite = !paper.isFavorite;
+        } else {
+          console.error("Failed to update favorite status:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error updating favorite status:", error);
+      }
+    },
+
+    downloadPaper(paper) {
+      console.log('下载论文:', paper);
     }
   },
-
-  quotePaper(paper) {
-    console.log('引用论文:', paper);
-  },
-  downloadPaper(paper) {
-    console.log('下载论文:', paper);
-  }
-},
 
   watch: {
-    selectedKeywords: 'getTotalPages',
-    selectedYears: 'getTotalPages',
-    selectedAuthors: 'getTotalPages'
+    selectedKeywords: {
+      handler() {
+        this.currentPage = 1;
+        this.getTotalPages();
+        this.fetchResults();
+      },
+      deep: true
+    },
+    selectedYears: {
+      handler() {
+        this.currentPage = 1;
+        this.getTotalPages();
+        this.fetchResults();
+      },
+      deep: true
+    },
+    selectedAuthors: {
+      handler() {
+        this.currentPage = 1;
+        this.getTotalPages();
+        this.fetchResults();
+      },
+      deep: true
+    },
+    
+    currentPage: {
+      handler() {
+        this.fetchResults();
+      }
+    },
+    sortBy: {
+      handler() {
+        this.currentPage = 1;
+        this.fetchResults();
+      }
+    },
+    sortDown: {
+      handler() {
+        this.currentPage = 1;
+        this.fetchResults();
+      }
+    }
   },
 
   created() {
