@@ -3,8 +3,32 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="userInfo.photoUrl || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" alt="用户头像" />
+        <img :src="userInfo.photoUrl || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" @click="showAvatarDialog = true"  />
       </div>
+      <el-dialog
+          title="选择头像"
+          v-model="showAvatarDialog"
+          width="60%"
+          @close="resetSelectedAvatar"
+      >
+        <div class="avatar-carousel">
+          <div class="avatar-wrapper">
+            <img
+                v-for="(avatar, index) in availableAvatars"
+                :key="index"
+                :src="avatar"
+                alt="头像选项"
+                class="avatar-option"
+                :class="{ selected: selectedAvatar === avatar }"
+                @click="selectAvatar(avatar)"
+            />
+          </div>
+        </div>
+        <template #footer>
+          <el-button @click="showAvatarDialog = false">取消</el-button>
+          <el-button type="primary" @click="confirmAvatar">确定</el-button>
+        </template>
+      </el-dialog>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
         <p><strong>简介：</strong>{{ userInfo.description }}
@@ -164,6 +188,16 @@ export default {
   data() {
     return {
       activeTab: "我的文章", // 默认激活动态选项卡
+      showAvatarDialog: false,
+      selectedAvatar: null, // 当前选择的头像
+      availableAvatars: [ // 可供选择的头像
+        'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
+        'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
+        'https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
+        'https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
+        'https://th.bing.com/th/id/R.7376aae88d772c821c6925b91e2ca1aa?rik=8n%2bJq8ypQTiJHA&pid=ImgRaw&r=0',
+        'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
+      ],
       userInfo: {
         name: '',
         photoUrl: '',
@@ -188,8 +222,20 @@ export default {
     setTab(tab) {
       this.activeTab = tab;
     },
-
-
+    selectAvatar(avatar) {
+      this.selectedAvatar = avatar;
+    },
+    // 确定选择
+    confirmAvatar() {
+      if (this.selectedAvatar) {
+        this.userInfo.photoUrl = this.selectedAvatar; // 更新用户头像
+      }
+      this.showAvatarDialog = false; // 关闭对话框
+    },
+    // 重置选择
+    resetSelectedAvatar() {
+      this.selectedAvatar = null; // 重置选择的头像
+    },
     // 修改简介
     editDescription() {
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
@@ -605,6 +651,53 @@ html, body {
 .edit-btn:hover {
   background-color: #45a049;
 }
+/* 弹窗中的头像水平滚动布局 */
+.avatar-carousel {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+.avatar-wrapper {
+  display: inline-flex;
+  gap: 42px; /* 调整头像之间的间距 */
+  justify-content: center; /* 水平居中对齐 */
+}
+
+.avatar-option {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.avatar-option:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-option.selected {
+  border-color: #007bff; /* 蓝色边框颜色 */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* 蓝色阴影效果 */
+}
+
+/* 确保滚动条样式统一 */
+.avatar-carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.avatar-carousel::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.avatar-carousel::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+
 
 
 </style>
