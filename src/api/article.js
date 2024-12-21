@@ -6,14 +6,14 @@ export function GetArticle(id){
     return get("/papers/getArticle/"+id);
 }
 
-export function GetStar(id,paperId){ //获取问卷设计
+export function GetStar(id,paperId){
     let data = {};
     data.id = id;
     data.paperId = paperId;
     return get("/paper/getStar/"+id+"/"+paperId);
 }
 
-export function PostStar(id,paperId,isStar){ //获取问卷设计
+export function PostStar(id,paperId,isStar){
     let data = {};
     data.id = id;
     data.paperId = paperId;
