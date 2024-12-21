@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="userInfo.photoUrl || 'default-avatar.jpg'" alt="用户头像" />
+        <img :src="userInfo.photoUrl || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" alt="用户头像" />
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
@@ -62,7 +62,7 @@
             </div>
           </div>
           <div v-else>
-            <p>您还没有发表任何文章。</p>
+            <p>TA还没有发表任何文章。</p>
           </div>
         </div>
         <div v-if="activeTab === 'TA的收藏'">
@@ -93,7 +93,7 @@
             </div>
           </div>
           <div v-else>
-            <p>您还没有收藏任何文章。</p>
+            <p>TA还没有收藏任何文章。</p>
           </div>
         </div>
         <div v-if="activeTab === 'TA的评论'">
@@ -116,7 +116,7 @@
             </div>
           </div>
           <div v-else>
-            <p>您还没有发布任何评论。</p>
+            <p>TA还没有发布任何评论。</p>
           </div>
         </div>
       </div>

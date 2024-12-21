@@ -1,6 +1,6 @@
 <!-- 首页 -->
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { getCurrentInstance } from 'vue';
 const router = useRouter();
@@ -112,6 +112,8 @@ const statistic = ref({
 const internalInstance = getCurrentInstance();
 const internalData = internalInstance.appContext.config.globalProperties;
 const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
+// const userId = this.$root.OnlineUser;
+console.log(userId.value);
 
 const quotes = [
   "Success isn't something that happens just because of a few isolated efforts or random bursts of hard work. It’s the result of daily commitment, discipline, and persistence. It comes from choosing to focus on your goals consistently, even when things are tough or progress seems slow. It’s about showing up day after day, putting in the work even when no one is watching. Over time, these small, consistent efforts will build upon each other, and eventually, the fruits of your hard work will emerge, even if it takes longer than you expected.",
@@ -163,8 +165,16 @@ const gotoError = (userId) => {
 }
 
 const initHome = (userId) => {
-    // top_articles.value = [];
-    // recommended_articles.value = [];
+    top_articles.value = [];
+    recommended_articles.value = [];
+    statistic.value = { // 重置 statistic
+      authorCount: 0,
+      organizationsCount: 0,
+      fieldsCount: 0,
+      journalCount: 0,
+      paperCount: 0
+    }; 
+    
     var promise = GetTopArticles();
     promise.then((result)=>{
         result.articles.forEach(element => {
@@ -254,7 +264,7 @@ onMounted(() => {
               <div class="bigtitle">Paper Wing Academia</div>
               <div class="loader" @click="gotoError"></div>
               <div class="input-box">
-                  <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p>
+                  <!-- <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p> -->
               </div>
           </div>
 
@@ -341,13 +351,13 @@ onMounted(() => {
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
                                 </div>
 
-                                <div style="text-align: left; margin-top: 10px;">
+                                <!-- <div style="text-align: left; margin-top: 10px;">
                                     <span v-for="(user, index2) in article.users" :key="user" class="author-name">
                                         <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
                                         <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
                                         <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
-                                </div>
+                                </div> -->
 
                                 <div style="text-align:left;margin-top:10px;">
                                     <span class="abstract">{{ FormatString(article.abstract) }}</span>
@@ -378,13 +388,13 @@ onMounted(() => {
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
                                 </div>
 
-                                <div style="text-align: left; margin-top: 10px;">
+                                <!-- <div style="text-align: left; margin-top: 10px;">
                                     <span v-for="(user, index2) in article.users" :key="user" class="author-name">
                                         <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
                                         <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
                                         <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
-                                </div>
+                                </div> -->
 
                                 <div style="text-align:left;margin-top:10px;">
                                     <span class="abstract">{{ FormatString(article.abstract) }}</span>
@@ -411,7 +421,7 @@ onMounted(() => {
 .loader {
   width: 44.8px;
   height: 44.8px;
-  color: #c2bcff;
+  color: #ffffff;
   position: relative;
   background: radial-gradient(11.2px,currentColor 94%,#0000);
 
@@ -462,7 +472,7 @@ onMounted(() => {
 
 .home .uphalf {
   padding-bottom: 60px;
-  background: url("../../assets/images/bg.png") no-repeat;
+  background: url("../../assets/images/bg2.png") no-repeat;
   background-size: cover;
 }
 
@@ -506,7 +516,7 @@ onMounted(() => {
 }
 
 .home .logos {
-  margin-top: 60px;
+  margin-top: 160px;
   padding-top: 0px;
   padding-left: 5%;
   padding-right: 5%;
