@@ -34,7 +34,7 @@
         <p><strong>简介：</strong>{{ userInfo.description }}
           <button class="edit-btn" @click="editDescription">修改</button>
         </p>
-        <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
+        <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
           <button class="edit-btn" @click="editResearchFields">修改</button>
         </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
@@ -270,12 +270,8 @@ export default {
     // 集中处理所有数据获取请求
     fetchUserData() {
       const userId = this.$root.OnlineUser;
-      axios({
-        method: 'get',
-        url: '/users/myUserData',
-        params: userId,
-      })
-          .then(response => {
+      var promise = GetMyUserData(userId);
+      promise.then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
             const { userInfo, favoriteArticles, comments, articles } = response.data;
             // 更新数据

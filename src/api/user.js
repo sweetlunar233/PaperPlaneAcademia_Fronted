@@ -12,3 +12,8 @@ export function GetOtherUserData(currentUserId,targetUserId){
     data.userId = targetUserId;
     return post("/users/otherUserData/",data);
 }
+export function GetMyUserData(userId){
+    let data = {};
+    data.userId = userId;
+    return post("/users/myUserData/",data);
+}
