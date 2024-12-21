@@ -1,6 +1,6 @@
 <!-- 首页 -->
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { getCurrentInstance } from 'vue';
 const router = useRouter();
@@ -109,10 +109,11 @@ const statistic = ref({
   paperCount: 26039
 })
 
-// const internalInstance = getCurrentInstance();
-// const internalData = internalInstance.appContext.config.globalProperties;
-// const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
-const userId = ref(this.$root.OnlineUser);
+const internalInstance = getCurrentInstance();
+const internalData = internalInstance.appContext.config.globalProperties;
+const userId = ref(internalData.$cookies.get('userId') || '00000'); // 后面的为之前设置的cookies的名字
+// const userId = this.$root.OnlineUser;
+console.log(userId.value);
 
 const quotes = [
   "Success isn't something that happens just because of a few isolated efforts or random bursts of hard work. It’s the result of daily commitment, discipline, and persistence. It comes from choosing to focus on your goals consistently, even when things are tough or progress seems slow. It’s about showing up day after day, putting in the work even when no one is watching. Over time, these small, consistent efforts will build upon each other, and eventually, the fruits of your hard work will emerge, even if it takes longer than you expected.",
@@ -164,8 +165,10 @@ const gotoError = (userId) => {
 }
 
 const initHome = (userId) => {
-    // top_articles.value = [];
-    // recommended_articles.value = [];
+    top_articles.value = [];
+    recommended_articles.value = [];
+    statistic.value = [];
+    
     var promise = GetTopArticles();
     promise.then((result)=>{
         result.articles.forEach(element => {

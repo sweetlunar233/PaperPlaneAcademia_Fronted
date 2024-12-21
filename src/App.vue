@@ -85,9 +85,11 @@ export default {
     },
     async logout() {
       this.loggedIn = false;
-          this.username = "";
-          alert("已注销！");
-          this.$router.push("/home");
+      this.username = "";
+      this.OnlineUser = 0;
+      $cookies.remove('userId');
+      alert("已注销！");
+      this.$router.push("/home");
     },
     async onSearch() {
       if (this.searchQuery.trim() !== "") {
@@ -114,6 +116,7 @@ export default {
     },
   },
   mounted() {
+    $cookies.set("userId", 1);
     this.checkLoginStatus(); // 组件加载时检查登录状态
   },
 };
