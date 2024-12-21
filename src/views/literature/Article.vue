@@ -69,7 +69,8 @@
                             </span>
                         </span>
                         <span v-else class="abstract-text">
-                            {{ article.abstract }}
+                            <span v-if="article.abstract === 'null'">暂无摘要信息.</span>
+                            <span v-else>{{ article.abstract }}</span>
                         </span>
                     </span>
                     <span v-else>
@@ -486,6 +487,7 @@ export default{
         .finally(() => {
             this.isLoading = false;
             this.quotation = this.formatGB7714();
+            console.log(this.article)
         })
 
         promise = GetStar(this.OnlineUser,this.id);
