@@ -167,7 +167,13 @@ const gotoError = (userId) => {
 const initHome = (userId) => {
     top_articles.value = [];
     recommended_articles.value = [];
-    statistic.value = [];
+    statistic.value = { // 重置 statistic
+      authorCount: 0,
+      organizationsCount: 0,
+      fieldsCount: 0,
+      journalCount: 0,
+      paperCount: 0
+    };
     
     var promise = GetTopArticles();
     promise.then((result)=>{
