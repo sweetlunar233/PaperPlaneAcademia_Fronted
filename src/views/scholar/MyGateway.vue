@@ -183,6 +183,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
+import {GetMyUserData} from "@/api/user.js";
 
 export default {
   data() {
@@ -273,7 +274,7 @@ export default {
       var promise = GetMyUserData(userId);
       promise.then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-            const { userInfo, favoriteArticles, comments, articles } = response.data;
+            const { userInfo, favoriteArticles, comments, articles } = response;
             // 更新数据
             this.userInfo = userInfo;
             this.favoriteArticles = favoriteArticles;
