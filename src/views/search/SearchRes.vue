@@ -48,7 +48,7 @@
       <div class="results-list">
         
         <div v-if="!loading && results.length === 0" class="no-results">
-          未找到相关论文。
+          未找到相关论文，以下是测试信息。
         </div>
 
         <div 
@@ -74,7 +74,7 @@
           </div>
           <div class="paper-authors">
             <span v-for="(author, idx) in paper.authors" :key="idx" class="author" @mouseover="hover = true" @mouseleave="hover = false">
-              <a :href="`/authors/${author.id}`">{{ author.name }}</a>
+              <a>{{ author.userName }}</a>
             </span>
           </div>
           <div class="paper-keywords">
@@ -85,8 +85,16 @@
           </div>
 
           <div class="action-buttons" >
-            <button @click="collectPaper(paper)" class="action-btn"> <el-icon :size="18"><Star /></el-icon></button>
-            <button @click="quotePaper(paper)" class="action-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16"><path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/></svg></button>
+            <button @click="collectPaper(paper)" class="action-btn" v-if="paper.isFavorite"> 
+              <el-icon :size="18" ><Star /></el-icon>
+            </button>
+            <button @click="collectPaper(paper)" class="action-btn" v-if="!paper.isFavorite"> 
+              <el-icon :size="18" ><StarFilled /></el-icon>
+            </button>
+            <!-- <button @click="quotePaper(paper)" class="action-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16">
+                <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/>
+              </svg></button> -->
             <button @click="downloadPaper(paper)" class="action-btn"><el-icon :size="18"><Download /></el-icon></button>
           </div>
         </div>
@@ -103,164 +111,201 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, watch } from 'vue';
+<script>
+import axios from 'axios';
+import { useRoute } from 'vue-router';
 
-const results = ref([]);
-const showRes = ref([]);
-const loading = ref(false);
-const currentPage = ref(1);
-const totalPages = ref(1);
+export default {
+  data() {
+    return {
+      results: [],
+      showRes: [],
+      loading: false,
+      currentPage: 1,
+      totalPages: 1,
+      sortBy: 0,
+      sortDown: 0,
+      allKeywords: ['人工智能', '深度学习', '自然语言处理', '机器学习', '数据分析'],
+      allAuthorOrganizations: ['北京航空航天大学', '清华大学', '中国科学院', '上海交通大学', '注意这是测试数据'],
 
-const sortBy = ref(0);
-const sortDown = ref(0);
+      selectedKeywords: [],
+      selectedYears: [],
+      selectedAuthors: [],
 
-const allKeywords = ref([]);
-const allAuthorOrganizations = ref([]);
-
-const selectedKeywords = ref([]);
-const selectedYears = ref([]);
-const selectedAuthors = ref([]);
-
-const citationColor = (citations) => {
-  if (citations >= 50) {
-    return 'rgb(255, 99, 71)';
-  } else if (citations >= 20) {
-    return 'rgb(255, 165, 0)';
-  } else if (citations >= 10) {
-    return 'rgb(0, 128, 0)';
-  } else {
-    return 'rgb(169, 169, 169)';
-  }
-};
-
-const fetchResults = async () => {
-  loading.value = true;
-
-  const response = await new Promise((resolve) =>
-  setTimeout(() => {
-    const mockData = {
-      //测试数据，均为随机生成
-      totalResults: 25,
-      papers: Array.from({ length: 10 }, (_, index) => {
-        let year = 2022 + (index % 5);
-        let month = String(index % 12 + 1).padStart(2, '0');
-        let date = `${year}-${month}-01`;
-
-        let citations = Math.floor(Math.random() * 100);
-
-        let organizations = [
-          '北京航空航天大学',
-          '清华大学',
-          '中国科学院',
-          '上海交通大学',
-          '复旦大学',
-        ];
-        let randomOrg = organizations[index % organizations.length];
-
-        let keywords = [
-          '人工智能', '深度学习', '自然语言处理', '机器学习', '数据分析',
-          '大数据', '计算机视觉', '图像处理', '算法优化', '自动化',
-        ];
-        let selectedKeywords = [
-          keywords[index % keywords.length],
-          keywords[(index + 1) % keywords.length],
-        ];
-
-        return {
-          title: `长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题 ${index + 1}`,
-          date: date,
-          journal: `期刊名${index + 1}`,
-          citations: citations,
-          authors: [
-            { id: index, name: `作者 ${index + 1}`, organization: randomOrg },
-            { id: index + 1, name: `作者 ${index + 2}`, organization: randomOrg },
-          ],
-          keywords: selectedKeywords,
-        };
-      }),
+      userId: this.$root.OnlineUser,
     };
+  },
+  computed: {
+    searchConditions() {
+      const conditions = this.$route.query.searchConditions;
+      return Array.isArray(conditions) ? conditions : [conditions].filter(Boolean);
+    },
+    dateRange() {
+      const range = this.$route.query.dateRange;
+      return Array.isArray(range) ? range : [range].filter(Boolean);
+    }
+  },
+  methods: {
 
-      resolve(mockData);
-    }, 1000)
-  );
+  citationColor(citations) {
+    if (citations >= 50) {
+      return 'rgb(255, 99, 71)';
+    } else if (citations >= 20) {
+      return 'rgb(255, 165, 0)';
+    } else if (citations >= 10) {
+      return 'rgb(0, 128, 0)';
+    } else {
+      return 'rgb(169, 169, 169)';
+    }
+  },
 
-  results.value = response.papers;
-  showRes.value = response.papers;
-  totalPages.value = Math.ceil(response.totalResults / 10);
-  allKeywords.value = Array.from(new Set(response.papers.flatMap(paper => paper.keywords)));
-  allAuthorOrganizations.value = Array.from(new Set(response.papers.flatMap(paper => paper.authors.map(author => author.organization))));
-  loading.value = false;
-};
+  async fetchFilters() {
+    try {
+      const response = await axios.post('/papers/filterdata', {
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+      });
+      this.allKeywords = response.data.allKeys;
+      this.allAuthorOrganizations = response.data.allAuthorOrganization;
+    } catch (error) {
+      console.error("Error fetching filters:", error);
+    }
+  },
 
-const filterResults = () => {
-  showRes.value = results.value.filter(paper => {
-    let years = selectedYears.value.map(date => date.getFullYear());
-    let paperYear = parseInt(paper.date.slice(0, 4), 10);
-    const keywordMatch = selectedKeywords.value.length === 0 || paper.keywords.some(keyword => selectedKeywords.value.includes(keyword));
-    const yearMatch = selectedYears.value.length === 0 || years.includes(paperYear);
-    const authorMatch = selectedAuthors.value.length === 0 || paper.authors.some(author => selectedAuthors.value.includes(author.organization));
+  async getTotalPages() {
+    try {
+      const response = await axios.post('/papers/getpage', {
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+        filter: {
+          keys: this.selectedKeywords,
+          years: this.selectedYears.map(year => year.toString()),
+          authorOrganizations: this.selectedAuthors
+        },
+        page: 1,
+        userId: this.userId
+      });
+      this.totalPages = response.data;
+    } catch (error) {
+      console.error("Error getting total pages:", error);
+      this.totalPages = Math.ceil(this.mockData.totalResults / 10);
+    }
+  },
 
-    return keywordMatch && yearMatch && authorMatch;
-  });
-};
+  async fetchResults() {
+    this.loading = true;
 
-const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page;
-    fetchResults();
+    try {
+      const response = await axios.post('/papers/search', {
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+        filter: {
+          keys: this.selectedKeywords,
+          years: this.selectedYears.map(year => year.toString()),
+          authorOrganizations: this.selectedAuthors
+        },
+        page: this.currentPage,
+        userId: this.userId
+      });
+
+      this.results = response.data.map(paper => ({
+        ...paper,
+        authors: paper.authors.map(author => ({ userName: author.userName, authorOrganization: author.authorOrganization }))
+      }));
+      this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
+    } catch (error) {
+      console.error("Error fetching results:", error);
+      this.showRes = [
+        { 
+          Id:'11',
+          title: '测试标题 1', 
+          isFavorite:true,
+          date: '2022-01-01', 
+          journal: '期刊名1', 
+          citations: 34, 
+          authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学' }, { userName: '作者 2', authorOrganization: '北京航空航天大学' }], 
+          keywords: ['人工智能', '深度学习'] 
+        },
+        { 
+          Id:'12',
+          title: '测试标题 2', 
+          isFavorite:false, 
+          date: '2022-02-01', 
+          journal: '期刊名2', 
+          citations: 78, 
+          authors: [{ userName: '作者 2', authorOrganization: '清华大学' }, { userName: '作者 3', authorOrganization: '清华大学' }], 
+          keywords: ['自然语言处理', '机器学习'] 
+        },
+      ]
+    } finally {
+      this.loading = false;
+    }
+  },
+  goToPage(page) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.fetchResults();
+    }
+  },
+  viewPaper(paper) {
+    console.log('查看全文:', paper);
+  },
+
+  async collectPaper(paper) {
+    try {
+      const response = await axios.post('/paper/postStar', {
+        id: this.userId,
+        paperId: paper.id,
+        isStar: paper.isFavorite
+      });
+
+      if (response.data.success) {
+        paper.isFavorite = !paper.isFavorite;
+      } else {
+        console.error("Failed to update favorite status:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+    }
+  },
+
+  quotePaper(paper) {
+    console.log('引用论文:', paper);
+  },
+  downloadPaper(paper) {
+    console.log('下载论文:', paper);
+  }
+},
+
+  watch: {
+    selectedKeywords: 'getTotalPages',
+    selectedYears: 'getTotalPages',
+    selectedAuthors: 'getTotalPages'
+  },
+
+  created() {
+    this.route = useRoute();
+  },
+
+  mounted() {
+    this.fetchFilters(); // 加载筛选条件
+    this.getTotalPages(); // 加载总页数
+    this.fetchResults(); // 初始加载结果
   }
 };
-
-const viewPaper = (paper) => {
-  console.log('查看全文:', paper);
-};
-
-const collectPaper = (paper) => {
-  console.log('收藏论文:', paper);
-};
-
-const quotePaper = (paper) => {
-  console.log('引用论文:', paper);
-};
-
-const downloadPaper = (paper) => {
-  console.log('下载论文:', paper);
-};
-
-watch([sortBy], () => {
-  currentPage.value = 1;
-  fetchResults();
-});
-
-watch([selectedKeywords, selectedYears, selectedAuthors], () => {
-  filterResults();
-  console.log('selectedKeywords:', selectedKeywords.value);
-  console.log('selectedYears:', selectedYears.value);
-  console.log('selectedAuthors:', selectedAuthors.value);
-
-  currentPage.value = 1
-  fetchResults
-
-});
-
-onMounted(() => {
-  fetchResults();
-});
 </script>
 
 <style>
-
 :root {
   --theme-color: #385b9d;
-    --mid-color:#5f96c7;
-    --light-color: #e5edfe;
-    --button-color:#a6c0ed;
-    --back-color: #fafcff;
-    --shadow-color:rgba(68, 95, 183, 0.185);
-    --deep-shadow:rgba(65, 73, 156, 0.311);
-    --gray-color:#c7d0db;
-    --dark-color: #868ea8;
+  --mid-color:#5f96c7;
+  --light-color: #e5edfe;
+  --button-color:#a6c0ed;
+  --back-color: #fafcff;
+  --shadow-color:rgba(68, 95, 183, 0.185);
+  --deep-shadow:rgba(65, 73, 156, 0.311);
+  --gray-color:#c7d0db;
+  --dark-color: #868ea8;
   --secondary-color: #ecf4ff;
   --second-text:#000000aa;
   --text-color: #282829;
@@ -278,12 +323,13 @@ onMounted(() => {
   max-width: 250px;
   border-right: 2px solid var(--gray-color);
   position: sticky;
-
+  height: 86vh;
 }
 
 .results-section {
   padding-left: 20px;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
 }
 

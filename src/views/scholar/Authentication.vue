@@ -192,7 +192,8 @@ export default {
           workPlace: '',
           field: '',
           claimedPapers: [],
-          newPapers: []
+          newPapers: [],
+          userId: this.$root.OnlineUser,
       },
       papersList: [
           { title: "论文1标题", date: "2023-08-1", journal: "期刊名",authors: "张三, 李四" },
