@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { Login } from "@/api/user";
 import axios from "axios";
 
 export default {
@@ -45,21 +46,48 @@ export default {
     };
   },
   methods: {
-    async submitLoginForm(formName) {
+    // async submitLoginForm(formName) {
+    //   this.$refs[formName].validate(async (valid) => {
+    //     if (valid) {
+    //       const userCredentials = { ...this.loginForm };
+    //       try {
+    //         const response = await axios.post("/user/login/", userCredentials);
+    //         if (response.data.status === "success") {
+    //           alert("登录成功！");
+    //           this.$root.loggedIn = true; // 修改根组件的登录状态
+    //           this.$root.OnlineUser = response.data.UserId; // 修改根组件的当前在线用户Id
+    //           $cookies.set("userId", response.data.UserId);
+    //           this.$router.push("/Home"); // 登录成功跳转到主页面
+    //         } else {
+    //           alert(response.data.message);
+    //         }
+    //       } catch (error) {
+    //         console.error("登录失败:", error);
+    //         alert("登录失败，请检查网络连接或稍后重试。");
+    //       }
+    //     } else {
+    //       console.log("error submit!!");
+    //     }
+    //   });
+    // },
+
+    submitLoginForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          const userCredentials = { ...this.loginForm };
           try {
-            const response = await axios.post("/user/login/", userCredentials);
-            if (response.data.status === "success") {
-              alert("登录成功！");
-              this.$root.loggedIn = true; // 修改根组件的登录状态
-              this.$root.OnlineUser = response.data.UserId; // 修改根组件的当前在线用户Id
-              $cookies.set("userId", response.data.UserId);
-              this.$router.push("/Home"); // 登录成功跳转到主页面
-            } else {
-              alert(response.data.message);
-            }
+            var promise = Login(this.loginForm.username,this.loginForm.password);
+            promise.then((result) => {
+              if( result && result.status === "success"){
+                alert("登录成功！");
+                this.$root.loggedIn = true; // 修改根组件的登录状态
+                this.$root.OnlineUser = result.UserId; // 修改根组件的当前在线用户Id
+                $cookies.set("userId", result.UserId);
+                this.$router.push("/home"); // 登录成功跳转到主页面
+              }
+              else{
+                alert(result);
+              }
+            })
           } catch (error) {
             console.error("登录失败:", error);
             alert("登录失败，请检查网络连接或稍后重试。");
