@@ -23,10 +23,10 @@
       <div class="block">
         <div class="filter-title">作者单位</div>
         <div class="filter-selections">
-        <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)">
-          <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
-        </el-checkbox-group>
-      </div>
+          <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)">
+            <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
+          </el-checkbox-group>
+        </div>
       </div>
     </el-affix>
 
@@ -47,9 +47,9 @@
 
       <div class="results-list">
         
-      <div v-if="!loading && results.length === 0" class="no-results">
-        未找到相关论文。
-      </div>
+        <div v-if="!loading && results.length === 0" class="no-results">
+          未找到相关论文。
+        </div>
 
         <div 
           v-for="(paper, index) in showRes" 
@@ -254,14 +254,14 @@ onMounted(() => {
 :root {
   --theme-color: #385b9d;
     --mid-color:#5f96c7;
-    --light-color: #e5f1fe;
-    --button-color:#b6b5f0;
-    --back-color: #fefaff;
-    --shadow-color:rgba(85, 68, 183, 0.185);
-    --deep-shadow:rgba(85, 65, 156, 0.311);
-    --gray-color:#c7c8db;
-    --dark-color: #8686a8;
-  --secondary-color: #f7ecff;
+    --light-color: #e5edfe;
+    --button-color:#a6c0ed;
+    --back-color: #fafcff;
+    --shadow-color:rgba(68, 95, 183, 0.185);
+    --deep-shadow:rgba(65, 73, 156, 0.311);
+    --gray-color:#c7d0db;
+    --dark-color: #868ea8;
+  --secondary-color: #ecf4ff;
   --second-text:#000000aa;
   --text-color: #282829;
   --light-text-color: #4f4454;
