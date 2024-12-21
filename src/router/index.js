@@ -80,6 +80,11 @@ const router = createRouter({
       path:'/myGateway',
       name:'myGateway',
       component: () => import('../views/scholar/MyGateway.vue')
+    },
+    {
+      path:'/error',
+      name:'error',
+      component: () => import('../views/search/Error.vue')
     }
   ]
 })

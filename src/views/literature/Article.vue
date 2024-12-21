@@ -1,6 +1,7 @@
 <!-- 文章详情页面 -->
 <template >
-    <div style="background-color:#EBEEF5">
+    <div style="background-color:#EBEEF5" v-loading="isLoading"
+    element-loading-background="rgba(244, 246, 247,0.8)">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -9,7 +10,14 @@
                 </div>
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
-                        <span class="hyperlink">{{ author }}</span>
+                        <span>{{ author }}</span>
+                        <span v-if="index != article.author.length">&ensp;, </span>
+                    </span>
+                </div>
+                <div class="subtitle">
+                    <span>去作者空间：</span>
+                    <span v-for="(author,index) in article.scholarAuthor">
+                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.name }}</span>
                         <span v-if="index != article.author.length">&ensp;, </span>
                     </span>
                 </div>
@@ -30,8 +38,11 @@
                     <el-tooltip class="item" effect="light" content="下载" placement="bottom">
                         <el-button type="primary" icon="Download" circle @click="download"></el-button>
                     </el-tooltip>
-                    <el-tooltip class="item" effect="light" content="收藏" placement="bottom">
+                    <el-tooltip class="item" effect="light" content="收藏" placement="bottom" v-if="!isStar">
                         <el-button type="warning" icon="Star" circle @click="star"></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="light" content="收藏" placement="bottom" v-else>
+                        <el-button type="warning" icon="Star-Filled" circle @click="undoStar"></el-button>
                     </el-tooltip>
                     <el-tooltip class="item" effect="light" content="分享" placement="bottom">
                         <el-button type="danger" icon="Share" circle @click="share"></el-button>
@@ -66,8 +77,8 @@
                     </span>
                 </div>
                 <div class="articleDetail">
-                    <el-tabs v-model="activeTab">
-                        <el-tab-pane label="参考文献" name="first">
+                    <el-tabs v-model="activeTab" @tab-click="toComment">
+                        <!-- <el-tab-pane label="参考文献" name="first">
                             <div class="tab-tip">
                                 共 {{ article.reference.length }} 条
                             </div>
@@ -97,12 +108,12 @@
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                         <el-tab-pane label="引证文献" name="second">
                             <div class="tab-tip">
                                 共 {{ article.citation.length }} 条
                             </div>
-                            <div class="tab-tip" v-if="article.reference.length>0">
+                            <div class="tab-tip" v-if="article.citation.length>0">
                                 由于版权限制，此处可能仅展示部分相关论文
                             </div>
                             <el-scrollbar height="350px">
@@ -129,7 +140,7 @@
                                 </el-row>
                             </el-scrollbar>
                         </el-tab-pane>
-                        <el-tab-pane label="文章评论" name="third" @click="toComment">
+                        <el-tab-pane label="文章评论" name="third">
                             <div class="tab-tip">
                                 请前往弹出网页
                             </div>
@@ -140,16 +151,16 @@
             
             <el-col :span="6" class="otherInfo">
                 <el-row style="text-align: center;">
-                    <el-col :span="6">
+                    <!-- <el-col :span="6">
                         <el-statistic title="引用量" :value="article.quoteCnt" value-style="color:#409EFF"/>
-                    </el-col>
-                    <el-col :span="6">
+                    </el-col> -->
+                    <el-col :span="8">
                         <el-statistic title="被引量" :value="article.citedCnt" value-style="color:#67C23A"/>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <el-statistic title="收藏数" :value="article.starCnt" value-style="color:#E6A23C;"/>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <el-statistic title="评论数" :value="article.cmtCnt" value-style="color:#F56C6C;"/>
                     </el-col>
                 </el-row>
@@ -184,9 +195,20 @@
         </el-row>
     </div>
 </div>
+
+<!-- <el-dialog v-model="quoteDialog" width="800" align-center title="引用" style="font-weight: bold;">
+    <div style="color:black;padding-top: 1%;font-size: 15px;font-weight: normal">
+        <div class="">GB/T 7714-2015 格式引文</div>
+        <div>{{ quotation }}</div>
+    </div>
+</el-dialog> -->
+
 </template>
 
 <script>
+import { GetArticle, GetStar, PostStar } from '@/api/article';
+import { useRouter } from 'vue-router';
+
 export default{
     
     data(){
@@ -195,6 +217,7 @@ export default{
             article:{
                 title:"Scalable Defect Detection via Traversal on Code Graph",
                 author:["Zhengyao Liu","Xitong Zhong","Xingjing Deng","Shuo Hong","Xiang Gao","Hailong Sun"],
+                scholarAuthor:[{name:"Zhengyao Liu",id:1},{name:"Xitong Zhong",id:2},{name:"Xingjing Deng",id:3},{name:"Shuo Hong",id:4},{name:"Xiang Gao",id:5},{name:"Hailong Sun",id:5}],
                 institution:"Beihang University",
                 year:"2021",
                 DOI:"10.1007/978-3-030-87358-5_40",
@@ -205,53 +228,53 @@ export default{
                     first_page:"5784",
                     last_page:"5784",
                 },
-                reference: [
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
-                                    articleId: 1,
-                                    articleTitle: "Securing and sharing Elasticsearch resources with Read-onlyREST",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                                {
-                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                                    articleId: 1,
-                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                                },
-                ],
+                // reference: [
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
+                //                     articleId: 1,
+                //                     articleTitle: "Securing and sharing Elasticsearch resources with Read-onlyREST",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                //                 {
+                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                //                     articleId: 1,
+                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                //                 },
+                // ],
                 citation: [
                                 {
                                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
@@ -284,7 +307,7 @@ export default{
                                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
                                 },
                 ],
-                quoteCnt:36,
+                // quoteCnt:36,
                 citedCnt:5112,
                 starCnt:2,
                 cmtCnt:1,
@@ -322,27 +345,65 @@ export default{
                         authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
                     },
                 ],
+                download:"https://www.baidu.com/",
             },
+            quotation:"",// 论文的引用
             isFold:true,
-            activeTab:"first",
+            activeTab:"second",
+            router:useRouter(),
+            // quoteDialog:false,
+            isStar:false,
+            isLoading:true,
+            OnlineUser:0,
         }
     },
-
     methods: {
         download(){
-
+            window.open(this.article.download, '_blank');
         },
 
         star(){
-
+            this.isStar = true;
+            var promise = PostStar(this.OnlineUser,this.id,this.isStar);
         },
 
-        share(){
-
+        undoStar(){
+            this.isStar = false;
+            var promise = PostStar(this.OnlineUser,this.id,this.isStar);
         },
 
-        quote(){
+        async share(){
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                ElMessage({
+                    message: '分享链接已复制到剪切板',
+                    type: 'success',
+                    plain: true,
+                });
+            } catch (err) {
+                ElMessage({
+                    message: '文本复制失败：',
+                    type: 'error',
+                    plain: true,
+                });
+            }
+        },
 
+        async quote(){
+            try {
+                await navigator.clipboard.writeText(this.quotation);
+                ElMessage({
+                    message: '引用格式已复制到剪切板',
+                    type: 'success',
+                    plain: true,
+                });
+            } catch (err) {
+                ElMessage({
+                    message: '文本复制失败：',
+                    type: 'error',
+                    plain: true,
+                });
+            }
         },
 
         changeFoldState(){
@@ -350,20 +411,83 @@ export default{
         },
 
         toArticle(id){
-
+            this.router.push({path: '/article',query: {paperId: id}});
         },
 
-        toComment(){
-
+        toComment(tab){
+            if(tab.props.name === "third"){
+                // 获取目标 URL
+                const targetUrl = this.router.resolve({ path: '/comment', query: { paperId: this.id } }).href;
+                // 使用 window.open 打开新窗口
+                window.open(targetUrl, '_blank');
+            }
         },
 
         toField(id){
-
+            
         },
+
+        toGateway(id){
+            this.router.push({path:'/gateway',query:{id:id} });
+        },
+
+        formatGB7714() {
+            let tmp = "[1] ";
+
+            // 拼接作者信息
+            tmp += this.formatAuthors() + '. ';
+
+            // 拼接文章标题
+            tmp += `${this.article.title}[J]. `;
+
+            // 拼接期刊信息
+            tmp += `${this.article.journal.name}, ${this.article.year}, ${this.article.journal.volume}(${this.article.journal.first_page}): ${this.article.journal.first_page}-${this.article.journal.last_page}. `;
+
+            // 拼接DOI信息
+            if (this.article.DOI) {
+                tmp += `DOI: ${this.article.DOI}.`;
+            }
+
+            console.log(tmp);
+
+            return tmp;
+        },
+
+        // 格式化作者信息
+        formatAuthors() {
+            if (this.article.author.length === 1) {
+                return this.article.author[0];
+            } else if (this.article.author.length === 2) {
+                return this.article.author.join(' 和 ');
+            } else {
+                // 超过两个作者，取前三个，并在末尾加上“等”
+                return this.article.author.slice(0, 3).join('、') + ' 等';
+            }
+        }
     },
 
     mounted(){
-        
+        this.id = this.$route.query.paperId;
+        this.OnlineUser = this.$root.OnlineUser;
+        console.log(this.OnlineUser);
+        this.isLoading = true;
+
+        var promise = GetArticle(this.id);
+        promise
+        .then((result) => {
+            this.article = result.article;
+        })
+        .finally(() => {
+            this.isLoading = false;
+            this.quotation = this.formatGB7714();
+        })
+
+        promise = GetStar(this.OnlineUser,this.id);
+        promise
+        .then((result) => {
+            this.isStar = result.isStar;
+        })
+
     },
 }
 
