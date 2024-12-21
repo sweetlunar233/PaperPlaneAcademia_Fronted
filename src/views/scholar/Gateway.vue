@@ -218,12 +218,13 @@ export default {
       var promise = GetOtherUserData(currentUserId, targetUserId);
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-          const { userInfo, favoriteArticles, comments, articles } = response.data;
+          const { userInfo, favoriteArticles, comments, articles, isFollowed } = response.data;
           // 更新数据
           this.userInfo = userInfo;
           this.favoriteArticles = favoriteArticles;
           this.comments = comments;
           this.articles = articles;
+          this.isFollowed = isFollowed;
         })
         .catch(error => {
           console.error('获取数据失败', error);
