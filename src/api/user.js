@@ -28,3 +28,11 @@ export function Register(username,password,email,organization,userType){
     console.log(data);
     return post("/user/register/",data);
 }
+
+export function UpdateAvatar(userId, avatarIndex){
+    let data = {};
+    data.userId = userId;
+    data.avatarIndex = avatarIndex;
+    console.log(data);
+    return post("/user/updateAvatar/",data);
+}
