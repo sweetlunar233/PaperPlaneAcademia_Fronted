@@ -13,3 +13,14 @@ export function GetOtherUserData(currentUserId,targetUserId){
     data.userId = targetUserId;
     return post("/users/otherUserData",data);
 }
+
+export function Register(username,password,email,organization,userType){
+    let data = {};
+    data.username = username;
+    data.password = password;
+    data.email = email;
+    data.organization = organization;
+    data.userType = userType;
+    console.log(data);
+    return post("/user/register",data);
+}
