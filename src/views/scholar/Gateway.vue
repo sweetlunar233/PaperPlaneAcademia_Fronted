@@ -218,10 +218,10 @@ export default {
       var promise = GetOtherUserData(currentUserId, targetUserId);
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-          const { userInfo, favoriteArticles, comments, articles } = response.data;
+          const { user_info, favorite_articles, comments, articles } = response.data;
           // 更新数据
-          this.userInfo = userInfo;
-          this.favoriteArticles = favoriteArticles;
+          this.userInfo = user_info;
+          this.favoriteArticles = favorite_articles;
           this.comments = comments;
           this.articles = articles;
         })
