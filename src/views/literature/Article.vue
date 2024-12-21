@@ -1,6 +1,7 @@
 <!-- 文章详情页面 -->
 <template >
-    <div style="background-color:#EBEEF5">
+    <div style="background-color:#EBEEF5" v-loading="isLoading"
+    element-loading-background="rgba(244, 246, 247,0.8)">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -205,6 +206,7 @@
 </template>
 
 <script>
+import { GetArticle, GetStar, PostStar } from '@/api/article';
 import { useRouter } from 'vue-router';
 
 export default{
@@ -351,6 +353,8 @@ export default{
             router:useRouter(),
             // quoteDialog:false,
             isStar:false,
+            isLoading:true,
+            OnlineUser:0,
         }
     },
     methods: {
@@ -360,10 +364,12 @@ export default{
 
         star(){
             this.isStar = true;
+            var promise = PostStar(this.OnlineUser,this.id,this.isStar);
         },
 
         undoStar(){
             this.isStar = false;
+            var promise = PostStar(this.OnlineUser,this.id,this.isStar);
         },
 
         async share(){
@@ -462,7 +468,26 @@ export default{
 
     mounted(){
         this.id = this.$route.query.paperId;
-        this.quotation = this.formatGB7714();
+        this.OnlineUser = this.$root.OnlineUser;
+        console.log(this.OnlineUser);
+        this.isLoading = true;
+
+        var promise = GetArticle(this.id);
+        promise
+        .then((result) => {
+            this.article = result.article;
+        })
+        .finally(() => {
+            this.isLoading = false;
+            this.quotation = this.formatGB7714();
+        })
+
+        promise = GetStar(this.OnlineUser,this.id);
+        promise
+        .then((result) => {
+            this.isStar = result.isStar;
+        })
+
     },
 }
 
