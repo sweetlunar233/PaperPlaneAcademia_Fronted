@@ -158,7 +158,7 @@ export default {
 };
 </script>
   
-  <style>
+<style>
   :root {
     --theme-color: #385b9d;
     --mid-color:#5f96c7;
