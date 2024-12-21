@@ -6,3 +6,9 @@ export function Login(username,password){
     data.password = password;
     return post("/user/login/",data);
 }
+export function GetOtherUserData(currentUserId,targetUserId){
+    let data = {};
+    data.currentUserId = currentUserId;
+    data.userId = targetUserId;
+    return post("/user/login/",data);
+}
