@@ -8,7 +8,7 @@
         <div style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
           发表评论
         </div>
-        <el-avatar :size="100" :src="availableAvatars[avator]"></el-avatar>
+        <el-avatar :size="100" :src="availableAvatars[avatar]"></el-avatar>
         <el-form style="padding-top: 3%;">
           <el-form-item>
             <el-input
@@ -31,19 +31,19 @@
         <div v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
           <el-row gutter="20" type="flex" align="top">
             <el-col :span="1">
-              <el-avatar size="50" :src="availableAvatars[comment.avator]"></el-avatar>
+              <el-avatar size="50" :src="availableAvatars[comment.avatar]"></el-avatar>
             </el-col>
             <el-col :span="21">
               <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}</p>
               <p style="color: #606266; margin-top: 8px; margin-left: 5px;">{{ comment.content }}</p>
               <el-row type="flex" align="middle" style="margin-top: 8px;">
-                <el-button
+                <!-- <el-button
                   type="text"
                   size="small"
                   @click="startReply(comment.id)"
                 >
                   回复
-                </el-button>
+                </el-button> -->
                 <el-button
                   type="text"
                   size="small"
@@ -55,7 +55,7 @@
               </el-row>
 
               <!-- 回复输入框 -->
-              <div v-if="replyingTo === comment.id" style="margin-top: 8px;">
+              <!-- <div v-if="replyingTo === comment.id" style="margin-top: 8px;">
                 <el-input
                   type="textarea"
                   rows="2"
@@ -70,13 +70,13 @@
                 >
                   发表回复
                 </el-button>
-              </div>
+              </div> -->
 
               <!-- 展示回复 -->
-              <div v-for="(reply, replyIndex) in comment.replies" :key="replyIndex" style="margin-left: 20px; margin-top: 12px;">
+              <!-- <div v-for="(reply, replyIndex) in comment.replies" :key="replyIndex" style="margin-left: 20px; margin-top: 12px;">
                 <p style="font-size: 14px; font-weight: bold; margin: 0;">{{ reply.username }}</p>
                 <p style="color: #606266; font-size: 12px; margin-top: 4px;">{{ reply.content }}</p>
-              </div>
+              </div> -->
             </el-col>
           </el-row>
         </div>
@@ -100,7 +100,7 @@ export default {
           username: "用户1",
           content: "这是评论内容。",
           likes: 10,
-          avator:0,
+          avatar:0,
           replies: [], // 新增字段，用于存储回复
         },
         {
@@ -108,7 +108,7 @@ export default {
           username: "用户2",
           content: "这是另一条评论。",
           likes: 5,
-          avator:2,
+          avatar:2,
           replies: [], // 新增字段，用于存储回复
         },
         
@@ -125,7 +125,7 @@ export default {
       ],
       userId:0,
       username:"",
-      avator:0,
+      avatar:0,
       paperId:0,
     };
   },
@@ -184,6 +184,7 @@ export default {
   mounted(){
     this.userId = this.$cookies.get("userId");
     this.username = this.$cookies.get("username");
+    this.avatar = this.$cookies.get("avatar");
     this.paperId = this.$route.query.paperId;
 
     var promise = GetComment(this.paperId);
