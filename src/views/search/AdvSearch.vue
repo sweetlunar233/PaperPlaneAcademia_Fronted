@@ -114,17 +114,38 @@
         }
       },
       submitSearch() {
-      const searchData = this.advancedFields.map(field => ({
-        logic: field.logic,
-        value: field.value,
-        scope: field.scope,
-      }));
-      const payload = {
-        searchConditions: searchData,
-        dateRange: this.dateRange,
-      };
-      console.log('搜索提交数据:', payload);
-      // 在这里调用接口或处理提交的数据
+            // 构造 searchData 格式的数据
+        const searchData = this.advancedFields.map(field => ({
+          logic: field.logic, // 保留原来的逻辑
+          value: field.value,  // 保留原来的值
+          scope: field.scope   // 保留原来的范围
+        }));
+
+        // 将 searchType 和 searchKeyword 作为额外的条件添加到 searchData 中
+        if (this.searchKeyword) {
+          searchData.push({
+            logic: null,         // 没有逻辑
+            value: this.searchKeyword,  // 将 searchKeyword 作为 value
+            scope: this.searchType // 将 searchType 作为 scope
+          });
+        }
+
+        // 创建 payload，包含搜索条件和日期范围
+        const payload = {
+          searchConditions: searchData,
+          dateRange: this.dateRange
+        };
+
+        console.log('搜索提交数据:', payload);
+
+        // 跳转并传递数据到搜索结果页面
+        this.$router.push({
+          name: 'searchRes',
+          query: {
+            searchConditions: JSON.stringify(payload.searchConditions),
+            dateRange: JSON.stringify(payload.dateRange)
+          }
+        });
     },
       onReset() {
       // 重置所有搜索条件

@@ -5,10 +5,10 @@
       <!-- 发表评论 -->
 
       <el-col :span="16" class="postComment">
-        <div style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
+        <div class="title" >
           发表评论
         </div>
-        <el-avatar :size="100" :src="availableAvatars[avatar]"></el-avatar>
+        <el-avatar :size="100" :src="availableAvatars[avatar]" @click="gotoUser" class="avatar"></el-avatar>
         <el-form style="padding-top: 3%;">
           <el-form-item>
             <el-input
@@ -18,7 +18,7 @@
               v-model="commentText"
             ></el-input>
           </el-form-item>
-          <el-button type="primary" @click="submitComment">发表</el-button>
+          <el-button type="primary" @click="submitComment" style="background-color: #333; color: white; border-radius: 5px; border: 1px solid #555; padding: 8px 20px;" class="button">发表</el-button>
         </el-form>
       </el-col>
       
@@ -51,7 +51,7 @@
                   @click="likeComment(comment.id)"
                   style="margin-left: 5px;"
                 >
-                <svg t="1732007549904" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1623" width="16" height="16"><path d="M734.426667 981.333333H320a149.333333 149.333333 0 0 1-149.333333-149.333333V546.46c0-100.666667 73.28-179.106667 126.786666-236.4l6-6.446667c68.52-73.56 74-133.906667 74-205.153333 0-25.746667 12.04-39.333333 22.14-46.186667C411.26 44.333333 424.326667 42.666667 433.233333 42.666667c20.993333 0 52.946667 9.473333 79.66 36.066666 20.553333 20.453333 45.053333 58.42 45.053334 123.113334 0 29.566667-7.18 62.666667-13.206667 85.2-7.8 29.213333-18.56 59.253333-30.28 84.573333a10.666667 10.666667 0 0 0 0.666667 10.373333 10.28 10.28 0 0 0 8.873333 4.833334h0.1l275.153333-2.22h0.666667a85.333333 85.333333 0 0 1 84.333333 98.306666l-65.546666 426.06A85.333333 85.333333 0 0 1 734.426667 981.333333zM433.233333 85.333333c-12.186667 0-13.133333 5.44-13.133333 13.126667 0 42.133333-2.26 77.706667-13.286667 114.373333C394.133333 255 370.54 294.206667 334.666667 332.666667l-6 6.513333C277.266667 394.186667 213.333333 462.666667 213.333333 546.46V832c0 58.813333 47.853333 106.666667 106.666667 106.666667h414.426667a42.433333 42.433333 0 0 0 42.173333-36.18l65.546667-426.06 21.086666 3.24-21.086666-3.24a42.666667 42.666667 0 0 0-42.146667-49.153334h-0.346667l-275.153333 2.22a53.333333 53.333333 0 0 1-48.74-75.8c22.913333-49.486667 39.54-113.333333 39.54-151.846666C515.28 113.813333 460 85.333333 433.233333 85.333333z" fill="#5C5C66" p-id="1624"></path></svg>{{ comment.likes }}
+                <svg t="1734869597630" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1484" width="28" height="28"><path d="M64 928h192V453.1H64V928z m891.1-461.4c-5.5-8.4-14.9-13.5-24.9-13.5H625.5V181.8c0-47.3-38.4-85.8-85.6-85.8h-55.8c-47.2 0-85.6 38.5-85.6 85.8v161.7c0 0.7 0 1.4 0.1 2.1 0 0.4 1.9 40.2-26.3 70.5-12.9 13.9-30.4 23.9-52.3 30v482h442.9c11.9 0 22.8-7.1 27.4-18.1l167.3-415c3.9-9.4 3-20-2.5-28.4z" fill="#47444F" p-id="1485"></path></svg><div class="likeNum">{{ comment.likes }}</div>
                 </el-button>
               </el-row>
 
@@ -130,6 +130,9 @@ export default {
     };
   },
   methods: {
+    gotoUser(){
+      this.$router.push(`/myGateway`);
+    },
     submitComment() {
       if (this.commentText.trim()) {
         this.isLoading = true;
@@ -219,6 +222,14 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap'); /* 引入 Montserrat 字体 */
+.title{
+  margin-bottom: 16px;
+  font-size: 32px; /* 设置字体大小 */
+  font-family: 'Montserrat', sans-serif; /* 使用 Montserrat 字体 */
+
+  font-weight: bold; /* 设置为加粗 */
+}
 /* 为每个组件的样式定制 */
 .bg-white {
   background-color: #ffffff;
@@ -237,5 +248,31 @@ export default {
     margin-top: 3%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04);
 }
+.likeNum{
+  margin-left: 10px;
+  font-size: 16px; /* 设置字体大小 */
+  font-family: 'Montserrat', sans-serif; /* 使用 Montserrat 字体 */
 
+  font-weight: bold; /* 设置为加粗 */
+}
+.avatar {
+  transition: transform 0.3s ease;  /* 设置过渡效果，使变大动作平滑 */
+}
+
+.avatar:hover {
+  transform: scale(1.1);  /* 鼠标悬停时，放大1.1倍 */
+}
+.avatar:active {
+  transform: scale(0.95);  /* 点击时头像略微缩小 */
+}
+.button {
+  transition: transform 0.2s ease;  /* 设置过渡效果，使变大动作平滑 */
+}
+
+.button:hover {
+  transform: scale(1.05);  /* 鼠标悬停时，放大1.1倍 */
+}
+.button:active {
+  transform: scale(0.95);  /* 点击时头像略微缩小 */
+}
 </style>
