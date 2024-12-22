@@ -101,27 +101,23 @@ const recommended_articles = ref([
   }
 ]);
 
-const organizations = ref([
-  {
-    organizationName: "ABC"
-  },
-  {
-    organizationName: "ABC"
-  }
-])
+// const organizations = ref([
+//   {
+//     organizationName: "ABC"
+//   },
+//   {
+//     organizationName: "ABC"
+//   }
+// ])
 
-const fields = ref([
-  {
-    fieldName: "ABC",
-    topArticleName: "Article1",
-    topArticleId: "1",
-  },
-  {
-    fieldName: "ABC",
-    topArticleName: "Article2",
-    topArticleId: "1",
-  }
-])
+// const fields = ref([
+//   {
+//     fieldName: "ABC"
+//   },
+//   {
+//     fieldName: "ABC"
+//   }
+// ])
 
 const statistic = ref({
   authorCount: 20502,
@@ -223,19 +219,19 @@ const initHome = (userId) => {
         statistic.value.paperCount = result.paperCount.toLocaleString();
     });
 
-    var promise = GetOrganizations();
-    promise.then((result)=>{
-        result.organizations.forEach(element => {
-            organizations.value.push(element);
-        });
-    });
+    // var promise = GetOrganizations();
+    // promise.then((result)=>{
+    //     result.organizations.forEach(element => {
+    //         organizations.value.push(element);
+    //     });
+    // });
 
-    var promise = GetFields();
-    promise.then((result)=>{
-        result.fields.forEach(element => {
-            fields.value.push(element);
-        });
-    });
+    // var promise = GetFields();
+    // promise.then((result)=>{
+    //     result.fields.forEach(element => {
+    //         fields.value.push(element);
+    //     });
+    // });
 }
 
 initHome(userId.value);
@@ -449,15 +445,11 @@ onMounted(() => {
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="科研机构" name="organization" style="text-align: left">
+                <!-- <el-tab-pane label="科研机构" name="organization" style="text-align: left">
                   <div class="articles">
                         <div class="articles-body">
                             <div v-for="(organization, index) in organizations" v-bind:key="index">
-                                <div style="text-align: left">
-                                    <div>
-                                        <span class="title">{{ organization.organizationName }}</span>
-                                    </div>
-                                </div>
+                                
 
                                 <el-divider v-if="index < organizations.length - 1"></el-divider>
                             </div>
@@ -468,21 +460,13 @@ onMounted(() => {
                   <div class="articles">
                         <div class="articles-body">
                             <div v-for="(field, index) in fields" v-bind:key="index">
-                                <div style="text-align: left">
-                                    <div>
-                                        <span class="title">{{ field.fieldName }}</span>
-                                    </div>
-                                    <div style="margin-top: 10px;">
-                                      <span>TOP引用量文章：</span>
-                                      <span class="author-name" @click="gotoPaper(field.topArticleId)"><u>{{ field.topArticleName }}</u></span>
-                                    </div>
-                                </div>
+                                
 
-                                <el-divider v-if="index < fields.length - 1"></el-divider>
+                              <el-divider v-if="index < organizations.length - 1"></el-divider>
                             </div>
                         </div>
                     </div>
-                </el-tab-pane>
+                </el-tab-pane> -->
             </el-tabs>
         </div>
     </div>
