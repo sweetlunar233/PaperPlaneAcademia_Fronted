@@ -85,10 +85,10 @@
           </div>
 
           <div class="action-buttons" >
-            <button @click="collectPaper(paper)" class="action-btn" v-if="paper.isFavorite"> 
+            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="paper.isFavorite"> 
               <el-icon :size="18" ><Star /></el-icon>
             </button>
-            <button @click="collectPaper(paper)" class="action-btn" v-if="!paper.isFavorite"> 
+            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="!paper.isFavorite"> 
               <el-icon :size="18" ><StarFilled /></el-icon>
             </button>
             <!-- <button @click="quotePaper(paper)" class="action-btn">
@@ -113,7 +113,7 @@
 
 <script>
 import axios from 'axios';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
   data() {
@@ -133,6 +133,7 @@ export default {
       selectedAuthors: [],
 
       userId: this.$root.OnlineUser,
+      router:useRouter(),
     };
   },
   computed: {
@@ -146,7 +147,6 @@ export default {
     }
   },
   methods: {
-
     citationColor(citations) {
       if (citations >= 50) {
         return 'rgb(255, 99, 71)';
@@ -202,7 +202,7 @@ export default {
             years: this.selectedYears.map(year => year.toString()),
             authorOrganizations: this.selectedAuthors
           },
-          sort: this.sortBy*this.sortDown,
+          sort: this.sortByz * this.sortDown,
           page: this.currentPage,
           userId: this.userId
         });
@@ -250,6 +250,12 @@ export default {
     },
     viewPaper(paper) {
       console.log('查看全文:', paper);
+      this.router.push({
+        path: '/article',
+        query: {
+          paperId: paper.Id
+        }
+      });
     },
 
     async collectPaper(paper) {

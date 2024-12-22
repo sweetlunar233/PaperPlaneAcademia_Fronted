@@ -45,7 +45,7 @@
             <div class="scholar-collaborators">
               <span style="padding-right:10px;color:var(--text-color)">相关学者：</span>
               <span v-for="(collaborator, idx) in scholar.collaborators" :key="idx" class="collaborator" @mouseover="hover = true" @mouseleave="hover = false">
-                <a :href="`/authors/${collaborator.id}`">{{ collaborator.name }}</a>
+                <a @click.stop="viewScholar(collaborator)">{{ collaborator.name }}</a>
               </span>
             </div>
   
@@ -69,6 +69,7 @@
   
 <script>
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
   data() {
@@ -84,6 +85,7 @@ export default {
       
       searchConditions: {},
       userId: this.$root.OnlineUser,
+      router:useRouter(),
     };
   },
   computed: {
@@ -129,7 +131,7 @@ export default {
 
         this.showRes = response.data.map(scholar => ({
           ...scholar,
-          collaborators: scholar.collaborators.map(collaborator => ({ name: collaborator.name, id: collaborator.id }))
+          collaborators: scholar.collaborators.map(collaborator => ({ name: collaborator.name, Id: collaborator.Id }))
         }));
       } catch (error) {
         console.error("Error fetching results:", error);
@@ -139,7 +141,7 @@ export default {
             name: '测试学者名字', 
             organization: '北京航空航天大学', 
             paperCount: 4, 
-            collaborators: [{ name: '作者 1', id: '002' }, { name: '作者 3', id: '003' }], 
+            collaborators: [{ name: '作者 1', Id: '002' }, { name: '作者 3', Id: '003' }], 
             fields: ['人工智能', '深度学习']
           }
         ];
@@ -155,6 +157,12 @@ export default {
     },
     viewScholar(scholar) {
       console.log('go to scholar:', scholar);
+      this.router.push({
+        path: '/gateway',
+        query: {
+          userId: scholar.Id
+        }
+      });
     }
   },
   watch: {
