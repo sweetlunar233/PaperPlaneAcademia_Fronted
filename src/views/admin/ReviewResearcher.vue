@@ -57,18 +57,21 @@ export default {
   },
   methods: {
     // 获取科研人员申请列表
-    async fetchApplications() {
-      try {
-        const response = await getApplications();  // 假设API接口是 getApplications
-        if (response.data.status === 'success') {
-          this.applications = response.data.data;
-          this.totalApplications = this.applications.length;
-        } else {
-          console.error("获取科研人员申请失败:", response.data.message);
-        }
-      } catch (error) {
-        console.error("获取科研人员申请失败:", error);
-      }
+    fetchApplications() {
+      // 通过调用 API 获取数据
+      var promise = getApplications();
+      promise
+        .then((response) => {
+          if (response.status === "success") {
+            this.applications = response.data.data;
+            this.totalApplications = this.applications.length;
+          } else {
+            console.error("获取科研人员申请失败:", response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("获取科研人员申请失败:", error);
+        });
     },
 
     // 页码变化时触发
@@ -77,40 +80,45 @@ export default {
     },
 
     // 通过申请
-    async approveApplication(applicationId) {
-      try {
-        const response = await approveApplication(applicationId);  // 调用后端接口
-        if (response.data.status === 'success') {
-          alert("科研人员申请已通过");
-          this.fetchApplications();
-        } else {
-          alert("审批失败：" + response.data.message);
-        }
-      } catch (error) {
-        console.error("审批失败:", error);
-      }
+    approveApplication(applicationId) {
+      var promise = approveApplication(applicationId); // 调用后端接口
+      promise
+        .then((response) => {
+          if (response.data.status === "success") {
+            alert("科研人员申请已通过");
+            this.fetchApplications();
+          } else {
+            alert("审批失败：" + response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("审批失败:", error);
+        });
     },
 
     // 驳回申请
     rejectApplication(row) {
-      this.selectedApplicationId = row.applicationId;  // 存储当前选中申请的applicationId
+      this.selectedApplicationId = row.applicationId; // 存储当前选中申请的applicationId
       this.rejectDialogVisible = true;
     },
 
     // 提交驳回理由
-    async submitRejection() {
-      try {
-        const response = await rejectApplication(this.selectedApplicationId, this.rejectReason);  // 提交驳回理由
-        if (response.data.status === 'success') {
-          alert("科研人员申请已驳回");
-          this.rejectDialogVisible = false;
-          this.fetchApplications();
-        } else {
-          alert("驳回失败：" + response.data.message);
-        }
-      } catch (error) {
-        console.error("驳回失败:", error);
-      }
+    submitRejection() {
+      const reason = this.rejectReason;
+      var promise = rejectApplication(this.selectedApplicationId, reason); // 提交驳回理由
+      promise
+        .then((response) => {
+          if (response.data.status === "success") {
+            alert("科研人员申请已驳回");
+            this.rejectDialogVisible = false;
+            this.fetchApplications();
+          } else {
+            alert("驳回失败：" + response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("驳回失败:", error);
+        });
     },
   },
   created() {
