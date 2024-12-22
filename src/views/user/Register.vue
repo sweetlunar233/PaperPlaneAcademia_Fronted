@@ -32,12 +32,6 @@
         <el-form-item label="机构或组织" prop="organization">
           <el-input v-model="registerForm.organization" placeholder="输入您的机构或组织"></el-input>
         </el-form-item>
-        <el-form-item label="用户类型" prop="userType">
-          <el-select v-model="registerForm.userType" placeholder="选择您的用户类型">
-            <el-option label="科研人员" value="researcher"></el-option>
-            <el-option label="审核人员" value="reviewer"></el-option>
-          </el-select>
-        </el-form-item>
         
         <!-- 头像选择 -->
         <el-form-item label="头像">
@@ -93,7 +87,6 @@ export default {
         confirmPassword: "",
         email: "",
         organization: "",
-        userType: "",
         avatar: "", // 添加 avatar 字段
       },
       showAvatarDialog: false, // 控制弹窗显示
@@ -127,7 +120,6 @@ export default {
           { type: "email", message: "非法的邮箱地址", trigger: "blur" },
         ],
         organization: [{ required: true, message: "请输入您的机构或组织", trigger: "blur" }],
-        userType: [{ required: true, message: "请选择您的用户类型", trigger: "blur" }],
       },
     };
   },
