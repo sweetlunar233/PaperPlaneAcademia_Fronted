@@ -75,6 +75,7 @@
                   <div class="scholar-other-info">
                     <span class="scholar-authorOrganization"><i>{{ scholar.authorOrganization }}</i></span>
                   </div>
+                  <div class="scholar-other-info"><span>收录有 </span><span v-for="(paper,index) in scholar.papers" :key="index">{{paper}}</span><span>等{{scholar.papers.length}}篇论文</span></div>
               </div>
             </div>
           </el-form-item>
