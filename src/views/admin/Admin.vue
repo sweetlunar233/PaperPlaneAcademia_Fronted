@@ -12,6 +12,7 @@
           <el-menu-item index="overview">平台概况</el-menu-item>
           <el-menu-item index="review">审核认领</el-menu-item>
           <el-menu-item index="scholars">平台学者</el-menu-item>
+          <el-menu-item index="reviewResearcher">审核科研人员申请</el-menu-item> 
         </el-menu>
       </el-aside>
       <!-- 右侧内容展示 -->
