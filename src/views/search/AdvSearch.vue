@@ -163,7 +163,7 @@
   .search-container {
     padding: 20px;
   }
-  .basic-search{
+  .basic-search {
     display: flex;
     justify-content: center;
     margin: 20px 0;
