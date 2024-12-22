@@ -106,7 +106,9 @@ export default {
       this.$router.push("/searchScholar"); // 跳转到学者搜索页面
     },
     checkLoginStatus() {
-      
+      if(this.$cookies.get('userId')){
+        this.loggedIn = true;
+      }
     }
   },
   mounted() {
