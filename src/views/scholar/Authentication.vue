@@ -295,11 +295,12 @@ export default {
         const requestBody = {
             "names": authorNames
         };
-          this.$axios.post('/papers/searchbyname', requestBody).then(response => {
-              this.papersList = response.data;
-          }).catch(error => {
-              console.error("获取论文数据失败", error);
-          });
+
+        this.$axios.post('/papers/searchbyname', requestBody).then(response => {
+            this.papersList = response.data;
+        }).catch(error => {
+            console.error("获取论文数据失败", error);
+        });
       } else {
           console.log('没有可搜索的作者名');
       }

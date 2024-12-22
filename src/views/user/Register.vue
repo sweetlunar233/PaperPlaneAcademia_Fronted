@@ -98,10 +98,13 @@ export default {
       },
       showAvatarDialog: false, // 控制弹窗显示
       selectedAvatar: "", // 选中的头像
-      availableAvatars: [
-        "https://example.com/avatar1.jpg",
-        "https://example.com/avatar2.jpg",
-        "https://example.com/avatar3.jpg", // 这里替换成实际的头像链接
+      availableAvatars: [ // 可供选择的头像
+        'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
+        'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
+        'https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
+        'https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
+        'https://th.bing.com/th/id/R.7376aae88d772c821c6925b91e2ca1aa?rik=8n%2bJq8ypQTiJHA&pid=ImgRaw&r=0',
+        'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
       ],
       rules: {
         username: [{ required: true, message: "请输入用户名", trigger: "blur" }],

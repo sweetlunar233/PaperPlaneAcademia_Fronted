@@ -5,7 +5,7 @@
       <el-header>
         <!-- 左侧 Logo -->
         <div class="logo" @click="goToHome">
-          Academia
+          PaperPlane
         </div>
 
         <!-- 高级搜索按钮和学者搜索按钮 -->
