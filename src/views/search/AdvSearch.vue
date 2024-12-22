@@ -187,6 +187,7 @@
   }
   .custom-card {
     background:url(../../assets/images/advSearch.png);
+    background-size: cover;
     background-color: #f0f8ff; /* 浅蓝色背景 */
     border-radius: 8px;       /* 圆角 */
     padding: 20px;            /* 内边距 */
