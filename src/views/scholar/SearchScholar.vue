@@ -76,7 +76,7 @@
     methods: {
       // 添加新条件
       addCondition(index) {
-        console.log('Adding field at index:', index);
+
         this.authorConditions.splice(index + 1, 0, { value: "" });
       },
   
@@ -99,7 +99,7 @@
           value: cond.value,
           scope: cond.scope,
         }));
-  
+        
         // 跳转到 ScholarRes.vue 页面并传递参数
         this.$router.push({ name: "scholarRes", query: { conditions: JSON.stringify(searchParams) } });
       },
