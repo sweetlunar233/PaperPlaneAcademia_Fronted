@@ -10,9 +10,9 @@
 
         <!-- 高级搜索按钮和学者搜索按钮 -->
         <div class="advanced-search">
-          <el-button class="TieZhu-button" link @click="goToAdvSearch">高级搜索</el-button>
+          <el-button class="TieZhu-button" style="color:rgb(216, 210, 210);" link @click="goToAdvSearch">高级搜索</el-button>
           <!-- 新增学者搜索按钮 -->
-          <el-button class="TieZhu-button" link @click="goToSearchScholar">学者搜索</el-button>
+          <el-button class="TieZhu-button" style="color:rgb(216, 210, 210);" link @click="goToSearchScholar">学者搜索</el-button>
         </div>
 
         <!-- 中间搜索框 -->
@@ -35,7 +35,7 @@
             <el-button @click="goToRegister">注册</el-button>
           </template>
           <template v-else>
-            <span @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
+            <span style="font-family: 'Microsoft YaHei', sans-serif;padding-top: 1%;" @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
             <el-button @click="logout">注销</el-button>
           </template>
         </div>
@@ -156,6 +156,7 @@ export default {
   align-items: center; /* 垂直居中 */
   justify-content: center; /* 水平居中 */
   height: 36px; /* 固定按钮高度，确保居中 */
+  font-family: 'Microsoft YaHei', sans-serif;
 }
 
 .search-box {
@@ -167,6 +168,10 @@ export default {
 .advanced-search,
 .auth-buttons {
   flex-shrink: 0; /* 固定宽度，避免被压缩 */
+}
+
+.auth-buttons :hover{
+  cursor: pointer;
 }
 
 .advanced-search {
@@ -198,7 +203,8 @@ html {
 }
 
 .TieZhu-button{
-  color: red;
+  color: rgb(216, 210, 210);
+  font-family: 'Microsoft YaHei', sans-serif;
 }
 
 .TieZhu-button :hover{
