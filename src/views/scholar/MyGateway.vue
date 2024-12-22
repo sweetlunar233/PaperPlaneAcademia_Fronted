@@ -260,7 +260,7 @@ export default {
     editDescription() {
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
       if (newDescription !== null) {
-       var promise = editDescription(this.$cookies.get('userId'), newDescription);
+       var promise = updateDescription(this.$cookies.get('userId'), newDescription);
             promise.then(response => {
               this.userInfo.description = newDescription;
               console.log('简介更新成功', response.data);
@@ -276,7 +276,7 @@ export default {
       const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
       if (newResearchFields !== null) {
         const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        var promise = editResearchFields(this.$cookies.get('userId'), updatedFields);
+        var promise = updateResearchFields(this.$cookies.get('userId'), updatedFields);
         promise.then(response => {
               this.userInfo.researchFields = updatedFields;
               console.log('研究领域更新成功', response.data);
