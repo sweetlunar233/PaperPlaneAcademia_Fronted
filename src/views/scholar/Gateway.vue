@@ -390,7 +390,7 @@ html, body {
   overflow-y: auto;
   background-color: #fff; /* 白色背景 */
   border-left: 1px solid #ddd;
-  height: 100%; /* 占满父容器的高度 */
+  height: 480px; /* 占满父容器的高度 */
   min-height: 0; /* 防止内容溢出 */
 }
 
