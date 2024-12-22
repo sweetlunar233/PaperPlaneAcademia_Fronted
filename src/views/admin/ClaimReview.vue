@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { getClaims } from "@/api/claim";
 import axios from "axios";
 
 export default {
@@ -58,27 +59,35 @@ export default {
   methods: {
     // 获取认领申请列表
     async fetchClaims() {
-      try {
-        const response = await axios.get(`/claims/`);
-        this.claims = response.data.data;
-        this.totalClaims = this.claims.length;
-      } catch (error) {
-        console.error("获取认领申请失败:", error);
-      }
+      var promise = getClaims;
+        // 调用后端接口
+        promise.then(response => {
+          if (response.data.status === 'success') {
+            this.claims = response.data.claims;
+          } else {
+            console.error("获取认领申请失败:", error);
+         }
+        })
+        .catch(error => {
+          console.error("获取认领申请失败:", error); 
+        });
     },
+    
     // 页码变化时触发
     handlePageChange(page) {
       this.currentPage = page;
     },
     // 通过申请
     async approveClaim(claimId) {
-      try {
-        await axios.post(`/claims/${claimId}/approve`);  // 使用claimId
-        alert("认领申请已通过");
+      var promise = approveClaims(claimId);
+        // 调用后端接口
+        promise.then(response => {
+          alert("认领申请已通过");
         this.fetchClaims();
-      } catch (error) {
-        console.error("审批失败:", error);
-      }
+        })
+        .catch(error => {
+          console.error("审批失败:", error);
+        });
     },
     // 驳回申请
     rejectClaim(row) {
@@ -87,16 +96,16 @@ export default {
     },
     // 提交驳回理由
     async submitRejection() {
-      try {
-        await axios.post(`/claims/${this.selectedClaimId}/reject/`, { // 使用选中的claimId
-          reason: this.rejectReason,
+      reason = this.rejectReason;
+      var promise = submitRejections(this.selectedClaimId, reason);
+        // 调用后端接口
+        promise.then(response => {
+          alert("认领申请已驳回");
+          this.fetchClaims();
+        })
+        .catch(error => {
+          console.error("驳回失败:", error);
         });
-        alert("认领申请已驳回");
-        this.rejectDialogVisible = false;
-        this.fetchClaims();
-      } catch (error) {
-        console.error("驳回失败:", error);
-      }
     },
   },
   created() {

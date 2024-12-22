@@ -35,7 +35,7 @@
             <el-button @click="goToRegister">注册</el-button>
           </template>
           <template v-else>
-            <span @click="goToMyGateway">欢迎, {{ username }}</span>
+            <span @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
             <el-button @click="logout">注销</el-button>
           </template>
         </div>
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import {GetMyUserData} from "@/api/user.js";
 export default {
   data() {
     return {
@@ -58,19 +60,6 @@ export default {
     };
   },
   methods: {
-    async checkLoginStatus() {
-      try {
-        const response = await axios.get("/users/myUserData/"); // 假设后端提供登录状态接口
-        if (response != null) {
-          this.loggedIn = true;
-          this.username = response.UserInfo.name; // 获取用户名
-        } else {
-          this.loggedIn = false;
-        }
-      } catch (error) {
-        console.error("获取登录状态失败：", error);
-      }
-    },
     goToHome() {
       this.$router.push("/home"); // 跳转到主页
     },
@@ -117,7 +106,6 @@ export default {
     },
   },
   mounted() {
-    $cookies.set("userId", 1);
     this.checkLoginStatus(); // 组件加载时检查登录状态
   },
 };
