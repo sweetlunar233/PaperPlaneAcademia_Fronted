@@ -175,7 +175,7 @@
                 <div>
                     <div class="abstract-title">领域</div>
                     <div v-for="(field,index) in article.fields" class="field">
-                        - <span class="hyperlink">{{ field }}</span>
+                        - <span class="hyperlink-noCursor">{{ field }}</span>
                     </div>
                 </div>
                 <el-divider />
@@ -590,8 +590,13 @@ export default{
     cursor: pointer;
 }
 
-.article .hyperlink-noHover {
+.article .hyperlink-noCursor {
     color: #409EFF;
+}
+
+.article .hyperlink-noCursor:hover {
+    color: rgb(31, 124, 196);
+    cursor: default;
 }
 
 .article .subtitle {

@@ -496,7 +496,7 @@ onMounted(() => {
   padding-top: 100px;/*空白在这*/
   color: white;
   font-weight: 600;
-
+  padding-bottom: 110px;
   display: inline-block;
 }
 
