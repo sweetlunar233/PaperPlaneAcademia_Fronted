@@ -11,7 +11,7 @@ export function post(url,data){
                 resolve(response.data);
             })
             .catch((error) => {
-                // 错误处理
+                resolve({error:error,status:"error"});
             })
     });
 }
@@ -27,7 +27,7 @@ export function get(url,param){
                 resolve(response.data);
             })
             .catch((error) => {
-                // 错误处理
+                resolve({error:error,status:"error"});
             })
     });
 }
