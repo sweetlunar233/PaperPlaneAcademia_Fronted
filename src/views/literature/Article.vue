@@ -387,6 +387,7 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
+            console.log(this.isStar)
         },
 
         undoStar(){
@@ -555,6 +556,7 @@ export default{
         promise
         .then((result) => {
             this.isStar = result.isStar;
+            console.log(result.isStar)
         })
 
     },
