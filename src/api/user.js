@@ -53,7 +53,7 @@ export function editDescription(userId, description){
     return post("/users/updateDescription/",data);
 }
 
-export function editResearchFields(){
+export function editResearchFields(userId, researchFields){
     let data = {};
     data.userId = userId;
     data.researchFields = researchFields;
