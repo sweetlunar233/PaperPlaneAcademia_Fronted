@@ -38,12 +38,45 @@
             <el-option label="审核人员" value="reviewer"></el-option>
           </el-select>
         </el-form-item>
+        
+        <!-- 头像选择 -->
+        <el-form-item label="头像">
+          <el-button @click="showAvatarDialog = true" type="primary">选择头像</el-button>
+          <span v-if="registerForm.avatar">已选择头像</span>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
           <el-button type="text" @click="$router.push('/login')">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
+
+    <!-- 头像选择弹窗 -->
+    <el-dialog
+      title="选择头像"
+      v-model="showAvatarDialog"
+      width="60%"
+      @close="resetSelectedAvatar"
+    >
+      <div class="avatar-carousel">
+        <div class="avatar-wrapper">
+          <img
+            v-for="(avatar, index) in availableAvatars"
+            :key="index"
+            :src="avatar"
+            alt="头像选项"
+            class="avatar-option"
+            :class="{ selected: selectedAvatar === avatar }"
+            @click="selectAvatar(avatar)"
+          />
+        </div>
+      </div>
+      <template #footer>
+        <el-button @click="showAvatarDialog = false">取消</el-button>
+        <el-button type="primary" @click="confirmAvatar">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -61,16 +94,24 @@ export default {
         email: "",
         organization: "",
         userType: "",
+        avatar: "", // 添加 avatar 字段
       },
+      showAvatarDialog: false, // 控制弹窗显示
+      selectedAvatar: "", // 选中的头像
+      availableAvatars: [
+        "https://example.com/avatar1.jpg",
+        "https://example.com/avatar2.jpg",
+        "https://example.com/avatar3.jpg", // 这里替换成实际的头像链接
+      ],
       rules: {
-        username: [{ required: true, message: "Username is required", trigger: "blur" }],
-        password: [{ required: true, message: "Password is required", trigger: "blur" }],
+        username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         confirmPassword: [
-          { required: true, message: "Please confirm your password", trigger: "blur" },
+          { required: true, message: "请确认您的密码", trigger: "blur" },
           {
             validator: (rule, value, callback) => {
               if (value !== this.registerForm.password) {
-                callback(new Error("Passwords do not match"));
+                callback(new Error("两次输入密码不一致"));
               } else {
                 callback();
               }
@@ -79,43 +120,34 @@ export default {
           },
         ],
         email: [
-          { required: true, message: "Email is required", trigger: "blur" },
-          { type: "email", message: "Invalid email format", trigger: "blur" },
+          { required: true, message: "请输入您的邮箱", trigger: "blur" },
+          { type: "email", message: "非法的邮箱地址", trigger: "blur" },
         ],
-        organization: [{ required: true, message: "Organization is required", trigger: "blur" }],
-        userType: [{ required: true, message: "User type is required", trigger: "blur" }],
+        organization: [{ required: true, message: "请输入您的机构或组织", trigger: "blur" }],
+        userType: [{ required: true, message: "请选择您的用户类型", trigger: "blur" }],
       },
     };
   },
   methods: {
-    // async submitRegisterForm(formName) {
-    //   this.$refs[formName].validate(async (valid) => {
-    //     if (valid) {
-    //       const newUser = { ...this.registerForm };
-    //       delete newUser.confirmPassword; // 确认密码不需要发送到后端
-    //       try {
-    //         const response = await axios.post("/user/register/", newUser);
-    //         if (response.data.status === "success") {
-    //           alert("注册成功！将为您跳转到登录界面");
-    //           this.$router.push("/login");
-    //         } else {
-    //           alert(response.data.message);
-    //         }
-    //       } catch (error) {
-    //         console.error("注册失败:", error);
-    //         alert("注册失败，请检查网络连接或稍后重试。");
-    //       }
-    //     } else {
-    //       console.log("error submit!!");
-    //     }
-    //   });
-    // },
+    // 选择头像
+    selectAvatar(avatar) {
+      this.selectedAvatar = avatar;
+    },
+    // 确认头像
+    confirmAvatar() {
+      this.registerForm.avatar = this.selectedAvatar; // 把选中的头像保存到 registerForm
+      this.showAvatarDialog = false;
+    },
+    // 重置头像
+    resetSelectedAvatar() {
+      this.selectedAvatar = "";
+    },
 
     submitRegisterForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           try {
-            var promise = Register(this.registerForm.username,this.registerForm.password,this.registerForm.email,this.registerForm.organization,this.registerForm.userType);
+            var promise = Register(this.registerForm.username, this.registerForm.password, this.registerForm.email, this.registerForm.organization, this.registerForm.userType, this.registerForm.avatar);
             promise.then((result) => {
               if (result && result.status === "success") {
                 alert("注册成功！将为您跳转到登录界面");
@@ -123,8 +155,7 @@ export default {
               } else {
                 alert(result);
               }
-            })
-            
+            });
           } catch (error) {
             console.error("注册失败:", error);
             alert("注册失败，请检查网络连接或稍后重试。");
@@ -143,11 +174,36 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
-  background: #f5f5f5;
+  height: 100vh; /* 设置为视口高度 */
+  background: url("../../assets/images/bg3.png") no-repeat center center; /* 背景图片 */
+  background-size: cover; /* 背景图自适应容器 */
+  background-attachment: fixed; /* 保持背景固定 */
+  overflow: hidden; /* 防止出现滚动条 */
 }
+
 .register-card {
   width: 500px;
   padding: 20px;
+  background: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+  border-radius: 8px; /* 圆角 */
 }
+
+.avatar-wrapper {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.avatar-option {
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.avatar-option.selected {
+  border: 2px solid #409eff;
+}
+
 </style>
+

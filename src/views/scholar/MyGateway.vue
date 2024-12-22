@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="userInfo.photoUrl || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" @click="showAvatarDialog = true" class="profile-photo-img"  />
+        <img :src="this.availableAvatars[userInfo.photoUrl - 1]" @click="showAvatarDialog = true" class="profile-photo-img"  />
       </div>
       <el-dialog
           title="选择头像"
@@ -34,7 +34,7 @@
         <p><strong>简介：</strong>{{ userInfo.description }}
           <button class="edit-btn" @click="editDescription">修改</button>
         </p>
-        <p><strong>研究领域：</strong>{{ userInfo.researchFields.join(', ') }}
+        <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
           <button class="edit-btn" @click="editResearchFields">修改</button>
         </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
@@ -183,6 +183,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
+import {GetMyUserData, UpdateAvatar} from "@/api/user.js";
 
 export default {
   data() {
@@ -200,7 +201,7 @@ export default {
       ],
       userInfo: {
         name: '',
-        photoUrl: '',
+        photoUrl: 3,
         description: '',
         researchFields: [],
         registerTime: '',
@@ -228,8 +229,27 @@ export default {
     // 确定选择
     confirmAvatar() {
       if (this.selectedAvatar) {
-        this.userInfo.photoUrl = this.selectedAvatar; // 更新用户头像
+        // 找到选中头像的编号
+        const avatarIndex = this.availableAvatars.indexOf(this.selectedAvatar) + 1; // 编号从 1 开始
+        var promise = UpdateAvatar(this.$route.query.userId, avatarIndex)
+        // 调用后端接口
+        promise.then(response => {
+              if (response.data.status === 'success') {
+                this.userInfo.photoUrl = this.selectedAvatar; // 本地更新头像
+                alert('头像更新成功！');
+              } else {
+                alert(`头像更新失败：${response.data.message}`);
+              }
+            })
+            .catch(error => {
+              console.error('头像更新失败:', error);
+              alert('头像更新失败，请稍后重试。');
+            });
+
+      } else {
+        alert('请选择一个头像！');
       }
+
       this.showAvatarDialog = false; // 关闭对话框
     },
     // 重置选择
@@ -240,7 +260,7 @@ export default {
     editDescription() {
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
       if (newDescription !== null) {
-        axios.put('/user/updateDescription', { userId: this.$root.OnlineUser, description: newDescription })
+        axios.put('/users/updateDescription/', { userId: this.$root.OnlineUser, description: newDescription })
             .then(response => {
               this.userInfo.description = newDescription;
               console.log('简介更新成功', response.data);
@@ -256,7 +276,7 @@ export default {
       const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
       if (newResearchFields !== null) {
         const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        axios.put('/user/updateResearchFields', { userId: this.$root.OnlineUser, researchFields: updatedFields })
+        axios.put('/users/updateResearchFields/', { userId: this.$root.OnlineUser, researchFields: updatedFields })
             .then(response => {
               this.userInfo.researchFields = updatedFields;
               console.log('研究领域更新成功', response.data);
@@ -270,14 +290,10 @@ export default {
     // 集中处理所有数据获取请求
     fetchUserData() {
       const userId = this.$root.OnlineUser;
-      axios({
-        method: 'get',
-        url: '/users/myUserData',
-        params: userId,
-      })
-          .then(response => {
+      var promise = GetMyUserData(userId);
+      promise.then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-            const { userInfo, favoriteArticles, comments, articles } = response.data;
+            const { userInfo, favoriteArticles, comments, articles } = response;
             // 更新数据
             this.userInfo = userInfo;
             this.favoriteArticles = favoriteArticles;
@@ -380,13 +396,13 @@ html, body {
   display: flex;
   flex-direction: column;
 }
+
 .left{
   width: 20%;
 }
 .right{
   width: 20%;
 }
-
 
 
 .username {
@@ -407,6 +423,7 @@ html, body {
 /* 主体内容样式 */
 .main-content {
   display: flex;
+  height: 100%;
   flex: 1; /* 填充剩余空间 */
   overflow: hidden;
 }
@@ -445,7 +462,7 @@ html, body {
   color: white;
 }
 
-/* 右侧内容样式 */
+
 .content {
   flex: 1;
   display: flex;
@@ -454,7 +471,7 @@ html, body {
   overflow-y: auto;
   background-color: #fff; /* 白色背景 */
   border-left: 1px solid #ddd;
-  height: 100%; /* 占满父容器的高度 */
+  height: 475px; /* 占满父容器的高度 */
   min-height: 0; /* 防止内容溢出 */
 }
 
