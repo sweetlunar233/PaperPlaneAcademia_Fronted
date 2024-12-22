@@ -99,7 +99,7 @@
           { label: "关键词", value: "keyword" },
         ],
         advancedFields: [
-          { value: "" },
+          { value: "", logic: null, scope: null},
         ],
         dateRange: [null, null],
       };
