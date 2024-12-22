@@ -26,7 +26,7 @@ export function Register(username,password,email,organization,userType){
     data.organization = organization;
     data.userType = userType;
     console.log(data);
-    return post("/user/register/",data);
+    return post("/users/register/",data);
 }
 
 export function UpdateAvatar(userId, avatarIndex){
@@ -34,5 +34,13 @@ export function UpdateAvatar(userId, avatarIndex){
     data.userId = userId;
     data.avatarIndex = avatarIndex;
     console.log(data);
-    return post("/user/updateAvatar/",data);
+    return post("/users/updateAvatar/",data);
+}
+
+export function getTotalPages(data) {
+    return post("/users/getpage/", data);
+}
+
+export function fetchResults(data) {
+    return post("/users/searchscholars/", data);
 }

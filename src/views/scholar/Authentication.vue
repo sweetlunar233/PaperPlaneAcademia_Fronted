@@ -179,7 +179,7 @@
 </template>
   
 <script>
-import { Authenticate } from '@/api/claim.js';
+import { Authenticate } from '@/api/claim';
 export default {
   data() {
     return {
