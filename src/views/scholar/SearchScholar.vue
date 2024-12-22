@@ -104,7 +104,7 @@
         }));
   
         // 跳转到 ScholarRes.vue 页面并传递参数
-        this.$router.push({ name: "ScholarRes", query: { conditions: JSON.stringify(searchParams) } });
+        this.$router.push({ name: "scholarRes", query: { conditions: JSON.stringify(searchParams) } });
       },
   
       // 重置条件
