@@ -43,47 +43,43 @@
           <el-form-item label="电子邮箱" prop="email">
             <el-input v-model="formData.email" placeholder="请输入电子邮箱"></el-input>
           </el-form-item>
-          <el-form-item label="工作单位" prop="workPlace" required>
+          <!-- <el-form-item label="工作单位" prop="workPlace" required>
             <el-input v-model="formData.workPlace" placeholder="请输入工作单位"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="研究领域" prop="field">
             <el-input v-model="formData.field" placeholder="多个领域名称用“;”隔开"></el-input>
           </el-form-item>
         </el-form>
   
         <el-form :model="formData" ref="form" v-if="step === 2" style="position: absolute; width: 100%; margin: 100px 15% 100px 10%;">
-          <div class="label">成果认领</div>
+          <div class="label">门户认领</div>
           <div class="dsc">
               已根据您的姓名搜索到了系统中如下
-              <span class="paper-count"><i>{{ papersList.length }}</i></span>
-              篇可认领论文
+              <span class="scholar-count"><i>{{ scholarsList.length }}</i></span>
+              个匹配的门户信息, 点击选择
           </div>
-          <el-form-item class="claimed-papers-container">
+          <el-form-item class="claimed-scholars-container">
             <div 
-                v-for="(paper, index) in papersList" 
-                :key="index" 
-                class="paper-item" 
-                :class="{ selected: selectedPapers.includes(index) }"
-                @click="toggleSelection(index)"
+              v-for="(scholar, Id) in scholarsList" 
+              :class="{ selected: formData.selectedScholarId == scholar.Id }"
+              :key="Id" 
+              class="scholar-item"
+              @click="selectScholar(scholar)"
+              
             >
-                <div class="paper-checkbox">
-                    <el-icon v-if="selectedPapers.includes(index)" class="selected-icon" size="20"><Select /></el-icon>
-                </div>
-                <div class="paper-info">
-                    <div class="paper-title">{{ paper.title }}</div>
-                    <div class="paper-other-info">
-                      <span class="paper-date"><i>{{ paper.date }}</i></span>
-                      <span >·</span>
-                      <span class="paper-journal"><i>{{ paper.journal }}</i></span>
-                      <span >·</span>
-                      <span class="paper-authors" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><i>{{ paper.authors }}</i></span>
-                    </div>
-                    
-                </div>
+              <div class="scholar-checkbox" >
+                <el-icon v-if="formData.selectedScholarId == scholar.Id" class="selected-icon" size="20"><Select /></el-icon>
               </div>
+              <div class="scholar-info">
+                  <div class="scholar-name">{{ scholar.name }}</div>
+                  <div class="scholar-other-info">
+                    <span class="scholar-authorOrganization"><i>{{ scholar.authorOrganization }}</i></span>
+                  </div>
+              </div>
+            </div>
           </el-form-item>
 
-          <div  class="manual-upload-link">
+          <!-- <div  class="manual-upload-link">
             系统中没有录入我的作品？<span @click="edit(null)" class="manual-upload">手动上传</span>
           </div>
           <div class="papers" v-if="formData.newPapers.length > 0" >
@@ -104,10 +100,10 @@
                 </div>
               </div>
             </ul>
-          </div>
+          </div> -->
         </el-form>
 
-        <el-dialog 
+        <!-- <el-dialog 
           v-model="dialogFormVisible" 
           :title="editIdx == -1 ? '添加论文' : '编辑论文'" 
           class="manual-upload-popup"
@@ -151,7 +147,7 @@
               </div>
             </div>
           </el-form>
-        </el-dialog>
+        </el-dialog> -->
 
         <el-row v-if="step === 3" justify="center" style="position: absolute; padding-top:20%">
           <el-col :span="16" class="centered-text">
@@ -179,74 +175,72 @@
 </template>
   
 <script>
-import { Authenticate } from '@/api/claim';
-import { searchByName } from '@/api/article';
+import { Authenticate,fetchScholars } from '@/api/claim';
+
 export default {
   data() {
     return {
-      step: 1,
-      steps: ["个人信息", "学术成果", "等待审核"],
+      step: 2,
+      steps: ["个人信息", "门户认领", "等待审核"],
       formData: {
           name: '',
           otherName:'',
           gender: '',
           email: '',
-          workPlace: '',
+          //workPlace: '',
           field: '',
-          claimedPapers: [],
-          newPapers: [],
+          selectedScholarId: null,
+          //newPapers: [],
           userId: this.$cookies.get('userId')
       },
-      papersList: [
-          { title: "论文1标题", date: "2023-08-1", journal: "期刊名",authors: "张三, 李四" },
-          { title: "论文2标题", date: "2023-08-1", journal: "期刊名", authors: "王五, 赵六" },
-          { title: "长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长标题",date: "2023-08-1",journal: "期刊名", authors: "李七, 周八，长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长长长长长长长长长长长长长长长长长超长长作者" },
+      
+      scholarsList: [
+          { Id:"001", name: "作者1", authorOrganization: "buaa", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
+          { Id:"002", name: "作者2", authorOrganization: "北京航空航天大学", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
       ],
       
       rules: {
         name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
         gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
-        workPlace: [{ required: true, message: '请输入工作单位', trigger: 'blur' }]
+        //workPlace: [{ required: true, message: '请输入工作单位', trigger: 'blur' }]
       },
-      paperRules: {
-        title: [{ required: true, message: '请输入论文标题', trigger: 'blur' }],
-        date: [{ required: true, message: '请选择发表日期', trigger: 'change' }],
-        key: [{ required: true, message: '请输入关键词', trigger: 'blur' }],
-        fileList: [
-          { validator: (rule, value, callback) => {
-          if (this.newPaperFormData.fileList.length === 0) {
-            callback(new Error('请上传文件'));
-          } else {
-            callback();
-          }
-        }, trigger: 'change' }
-      ]},
+      // paperRules: {
+      //   title: [{ required: true, message: '请输入论文标题', trigger: 'blur' }],
+      //   date: [{ required: true, message: '请选择发表日期', trigger: 'change' }],
+      //   key: [{ required: true, message: '请输入关键词', trigger: 'blur' }],
+      //   fileList: [
+      //     { validator: (rule, value, callback) => {
+      //     if (this.newPaperFormData.fileList.length === 0) {
+      //       callback(new Error('请上传文件'));
+      //     } else {
+      //       callback();
+      //     }
+      //   }, trigger: 'change' }
+      // ]},
 
-      selectedPapers: [],
-      manualUploadedPapers: [],
-      dialogFormVisible: false,
-      hoverIconIndex: null,
-      newPaperFormData: {
-        idx:'',
-        title: '',
-        date: null,
-        journal:'',
-        coauthor:'',
-        key:'',
-        fileList: null,
-      },
-      editIdx: -1,
+      // selectedScholars: '',
+      // manualUploadedPapers: [],
+      // dialogFormVisible: false,
+      // hoverIconIndex: null,
+      // newPaperFormData: {
+      //   idx:'',
+      //   title: '',
+      //   date: null,
+      //   journal:'',
+      //   coauthor:'',
+      //   key:'',
+      //   fileList: null,
+      // },
+      // editIdx: -1,
     };
   },
   methods: {
-    goToStep(index) {
-      this.step = index;
-    },
     nextStep() {
       if(this.step==1){
         this.$refs.form.validate((valid) => {
         console.log(this.formData)
         if (valid) {
+          this.fetchScholarsByName();
           this.step++;
         } else {
           ElMessage({
@@ -281,27 +275,27 @@ export default {
       })
     },
 
-    fetchPapersByAuthor() {
+    fetchScholarsByName() {
       const { name, otherName } = this.formData;
       let authorNames = [];
       if (name && name.trim()) {
-          authorNames.push(name.trim());
+        authorNames.push(name.trim());
       }
       if (otherName && otherName.trim()) {
-          const namesArray = otherName.split(/[\u3002\uff1b\uff0c,;]/).map(n => n.trim()).filter(Boolean);
-          authorNames = authorNames.concat(namesArray);
+        const namesArray = otherName.split(/[\u3002\uff1b\uff0c,;]/).map(n => n.trim()).filter(Boolean);
+        authorNames = authorNames.concat(namesArray);
       }
-      console.log("搜索论文");
+      console.log("搜索认证门户", authorNames);
       if (authorNames.length > 0) {
-        var response = searchByName(authorNames);
+        var response = fetchScholars(authorNames);
 
         response
         .then((data) => {
-        console.log("searchByName res", data);
+        console.log("fetchScholars res", data);
         if(data.status == "error"){
-          console.error("Error searchByName");
+          console.error("Error fetchScholars");
         }else{
-          this.papersList =data;
+          this.scholarsList = data;
         }
         });
       } else {
@@ -309,98 +303,107 @@ export default {
       }
     },
 
-    handleRemove(file, fileList) {
-      console.log('remove', file, fileList);
-      this.newPaperFormData.fileList = fileList;
-    },
+    // handleRemove(file, fileList) {
+    //   console.log('remove', file, fileList);
+    //   this.newPaperFormData.fileList = fileList;
+    // },
     
-    handleChange(file, fileList) {
-      console.log('file changed', file, fileList);
-      this.newPaperFormData.fileList = fileList.slice(-1);
-    },
+    // handleChange(file, fileList) {
+    //   console.log('file changed', file, fileList);
+    //   this.newPaperFormData.fileList = fileList.slice(-1);
+    // },
 
-    handleExceed(files, fileList) {
-      this.$refs.upload.clearFiles();
-      this.$refs.upload.handleStart(files[0]);
-    },
+    // handleExceed(files, fileList) {
+    //   this.$refs.upload.clearFiles();
+    //   this.$refs.upload.handleStart(files[0]);
+    // },
 
-    toggleSelection(index) {
-      if (this.selectedPapers.includes(index)) {
-        this.selectedPapers = this.selectedPapers.filter(i => i !== index);
-      } else {
-        this.selectedPapers.push(index);
+    // toggleSelection(index) {
+    //   if (this.selectedPapers.includes(index)) {
+    //     this.selectedPapers = this.selectedPapers.filter(i => i !== index);
+    //   } else {
+    //     this.selectedPapers.push(index);
+    //   }
+    // },
+
+    // submitManualUpload() {
+    //   this.$refs.newPaperForm.validate((valid) => {
+    //     console.log(this.newPaperFormData)
+    //     if (valid) {
+    //       if (this.editIdx != -1) {
+    //         console.log('changing:idx='+this.editIdx)
+    //         const editedPaper = JSON.parse(JSON.stringify(this.newPaperFormData));
+    //         this.formData.newPapers.splice(this.editIdx, 1, editedPaper);
+    //         this.editIdx = -1;
+    //       } else {
+    //         this.formData.newPapers.push(JSON.parse(JSON.stringify(this.newPaperFormData)));
+    //         this.formData.newPapers.at(-1).idx = this.formData.newPapers.length - 1 ;0
+    //       }
+    //       this.dialogFormVisible = false;
+    //       this.resetNewPaperFormData();
+    //     } else {
+    //       ElMessage({
+    //         message: '请填写所有必填字段',
+    //         type: 'warning',
+    //       });
+    //       return false;
+    //     }
+    //   });
+    // },
+
+    // handleClose() {
+    //   this.dialogFormVisible = false;
+    //   this.editIdx = -1;
+    //   this.resetNewPaperFormData();
+    // },
+
+    // resetNewPaperFormData() {
+    //   this.newPaperFormData = {
+    //     title: '',
+    //     date: null,
+    //     journal: '',
+    //     coauthor: '',
+    //     key: '',
+    //     fileList: [] // 确保这是一个空数组
+    //   };
+    // },
+
+    // removePaper(index) {
+    //   this.formData.newPapers.splice(index, 1);
+    // },
+    selectScholar(scholar) {
+      if(this.formData.selectedScholarId == scholar.Id){
+        this.formData.selectedScholarId = null;
+      }else{
+        this.formData.selectedScholarId = scholar.Id;
       }
-    },
-
-    submitManualUpload() {
-      this.$refs.newPaperForm.validate((valid) => {
-        console.log(this.newPaperFormData)
-        if (valid) {
-          if (this.editIdx != -1) {
-            console.log('changing:idx='+this.editIdx)
-            const editedPaper = JSON.parse(JSON.stringify(this.newPaperFormData));
-            this.formData.newPapers.splice(this.editIdx, 1, editedPaper);
-            this.editIdx = -1;
-          } else {
-            this.formData.newPapers.push(JSON.parse(JSON.stringify(this.newPaperFormData)));
-            this.formData.newPapers.at(-1).idx = this.formData.newPapers.length - 1 ;0
-          }
-          this.dialogFormVisible = false;
-          this.resetNewPaperFormData();
-        } else {
-          ElMessage({
-            message: '请填写所有必填字段',
-            type: 'warning',
-          });
-          return false;
-        }
-      });
-    },
-
-    handleClose() {
-      this.dialogFormVisible = false;
-      this.editIdx = -1;
-      this.resetNewPaperFormData();
-    },
-
-    resetNewPaperFormData() {
-      this.newPaperFormData = {
-        title: '',
-        date: null,
-        journal: '',
-        coauthor: '',
-        key: '',
-        fileList: [] // 确保这是一个空数组
-      };
-    },
-
-    removePaper(index) {
-      this.formData.newPapers.splice(index, 1);
+      console.log("choose "+this.formData.selectedScholarId);
     },
 
     goHome() {
       this.$router.push("/home");
     },
 
-    edit(paper) {
-      if (paper == null) {
-        console.log('creating new paper');
-        this.editIdx = -1;
-        this.resetNewPaperFormData();
-      } else {
-        console.log('editing idx='+paper.idx);
-        this.editIdx = paper.idx;
-        Object.assign(this.newPaperFormData, JSON.parse(JSON.stringify(paper)));
-      }
-      this.dialogFormVisible = true;
-    }
+  //   edit(paper) {
+  //     if (paper == null) {
+  //       console.log('creating new paper');
+  //       this.editIdx = -1;
+  //       this.resetNewPaperFormData();
+  //     } else {
+  //       console.log('editing idx='+paper.idx);
+  //       this.editIdx = paper.idx;
+  //       Object.assign(this.newPaperFormData, JSON.parse(JSON.stringify(paper)));
+  //     }
+  //     this.dialogFormVisible = true;
+  //   }
+
   },
 
   created() {
-    this.fetchPapersByAuthor();
+    this.fetchScholarsByName();
   },
-
 };
+
 </script>
 
 <style>
@@ -507,7 +510,7 @@ export default {
   text-align: center;
 }
 
-.papers-list {
+.scholars-list {
   display: flex;
   flex-wrap: wrap;
 }
@@ -520,7 +523,7 @@ export default {
   margin-left: 10px;
 }
 
-.claimed-papers-container {
+.claimed-scholars-container {
   display: flex;
   border: 1px solid var(--gray-color);
   width: 95%;
@@ -528,7 +531,7 @@ export default {
   overflow-y: auto;
 }
 
-.paper-item {
+.scholar-item {
   display: flex;
   align-items: center;
   width: 100%;
@@ -538,7 +541,7 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.paper-item:hover {
+.scholar-item:hover {
   background-color: var(--light-color);
 }
 
@@ -546,7 +549,7 @@ export default {
   background-color: var(--light-color);
 }
 
-.paper-checkbox {
+.scholar-checkbox {
   margin-right: 10px;
   margin-left:20px;
   width: 40px;
@@ -559,7 +562,7 @@ export default {
   color: var(--theme-color);
 }
 
-.paper-info {
+.scholar-info {
   position: flex;
   min-width: 0;
   width: 100%;
@@ -567,7 +570,7 @@ export default {
   padding-right: 10px;
 }
 
-.paper-title {
+.scholar-title {
   font-size: 16px !important;
   font-weight: bold;
   color: var(--text-color);
@@ -578,7 +581,7 @@ export default {
   width: 90%;
 }
 
-.paper-other-info{
+.scholar-other-info{
   font-size: 14px;
   color: var(--light-text-color);
   max-width: 100%;
@@ -588,7 +591,7 @@ export default {
   gap: 10px;
 }
 
-.paper-item:hover .paper-title {
+.scholar-item:hover .scholar-name {
   color: var(--theme-color);
 }
 
@@ -601,7 +604,7 @@ export default {
   margin-top: 10px;
 }
 
-.paper-count {
+.scholar-count {
   font-size: 20px;
   font-weight: bold;
   color: var(--secondary-color);
@@ -626,7 +629,7 @@ export default {
   gap: 10px;
 }
 
-.paper-title-container {
+.scholar-name-container {
   display: flex;
   align-items: center;
   border: 1px solid var(--gray-color) ;
@@ -641,7 +644,7 @@ export default {
   transition: color 0.3s ease;
 }
 
-.paper-title-container {
+.scholar-name-container {
   display: flex;
   align-items: center;
   width: 80%;
@@ -651,7 +654,7 @@ export default {
   cursor: pointer;
 }
 
-.paper-title {
+.scholar-name {
   font-size: 14px;
   color: var(--text-color);
   text-overflow: ellipsis;

@@ -84,8 +84,8 @@ export default {
       sortDown: 1,
       
       searchConditions: {},
-      userId: this.$root.OnlineUser,
-      router: this.$cookies.get('userId')
+      userId: this.$cookies.get('userId'),
+      router:useRouter(),
     };
   },
   computed: {

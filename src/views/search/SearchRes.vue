@@ -190,7 +190,7 @@ export default {
 
       response
       .then(data => {
-        console.log("response", data);
+        console.log("getTotalPage res", data);
         if(data.status == "error"){
           console.error("Error getting total pages");
           this.totalPages = 999;
@@ -217,7 +217,7 @@ export default {
 
       response
       .then(data => {
-        console.log("fetchResults", data);
+        console.log("fetch Results", data);
         if(data.status == "error"){
           console.error("Error fetching results");
           this.showRes = [
