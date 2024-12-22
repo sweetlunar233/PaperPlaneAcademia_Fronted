@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="this.availableAvatars[userInfo.photoUrl - 1]" @click="showAvatarDialog = true" class="profile-photo-img"  />
+        <img :src="this.availableAvatars[userInfo.photoUrl]" @click="showAvatarDialog = true" class="profile-photo-img"  />
       </div>
       <el-dialog
           title="选择头像"
