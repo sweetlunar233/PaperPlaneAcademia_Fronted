@@ -476,7 +476,7 @@ onMounted(() => {
 
 .home .uphalf {
   padding-bottom: 60px;
-  background: url("../../assets/images/bg2.png") no-repeat;
+  background: url("../../assets/images/bg2.jpg") no-repeat;
   background-size: cover;
 }
 
