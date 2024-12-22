@@ -14,3 +14,13 @@ export function GetStatistics(){
     let data = {};
     return get("/papers/statistics/");
 }
+
+export function GetOrganizations(){
+    let data = {};
+    return get("/papers/organizations/");
+}
+
+export function GetFields(){
+    let data = {};
+    return get("/papers/fileds/");
+}
