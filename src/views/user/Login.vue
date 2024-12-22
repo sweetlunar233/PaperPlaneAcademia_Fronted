@@ -50,10 +50,15 @@ export default {
     submitLoginForm() {
       var promise = Login(this.loginForm.username,this.loginForm.password);
         promise.then((result) => {
-            alert("登录成功！");
-            $cookies.set("userId", result.UserId);
-            $cookies.set("username", result.username);
-            this.$router.push("/home"); // 登录成功跳转到主页面
+            if(result.status === "success"){
+              alert("登录成功！");
+              $cookies.set("userId", result.UserId);
+              $cookies.set("username", result.username);
+              this.$router.push("/home"); // 登录成功跳转到主页面
+            }
+            else{
+              alert(result.message);
+            }
         })
     },
   },
