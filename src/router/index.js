@@ -22,6 +22,11 @@ const router = createRouter({
       component: () => import('../views/literature/Article.vue')
     },
     {
+      path:'/field',
+      name:'field',
+      component: () => import('../views/literature/Field.vue')
+    },
+    {
       path:'/authentication',
       name:'authentication',
       component: () => import('../views/scholar/Authentication.vue')
