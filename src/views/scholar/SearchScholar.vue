@@ -11,17 +11,23 @@
             style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;"
           >
             <!-- 运算符选择 -->
-            <el-select v-if="index > 0" v-model="condition.operator" placeholder="逻辑运算" style="width: 80px;">
+            <el-select v-show="index > 0" v-model="condition.operator" placeholder="逻辑运算" style="width: 80px;">
               <el-option label="AND" value="AND"></el-option>
               <el-option label="OR" value="OR"></el-option>
               <el-option label="NOT" value="NOT"></el-option>
             </el-select>
   
+  
             <!-- 输入框 -->
-            <el-input
+            <el-input v-if="index===0"
               v-model="condition.value"
               placeholder="请输入作者相关内容"
-              style="flex: 1;width: 800px;"
+              style="flex: 1;width: 600px;"
+            />
+            <el-input v-else
+              v-model="condition.value"
+              placeholder="请输入作者相关内容"
+              style="flex: 1;width: 500px;"
             />
   
             <!-- 搜索范围选择 -->

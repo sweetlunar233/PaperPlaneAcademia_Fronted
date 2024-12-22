@@ -290,16 +290,17 @@ const initHome = (userId) => {
     //startCounting();
 }
 
-initHome(userId.value);
+
 
 
 
 
 
 // 页面加载完成后开始动画
-// onMounted(() => {
-//   startCounting();
-// });
+onMounted(() => {
+  initHome(userId.value);
+  //startCounting();
+});
 
 </script>
 
@@ -311,7 +312,9 @@ initHome(userId.value);
     <div class="main">
         <div class="uphalf">
           <div class="title-and-input">
-              <div class="bigtitle">PaperPlane Academia</div>
+              <div class="bigtitle">
+                <span>PaperPlane&nbsp;Academia</span>
+              </div>
               <div class="loader" @click="gotoError"></div>
               <div class="input-box">
                   <!-- <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p> -->
@@ -561,7 +564,7 @@ initHome(userId.value);
 
 .home .uphalf {
   padding-bottom: 60px;
-  background: url("../../assets/images/bg2.png") no-repeat;
+  background: url("../../assets/images/bg2.jpg") no-repeat;
   background-size: cover;
 }
 
@@ -581,9 +584,24 @@ initHome(userId.value);
 
 .home .bigtitle {
   /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
-  font-size: 60px;
+  font-size: 80px;
   padding-top: 100px;/*空白在这*/
   color: white;
+  font-weight: 600;
+  padding-bottom: 110px;
+  display: inline-block;
+  text-shadow: 
+    10px 10px 5px black, 
+    /* -2px -2px 3px black,  */
+    /* 5px -5px 5px black, */
+    -5px 5px 5px black;
+}
+
+.home .bigtitle1 {
+  /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
+  font-size: 80px;
+  padding-top: 100px;/*空白在这*/
+  color: black;
   font-weight: 600;
   padding-bottom: 110px;
   display: inline-block;

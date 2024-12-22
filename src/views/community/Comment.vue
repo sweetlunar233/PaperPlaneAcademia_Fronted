@@ -57,7 +57,7 @@
               v-model="commentText"
             ></el-input>
           </el-form-item>
-          <el-button type="primary" @click="submitComment">发表</el-button>
+          <el-button type="primary" @click="submitComment" style="background-color: #333; color: white; border-radius: 5px; border: 1px solid #555; padding: 8px 20px;">发表</el-button>
         </el-form>
       </el-card>
       
@@ -83,6 +83,7 @@
             type="text"
             size="small"
             @click="startReply(comment.id)"
+            style="color: #333"
           >
             回复
           </el-button>
@@ -108,7 +109,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="submitReply(comment.id)"
+            @click="submitReply(comment.id)" style="background-color: #333; color: white; border-radius: 5px; border: 1px solid #555; padding: 8px 20px;"
           >
             发表回复
           </el-button>
@@ -162,17 +163,68 @@ export default {
       },
     };
   },
+  created() {
+    // 从 URL 查询参数中获取文章 ID
+    this.articleId = this.$route.query.paperId;
+
+    // 获取文章详情和评论
+    this.fetchArticleDetails();
+  },
   methods: {
-    submitComment() {
-      if (this.commentText.trim()) {
-        this.comments.push({
-          id: this.comments.length + 1,
-          username: "新用户",
-          content: this.commentText,
-          likes: 0,
-          replies: [],
+    fetchArticleDetails() {
+      fetch(`/api/articles/${this.articleId}`)
+        .then(response => response.json())
+        .then(data => {
+          this.article = data;
+
+          // 文章详情获取成功后再获取评论
+          this.fetchComments();
+        })
+        .catch(error => {
+          console.error("获取文章详情失败", error);
         });
-        this.commentText = "";
+    },
+
+    // 获取评论
+    fetchComments() {
+      fetch(`/api/comments/${this.articleId}`)
+        .then(response => response.json())
+        .then(data => {
+          this.comments = data;
+        })
+        .catch(error => {
+          console.error("获取评论失败", error);
+        });
+    },
+    submitComment() {
+          if (this.commentText.trim()) {
+        // 构造评论数据
+        const commentData = {
+          articleId: this.articleId,  // 当前文章的 ID
+          content: this.commentText,   // 评论的内容
+          username: "新用户",          // 用户名，这里可以根据实际情况传递
+          likes: 0,                    // 初始点赞数
+          replies: [],                 // 评论初始没有回复
+        };
+
+        // 向后端发送请求，保存评论
+        fetch('/api/comments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(commentData),  // 将评论数据转换为 JSON 格式
+        })
+        .then(response => response.json())
+        .then(data => {
+          // 评论提交成功后，更新本地评论列表
+          this.comments.push(data);  // 假设后端返回了保存后的评论对象
+          this.commentText = "";  // 清空评论框
+        })
+        .catch(error => {
+          console.error("提交评论失败", error);
+          this.$message.error("提交评论失败，请重试！");
+        });
       } else {
         this.$message.warning("评论内容不能为空！");
       }
@@ -199,19 +251,40 @@ export default {
     },
     submitReply(commentId) {
       const replyContent = this.replyText[commentId]?.trim();
-      if (replyContent) {
-        const comment = this.comments.find((c) => c.id === commentId);
-        if (comment) {
-          comment.replies.push({
-            username: "当前用户", // 替换为实际用户名
-            content: replyContent,
-          });
-          this.replyText[commentId] = ""; // 清空输入框
-          this.replyingTo = null; // 重置回复状态
-        }
-      } else {
-        this.$message.warning("回复内容不能为空！");
+  if (replyContent) {
+    const replyData = {
+      content: replyContent,  // 回复内容
+      username: "当前用户",   // 当前用户的用户名，可以根据实际情况修改
+    };
+
+    // 构建动态 URL，使用 commentId
+    const url = `/api/comments/${commentId}/reply`;
+
+    // 向后端发送请求，保存回复
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(replyData),  // 将回复数据转换为 JSON 格式
+    })
+    .then(response => response.json())
+    .then(data => {
+      // 回复提交成功后，更新本地评论的回复列表
+      const comment = this.comments.find(c => c.id === commentId);
+      if (comment) {
+        comment.replies.push(data);  // 假设后端返回了保存后的回复对象
+        this.replyText[commentId] = "";  // 清空回复框
+        this.replyingTo = null;  // 重置回复状态
       }
+    })
+    .catch(error => {
+      console.error("提交回复失败", error);
+      this.$message.error("提交回复失败，请重试！");
+    });
+  } else {
+    this.$message.warning("回复内容不能为空！");
+  }
     },
 },
 }

@@ -6,7 +6,7 @@
       <!-- 高级搜索 -->
       <el-main>
         <el-card class="custom-card">
-          <h2 style="display: flex;justify-content: center ; font-size: 45px;">AdvancedSearch<svg t="1732093185852" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2792" width="32" height="32"><path d="M974.966667 91.46a21.333333 21.333333 0 0 0-21.713334-5.033333l-896 298.666666a21.333333 21.333333 0 0 0-4.226666 38.533334L256 545.413333V832a21.333333 21.333333 0 0 0 36.42 15.086667L448 691.506667l240.913333 240.913333a21.333333 21.333333 0 0 0 35.426667-8.666667l256-810.666666a21.333333 21.333333 0 0 0-5.373333-21.626667z" fill="#5C5C66" p-id="2793"></path></svg></h2>
+          <h2 style="display: flex;justify-content: center ; font-size: 60px; color: white ;">AdvancedSearch<svg t="1732093185852" style="color: white;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2792" width="32" height="32"><path d="M974.966667 91.46a21.333333 21.333333 0 0 0-21.713334-5.033333l-896 298.666666a21.333333 21.333333 0 0 0-4.226666 38.533334L256 545.413333V832a21.333333 21.333333 0 0 0 36.42 15.086667L448 691.506667l240.913333 240.913333a21.333333 21.333333 0 0 0 35.426667-8.666667l256-810.666666a21.333333 21.333333 0 0 0-5.373333-21.626667z" fill="rgb(121.3, 187.1, 255)" p-id="2793"></path></svg></h2>
           <div class="basic-search">
             <el-select v-model="searchType" placeholder="类型" style="width: 100px;">
               <el-option
@@ -114,17 +114,38 @@
         }
       },
       submitSearch() {
-      const searchData = this.advancedFields.map(field => ({
-        logic: field.logic,
-        value: field.value,
-        scope: field.scope,
-      }));
-      const payload = {
-        searchConditions: searchData,
-        dateRange: this.dateRange,
-      };
-      console.log('搜索提交数据:', payload);
-      // 在这里调用接口或处理提交的数据
+            // 构造 searchData 格式的数据
+        const searchData = this.advancedFields.map(field => ({
+          logic: field.logic, // 保留原来的逻辑
+          value: field.value,  // 保留原来的值
+          scope: field.scope   // 保留原来的范围
+        }));
+
+        // 将 searchType 和 searchKeyword 作为额外的条件添加到 searchData 中
+        if (this.searchKeyword) {
+          searchData.push({
+            logic: null,         // 没有逻辑
+            value: this.searchKeyword,  // 将 searchKeyword 作为 value
+            scope: this.searchType // 将 searchType 作为 scope
+          });
+        }
+
+        // 创建 payload，包含搜索条件和日期范围
+        const payload = {
+          searchConditions: searchData,
+          dateRange: this.dateRange
+        };
+
+        console.log('搜索提交数据:', payload);
+
+        // 跳转并传递数据到搜索结果页面
+        this.$router.push({
+          name: 'searchRes',
+          query: {
+            searchConditions: JSON.stringify(payload.searchConditions),
+            dateRange: JSON.stringify(payload.dateRange)
+          }
+        });
     },
       onReset() {
       // 重置所有搜索条件
@@ -142,7 +163,7 @@
   .search-container {
     padding: 20px;
   }
-  .basic-search{
+  .basic-search {
     display: flex;
     justify-content: center;
     margin: 20px 0;
@@ -165,10 +186,12 @@
     margin: 10px 0;
   }
   .custom-card {
-  background-color: #f0f8ff; /* 浅蓝色背景 */
-  border-radius: 8px;       /* 圆角 */
-  padding: 20px;            /* 内边距 */
-  border: 1px solid #dcdcdc; /* 可选：设置边框 */
+    background:url(../../assets/images/advSearch.png);
+    background-size: cover;
+    background-color: #f0f8ff; /* 浅蓝色背景 */
+    border-radius: 8px;       /* 圆角 */
+    padding: 20px;            /* 内边距 */
+    border: 1px solid #dcdcdc; /* 可选：设置边框 */
 }
 .search-row {
   display: flex;
