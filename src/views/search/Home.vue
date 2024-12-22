@@ -311,7 +311,7 @@ initHome(userId.value);
     <div class="main">
         <div class="uphalf">
           <div class="title-and-input">
-              <div class="bigtitle">Paper Wing Academia</div>
+              <div class="bigtitle">PaperPlane Academia</div>
               <div class="loader" @click="gotoError"></div>
               <div class="input-box">
                   <!-- <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p> -->
@@ -580,7 +580,7 @@ initHome(userId.value);
   padding-top: 100px;/*空白在这*/
   color: white;
   font-weight: 600;
-
+  padding-bottom: 110px;
   display: inline-block;
 }
 
