@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 import { getCurrentInstance } from 'vue';
 const router = useRouter();
 
-import { GetTopArticles, GetRecommendedArticles, GetStatistics } from '../../api/home.js'
+import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../../api/home.js'
 
 const topOrRec = ref("hot-gate-articles");
 const top_articles = ref([
@@ -101,6 +101,18 @@ const recommended_articles = ref([
   }
 ]);
 
+const organizations = ref([
+  {
+
+  }
+])
+
+const fields = ref([
+  {
+    
+  }
+])
+
 const statistic = ref({
   authorCount: 20502,
   organizationsCount: 16479,
@@ -167,6 +179,9 @@ const gotoError = (userId) => {
 const initHome = (userId) => {
     top_articles.value = [];
     recommended_articles.value = [];
+    organizations = [];
+    fields = [];
+
     statistic.value = { // 重置 statistic
       authorCount: 0,
       organizationsCount: 0,
@@ -196,6 +211,20 @@ const initHome = (userId) => {
       statistic.value.fieldsCount = result.fieldsCount.toLocaleString();
       statistic.value.journalCount = result.journalCount.toLocaleString();
       statistic.value.paperCount = result.paperCount.toLocaleString();
+    });
+
+    var promise = GetOrganizations();
+    promise.then((result)=>{
+        result.articles.forEach(element => {
+            organizations.value.push(element);
+        });
+    });
+
+    var promise = GetFields();
+    promise.then((result)=>{
+        result.articles.forEach(element => {
+            fields.value.push(element);
+        });
     });
 }
 
@@ -406,6 +435,28 @@ onMounted(() => {
                                 </div>
 
                                 <el-divider v-if="index < recommended_articles.length - 1"></el-divider>
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="科研机构" name="organization" style="text-align: left">
+                  <div class="articles">
+                        <div class="articles-body">
+                            <div v-for="(organization, index) in organizations" v-bind:key="index">
+                                
+
+                                <el-divider v-if="index < organizations.length - 1"></el-divider>
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="科研领域" name="field" style="text-align: left">
+                  <div class="articles">
+                        <div class="articles-body">
+                            <div v-for="(field, index) in fields" v-bind:key="index">
+                                
+
+                              <el-divider v-if="index < organizations.length - 1"></el-divider>
                             </div>
                         </div>
                     </div>
