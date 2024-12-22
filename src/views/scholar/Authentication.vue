@@ -179,6 +179,7 @@
 </template>
   
 <script>
+import { Authenticate } from '@/api/claim';
 export default {
   data() {
     return {
@@ -265,22 +266,18 @@ export default {
       }
     },
     submitForm() {
-      const formDataCopy = JSON.parse(JSON.stringify(this.formData));
-      fetch('/claims/authentication', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formDataCopy)
-      })
-      .then(response => response.json())
+      var response = Authenticate(this.formData);
+
+      response
       .then(data => {
-        console.log('Success:', data);
-        this.step++;
+        console.log("Authenticate", data);
+        if(data.status == "error"){
+          console.error('Authenticate submit error');
+        }else{
+          console.log('Success:', data);
+          this.step++;
+        }
       })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
     },
 
     fetchPapersByAuthor() {

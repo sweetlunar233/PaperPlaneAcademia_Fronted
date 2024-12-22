@@ -68,7 +68,7 @@
   </template>
   
 <script>
-import axios from 'axios';
+import {  getTotalPages, fetchResults } from '@/api/user';
 import { useRouter } from 'vue-router';
 
 export default {
@@ -108,46 +108,58 @@ export default {
     },
 
     async getTotalPages() {
-      try {
-        const response = await axios.post('/users/getpage', {
-          searchConditions: this.searchConditions
-        });
-        this.totalPages = response.data.totalPages || 1;
-      } catch (error) {
-        console.error("Error getting total pages:", error);
-      }
+      var response = getTotalPages({
+        searchConditions: this.searchConditions
+      });
+
+      response
+      .then(data => {
+        console.log("response", data);
+        if(data.status == "error"){
+          console.error("Error getting total pages");
+          this.totalPages = 999;
+        }else{
+          this.totalPages = data;
+        }
+      })
     },
 
     async fetchResults() {
       this.loading = true;
 
-      try {
-        const response = await axios.post('/users/searchscholars', {
-          searchConditions: this.searchConditions,
-          sort: this.sortBy * this.sortDown,
-          page: this.currentPage,
-          userId: this.userId
-        });
-
-        this.showRes = response.data.map(scholar => ({
-          ...scholar,
-          collaborators: scholar.collaborators.map(collaborator => ({ name: collaborator.name, Id: collaborator.Id }))
-        }));
-      } catch (error) {
-        console.error("Error fetching results:", error);
-        this.showRes = [
-          { 
-            Id:'11',
-            name: '测试学者名字', 
-            organization: '北京航空航天大学', 
-            paperCount: 4, 
-            collaborators: [{ name: '作者 1', Id: '002' }, { name: '作者 3', Id: '003' }], 
-            fields: ['人工智能', '深度学习']
-          }
-        ];
-      } finally {
+      var response = fetchResults({
+        searchConditions: this.searchConditions,
+        sort: this.sortByz * this.sortDown,
+        page: this.currentPage,
+        userId: this.userId
+      });
+      response
+      .then(data => {
+        console.log("fetchResults", data);
+        if(data.status == "error"){
+          console.error("Error fetching results");
+          this.showRes = [
+            { 
+              Id:'11',
+              name: '测试学者名字', 
+              organization: '北京航空航天大学', 
+              paperCount: 4, 
+              collaborators: [{ name: '作者 1', Id: '002' }, { name: '作者 3', Id: '003' }], 
+              fields: ['人工智能', '深度学习']
+            }
+          ];
+        }else{
+          this.results = data.map(scholar => ({
+            ...scholar,
+            collaborators: scholar.collaborators.map(collaborator => ({ name: collaborator.name, Id: collaborator.Id }))
+          }));
+          this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
+        }
+      })
+      .finally(() => {
+        console.log("fetchResults end")
         this.loading = false;
-      }
+      });
     },
     goToPage(page) {
       if (page >= 1 && page <= this.totalPages) {
