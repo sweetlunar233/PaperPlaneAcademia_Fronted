@@ -132,7 +132,7 @@ export default {
       selectedYears: [],
       selectedAuthors: [],
 
-      userId: this.$root.OnlineUser,
+      userId: this.$cookies.get('userId'),
       router:useRouter(),
     };
   },

@@ -476,7 +476,7 @@ export default{
     mounted(){
         this.id = this.$route.query.paperId;
         this.isLoading = true;
-        this.userId = this.$root.OnlineUser;
+        this.userId = this.$cookies.get('userId');
         console.log(this.userId)
 
         var promise = GetArticle(this.id);

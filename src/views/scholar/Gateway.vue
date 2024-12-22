@@ -200,7 +200,7 @@ export default {
 
       // 调用后端接口来更新关注状态
       axios.post('/user/follow', {
-        currentUserId: this.$root.OnlineUser, // 当前用户 ID
+        currentUserId: this.$cookies.get('userId'), // 当前用户 ID
         targetUserId: this.$route.query.userId, // 目标用户 ID
       })
           .then(response => {
@@ -213,7 +213,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchUserData() {
-      const currentUserId = this.$root.OnlineUser;
+      const currentUserId = this.$cookies.get('userId');
       const targetUserId = this.$route.query.userId;
       var promise = GetOtherUserData(currentUserId, targetUserId);
       promise.then(response => {
