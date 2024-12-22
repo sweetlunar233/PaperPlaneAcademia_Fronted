@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { fetchFilters, getTotalPages, fetchResults, PostStar } from '@/api/article';
 import { useRouter, useRoute } from 'vue-router';
 
 export default {
@@ -161,12 +161,15 @@ export default {
 
     async fetchFilters() {
       try {
-        const response = await axios.post('/papers/filterdata', {
+        const data = await fetchFilters({
           searchConditions: this.searchConditions,
           dateRange: this.dateRange,
         });
-        this.allKeywords = response.data.allKeys;
-        this.allAuthorOrganizations = response.data.allAuthorOrganization;
+
+        console.log("Fetched filters:", data);
+
+        this.allKeywords = data.allKeys;
+        this.allAuthorOrganizations = data.allAuthorOrganization;
       } catch (error) {
         console.error("Error fetching filters:", error);
       }
@@ -174,7 +177,7 @@ export default {
 
     async getTotalPages() {
       try {
-        const response = await axios.post('/papers/getpage', {
+        const data = await getTotalPages({
           searchConditions: this.searchConditions,
           dateRange: this.dateRange,
           filter: {
@@ -183,7 +186,8 @@ export default {
             authorOrganizations: this.selectedAuthors
           }
         });
-        this.totalPages = response.data;
+
+        this.totalPages = data;
       } catch (error) {
         console.error("Error getting total pages:", error);
         this.totalPages = Math.ceil(this.mockData.totalResults / 10);
@@ -191,57 +195,57 @@ export default {
     },
 
     async fetchResults() {
-      this.loading = true;
+  this.loading = true;
 
-      try {
-        const response = await axios.post('/papers/search', {
-          searchConditions: this.searchConditions,
-          dateRange: this.dateRange,
-          filter: {
-            keys: this.selectedKeywords,
-            years: this.selectedYears.map(year => year.toString()),
-            authorOrganizations: this.selectedAuthors
-          },
-          sort: this.sortByz * this.sortDown,
-          page: this.currentPage,
-          userId: this.userId
-        });
+  try {
+    const data = await fetchResults({
+      searchConditions: this.searchConditions,
+      dateRange: this.dateRange,
+      filter: {
+        keys: this.selectedKeywords,
+        years: this.selectedYears.map(year => year.toString()),
+        authorOrganizations: this.selectedAuthors
+      },
+      sort: this.sortByz * this.sortDown,
+      page: this.currentPage,
+      userId: this.userId
+    });
 
-        this.results = response.data.map(paper => ({
-          ...paper,
-          authors: paper.authors.map(author => ({ userName: author.userName, authorOrganization: author.authorOrganization }))
-        }));
-        this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
-      } catch (error) {
-        console.error("Error fetching results:", error);
-        this.showRes = [
-          { 
-            Id:'11',
-            title: '测试标题 1', 
-            isFavorite:true,
-            date: '2022-01-01', 
-            journal: '期刊名1', 
-            citations: 34, 
-            authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学' }, { userName: '作者 2', authorOrganization: '北京航空航天大学' }], 
-            keywords: ['人工智能', '深度学习'] ,
-            download:null,
-          },
-          { 
-            Id:'12',
-            title: '测试标题 2', 
-            isFavorite:false, 
-            date: '2022-02-01', 
-            journal: '期刊名2', 
-            citations: 78, 
-            authors: [{ userName: '作者 2', authorOrganization: '清华大学' }, { userName: '作者 3', authorOrganization: '清华大学' }], 
-            keywords: ['自然语言处理', '机器学习'],
-            download:null,
-          },
-        ]
-      } finally {
-        this.loading = false;
-      }
-    },
+    this.results = data.map(paper => ({
+      ...paper,
+      authors: paper.authors.map(author => ({ userName: author.userName, authorOrganization: author.authorOrganization }))
+    }));
+    this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    this.showRes = [
+      { 
+        Id:'11',
+        title: '测试标题 1', 
+        isFavorite:true,
+        date: '2022-01-01', 
+        journal: '期刊名1', 
+        citations: 34, 
+        authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学' }, { userName: '作者 2', authorOrganization: '北京航空航天大学' }], 
+        keywords: ['人工智能', '深度学习'] ,
+        download:null,
+      },
+      { 
+        Id:'12',
+        title: '测试标题 2', 
+        isFavorite:false, 
+        date: '2022-02-01', 
+        journal: '期刊名2', 
+        citations: 78, 
+        authors: [{ userName: '作者 2', authorOrganization: '清华大学' }, { userName: '作者 3', authorOrganization: '清华大学' }], 
+        keywords: ['自然语言处理', '机器学习'],
+        download:null,
+      },
+    ];
+  } finally {
+    this.loading = false;
+  }
+},
     goToPage(page) {
       if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page;
@@ -260,16 +264,12 @@ export default {
 
     async collectPaper(paper) {
       try {
-        const response = await axios.post('/paper/postStar', {
-          id: this.userId,
-          paperId: paper.id,
-          isStar: paper.isFavorite
-        });
+        const response = await PostStar(this.userId, paper.id, paper.isFavorite);
 
-        if (response.data.success) {
+        if (response.success) {
           paper.isFavorite = !paper.isFavorite;
         } else {
-          console.error("Failed to update favorite status:", response.data.message);
+          console.error("Failed to update favorite status:", response.message || 'Unknown error');
         }
       } catch (error) {
         console.error("Error updating favorite status:", error);
