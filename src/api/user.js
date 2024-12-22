@@ -45,11 +45,14 @@ export function fetchResults(data) {
     return post("/users/searchscholars/", data);
 }
 
-export function updateUserFollow(data) {
+export function updateUserFollow(currentUserId, targetUserId) {
+    let data = {};
+    data.currentUserId = currentUserId;
+    data.targetUserId = targetUserId;
     return post("/user/follow/", data);
 }
 
-export function editDescription(userId, description){
+export function updateDescription(userId, description){
     let data = {};
     data.userId = userId;
     data.description = description;
@@ -57,7 +60,7 @@ export function editDescription(userId, description){
     return post("/users/updateDescription/",data);
 }
 
-export function editResearchFields(userId, researchFields){
+export function updateResearchFields(userId, researchFields){
     let data = {};
     data.userId = userId;
     data.researchFields = researchFields;
