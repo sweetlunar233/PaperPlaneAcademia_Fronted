@@ -75,7 +75,7 @@
                   <div class="scholar-other-info">
                     <span class="scholar-authorOrganization"><i>{{ scholar.authorOrganization }}</i></span>
                   </div>
-                  <div class="scholar-other-info"><span>收录有 </span><span v-for="(paper,index) in scholar.papers" :key="index">{{paper}}</span><span>等{{scholar.papers.length}}篇论文</span></div>
+                  <div class="scholar-other-info"><span>收录有 </span><span v-for="(paper,index) in scholar.papers" :key="index">{{paper}} </span><span> 等{{scholar.papers.length}}篇论文</span></div>
               </div>
             </div>
           </el-form-item>
@@ -190,15 +190,9 @@ export default {
           email: '',
           //workPlace: '',
           field: '',
-<<<<<<< HEAD
           selectedScholarId: null,
           //newPapers: [],
           userId: this.$cookies.get('userId')
-=======
-          claimedPapers: [],
-          newPapers: [],
-          userId: this.$cookies.get('userId'),
->>>>>>> 8fb1346a75c5e2ae09e9d405f68b7c44ac628154
       },
       
       scholarsList: [
@@ -294,23 +288,7 @@ export default {
       }
       console.log("搜索认证门户", authorNames);
       if (authorNames.length > 0) {
-<<<<<<< HEAD
         var response = fetchScholars(authorNames);
-=======
-        const requestBody = {
-            "names": authorNames
-        };
-
-        this.$axios.post('/papers/searchbyname', requestBody).then(response => {
-            this.papersList = response.data;
-        }).catch(error => {
-            console.error("获取论文数据失败", error);
-        });
-      } else {
-          console.log('没有可搜索的作者名');
-      }
-    },
->>>>>>> 8fb1346a75c5e2ae09e9d405f68b7c44ac628154
 
         response
         .then((data) => {
