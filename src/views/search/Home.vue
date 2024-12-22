@@ -177,16 +177,16 @@ const initHome = (userId) => {
     
     var promise = GetTopArticles();
     promise.then((result)=>{
-        result.articles.forEach(element => {
-            top_articles.value.push(element);
-        });
+        for(const element of result.articles) {
+          top_articles.value.push(element);
+        }
     });
 
     var promise = GetRecommendedArticles();
     promise.then((result)=>{
-        result.articles.forEach(element => {
-            recommended_articles.value.push(element);
-        });
+      for(const element of result.articles) {
+        recommended_articles.value.push(element);
+      }
     });
 
     var promise = GetStatistics();
