@@ -20,3 +20,15 @@ export function PostStar(id,paperId,isStar){
     data.isStar = isStar;
     return post("/paper/postStar/",data);
 }
+
+export function fetchFilters(data){
+    return post("papers/filterdata/",data);
+}
+
+export function getTotalPages(data) {
+    return post("/papers/getpage/", data);
+}
+
+export function fetchResults(data) {
+    return post("/papers/search/", data);
+}
