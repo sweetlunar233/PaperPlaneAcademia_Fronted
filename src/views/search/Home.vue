@@ -186,6 +186,36 @@ const gotoError = (userId) => {
   });
 }
 
+
+//动画
+// 目标数字数组
+const targetNumbers = [202233, 45322, 781120, 123456, 67890];
+targetNumbers.length = 0; // 清空原数组
+Object.values(statistic.value).forEach((value, index) => {
+  targetNumbers[index] = value;
+});
+const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
+
+// 动画设置
+const intervalTime = 50; // 每50毫秒更新一次
+const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
+
+// 动画函数
+const startCounting = () => {
+  const intervals = targetNumbers.map((target, index) => {
+    return setInterval(() => {
+        if (numbers.value[index] < target) {
+            numbers.value[index] += increment;
+        } else {
+            numbers.value[index] = target;
+            clearInterval(intervals[index]); // 达到目标时停止
+        }
+    }, intervalTime);
+  });
+};
+
+
+
 const initHome = (userId) => {
     top_articles.value = [];
     recommended_articles.value = [];
@@ -213,9 +243,20 @@ const initHome = (userId) => {
             recommended_articles.value.push(element);
         });
     });
-
+    console.log("1234");
     var promise = GetStatistics();
     promise.then((result)=>{
+        console.log(statistic.value.authorCount);
+        console.log(statistic.value.organizationsCount);
+        console.log(statistic.value.fieldsCount);
+        console.log(statistic.value.journalCount);
+        console.log(statistic.value.paperCount);
+        console.log("1234");
+        console.log(result.authorCount);
+        console.log(result.organizationsCount);
+        console.log(result.fieldsCount);
+        console.log(result.journalCount);
+        console.log(result.paperCount);
         statistic.value = {
           authorCount: result.authorCount,
           organizationsCount: result.organizationsCount,
@@ -223,6 +264,12 @@ const initHome = (userId) => {
           journalCount: result.journalCount,
           paperCount: result.paperCount
         }
+        console.log("1234");
+        console.log(statistic.value.authorCount);
+        console.log(statistic.value.organizationsCount);
+        console.log(statistic.value.fieldsCount);
+        console.log(statistic.value.journalCount);
+        console.log(statistic.value.paperCount);
     });
 
     var promise = GetOrganizations();
@@ -238,59 +285,21 @@ const initHome = (userId) => {
             fields.value.push(element);
         });
     });
+
+    // 调用 startCounting
+    startCounting();
 }
 
 initHome(userId.value);
 
 
 
-//动画
-// 目标数字数组
-const targetNumbers = [202233, 45322, 781120, 123456, 67890];
-targetNumbers.length = 0; // 清空原数组
-Object.values(statistic.value).forEach((value, index) => {
-  targetNumbers[index] = value;
-});
-const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
 
-// 动画设置
-const intervalTime = 50; // 每50毫秒更新一次
-const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
-
-// 动画函数
-const startCounting = () => {
-  const intervals = targetNumbers.map((target, index) => {
-    return setInterval(() => {
-        // if(index == 0 || index == 4){
-        //     if (numbers.value[index] < target) {
-        //         numbers.value[index] += increment * 8;
-        //     } else {
-        //         numbers.value[index] = target;
-        //         clearInterval(intervals[index]); // 达到目标时停止
-        //     }
-        // }
-        // else{
-        //     if (numbers.value[index] < target) {
-        //         numbers.value[index] += increment;
-        //     } else {
-        //         numbers.value[index] = target;
-        //         clearInterval(intervals[index]); // 达到目标时停止
-        //     }
-        // }
-        if (numbers.value[index] < target) {
-            numbers.value[index] += increment;
-        } else {
-            numbers.value[index] = target;
-            clearInterval(intervals[index]); // 达到目标时停止
-        }
-    }, intervalTime);
-  });
-};
 
 // 页面加载完成后开始动画
-onMounted(() => {
-  startCounting();
-});
+// onMounted(() => {
+//   startCounting();
+// });
 
 </script>
 
