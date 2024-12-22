@@ -216,11 +216,13 @@ const initHome = (userId) => {
 
     var promise = GetStatistics();
     promise.then((result)=>{
-        statistic.value.authorCount = result.authorCount.toLocaleString();
-        statistic.value.organizationsCount = result.organizationsCount.toLocaleString();
-        statistic.value.fieldsCount = result.fieldsCount.toLocaleString();
-        statistic.value.journalCount = result.journalCount.toLocaleString();
-        statistic.value.paperCount = result.paperCount.toLocaleString();
+        statistic.value = {
+          authorCount: result.authorCount,
+          organizationsCount: result.organizationsCount,
+          fieldsCount: result.fieldsCount,
+          journalCount: result.journalCount,
+          paperCount: result.paperCount
+        }
     });
 
     var promise = GetOrganizations();
