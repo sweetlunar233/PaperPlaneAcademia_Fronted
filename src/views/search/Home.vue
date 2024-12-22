@@ -251,9 +251,7 @@ const startCounting = () => {
 
 // 页面加载完成后开始动画
 onMounted(() => {
-  print("init")
   initHome(userId.value);
-  print("startCounting")
   startCounting();
 });
 
