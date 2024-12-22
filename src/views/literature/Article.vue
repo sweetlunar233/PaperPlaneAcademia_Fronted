@@ -208,6 +208,7 @@
 
 <script>
 import { GetArticle, GetStar, PostStar } from '@/api/article';
+import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 export default{
@@ -482,12 +483,20 @@ export default{
         var promise = GetArticle(this.id);
         promise
         .then((result) => {
-            this.article = result.article;
+            if(result.status === "error"){
+                ElMessage({
+                    message: '该论文不存在',
+                    type: 'error',
+                    plain: true,
+                });
+            }
+            else{
+                this.article = result.article;
+                this.isLoading = false;
+                this.quotation = this.formatGB7714();
+            }
         })
         .finally(() => {
-            this.isLoading = false;
-            this.quotation = this.formatGB7714();
-            console.log(this.article)
         })
 
         promise = GetStar(this.userId,this.id);
