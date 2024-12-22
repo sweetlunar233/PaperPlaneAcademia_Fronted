@@ -17,11 +17,17 @@
               <el-option label="NOT" value="NOT"></el-option>
             </el-select>
   
+  
             <!-- 输入框 -->
-            <el-input
+            <el-input v-if="index===0"
               v-model="condition.value"
               placeholder="请输入作者相关内容"
-              style="flex: 1;width: 800px;"
+              style="flex: 1;width: 600px;"
+            />
+            <el-input v-else
+              v-model="condition.value"
+              placeholder="请输入作者相关内容"
+              style="flex: 1;width: 500px;"
             />
   
             <!-- 搜索范围选择 -->
@@ -69,12 +75,9 @@
     },
     methods: {
       // 添加新条件
-      addCondition() {
-        this.authorConditions.push({
-          operator: "AND",
-          value: "",
-          scope: "name",
-        });
+      addCondition(index) {
+
+        this.authorConditions.splice(index + 1, 0, { value: "" });
       },
   
       // 移除条件
@@ -96,9 +99,9 @@
           value: cond.value,
           scope: cond.scope,
         }));
-  
+        
         // 跳转到 ScholarRes.vue 页面并传递参数
-        this.$router.push({ name: "ScholarRes", query: { conditions: JSON.stringify(searchParams) } });
+        this.$router.push({ name: "scholarRes", query: { conditions: JSON.stringify(searchParams) } });
       },
   
       // 重置条件

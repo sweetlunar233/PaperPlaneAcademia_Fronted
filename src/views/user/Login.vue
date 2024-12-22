@@ -52,8 +52,9 @@ export default {
         promise.then((result) => {
             if(result.status === "success"){
               alert("登录成功！");
-              $cookies.set("userId", result.UserId);
-              $cookies.set("username", result.username);
+              this.$cookies.set("userId", result.UserId);
+              this.$cookies.set("username", result.username);
+              this.$cookies.set("avatar",result.avatarId);
               this.$router.push("/home"); // 登录成功跳转到主页面
             }
             else{
