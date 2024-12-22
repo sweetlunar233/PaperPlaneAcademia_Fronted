@@ -10,7 +10,7 @@ const router = createRouter({
     {
       path: '/comment',
       name: 'comment',
-      component: () => import('../views/community/Comment.vue')
+      component: () => import('../views/community/Comment copy.vue')
     },
     {
       path:'/article',
