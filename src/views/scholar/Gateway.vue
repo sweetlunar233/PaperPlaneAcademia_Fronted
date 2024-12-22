@@ -197,17 +197,15 @@ export default {
     // 切换关注状态
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
-      
+
       // 调用后端接口来更新关注状态
       var promise = updateUserFollow(this.$cookies.get('userId'), this.$route.query.userId);
       promise.then((result) => {
-          console.log('关注状态更新成功', response.data);
+          console.log('关注状态更新成功', result.data);
         })
         .catch(error => {
           console.error('关注状态更新失败', error);
         });
-
-      
     },
 
     // 集中处理所有数据获取请求
