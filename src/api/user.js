@@ -71,3 +71,11 @@ export function updateResearchFields(userId, researchFields){
 export function platformOverview(){
     return get("/user/platform-overview/");
 }
+
+export function fatchScholars_api(page, pagesize) {
+    const params = {
+        page: page,
+        size: pagesize
+    };
+    return get("/user/scholars/", params);
+}

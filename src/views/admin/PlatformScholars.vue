@@ -35,6 +35,7 @@
 
 <script>
 import axios from "axios";
+import { fatchScholars_api } from "@/api/user.js";
 
 export default {
   data() {
@@ -50,26 +51,20 @@ export default {
   },
   methods: {
     // 获取平台入驻学者总数和分页数据
-    async fetchScholars(page = 1) {
-      try {
-        const response = await axios.get("/user/scholars/", {
-          params: {
-            page: page, // 当前页
-            size: this.pagination.pageSize, // 每页显示条数
-          },
-        });
-        if (response.status === 200) {
+    fetchScholars(page = 1) {
+        var promise = fatchScholars_api(page, this.pagination.pageSize);
+        promise.then((response) => {
           this.scholars = response.data.data; // 更新学者数据
           this.totalScholars = response.data.totalCount; // 更新总学者数
           this.pagination.total = response.data.totalCount; // 更新数据总数
-          this.pagination.currentPage = page; // 更新当前页
-        }
-      } catch (error) {
-        console.error("获取入驻学者数据失败:", error);
-        this.scholars = []; // 出现错误时确保学者列表为空
-        this.totalScholars = 0; // 错误时总学者数为0
-        this.pagination.total = 0; // 错误时总数据为0
-      }
+          this.pagination.currentPage = page;
+        })
+        .catch((error) => {
+          console.error("获取入驻学者数据失败:", error);
+          this.scholars = []; // 出现错误时确保学者列表为空
+          this.totalScholars = 0; // 错误时总学者数为0
+          this.pagination.total = 0; // 错误时总数据为0
+        });
     },
     // 处理页码改变时重新加载数据
     handleCurrentChange(page) {
