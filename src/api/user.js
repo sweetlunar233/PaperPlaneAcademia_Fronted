@@ -72,10 +72,6 @@ export function platformOverview(){
     return get("/user/platform-overview/");
 }
 
-export function fatchScholars_api(page, pagesize) {
-    const params = {
-        page: page,
-        size: pagesize
-    };
-    return get("/user/scholars/", params);
-}
+export function fatchScholars_api() {
+    return get('/users/scholars/')  // 你可以根据自己的实际后端接口调整路径
+  }

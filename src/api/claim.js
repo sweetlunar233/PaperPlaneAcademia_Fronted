@@ -19,15 +19,15 @@ export function submitRejections(claimId, reason){
 
 // 获取科研人员申请
 export function getApplications() {
-    return axios.get('/applications/');
+    return get('/claims/applications/');
   }
   
   // 通过科研人员申请
   export function approveApplication(applicationId) {
-    return axios.post(`/applications/${applicationId}/approve`);
+    return post(`/claims/applications/${applicationId}/approve/`);
   }
   
   // 驳回科研人员申请
   export function rejectApplication(applicationId, reason) {
-    return axios.post(`/applications/${applicationId}/reject/`, { reason });
+    return post(`/claims/applications/${applicationId}/reject/`, { reason });
   }

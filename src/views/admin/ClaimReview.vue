@@ -59,17 +59,17 @@ export default {
   methods: {
     // 获取认领申请列表
     async fetchClaims() {
-      var promise = getClaims;
+      var promise = getClaims();
         // 调用后端接口
         promise.then(response => {
-          if (response.data.status === 'success') {
+          if (response.status === 'success') {
             this.claims = response.data.claims;
           } else {
-            console.error("获取认领申请失败:", error);
+            console.error("获取认领申请失败");
          }
         })
         .catch(error => {
-          console.error("获取认领申请失败:", error); 
+          console.error("获取认领申请失败"); 
         });
     },
     
@@ -86,7 +86,7 @@ export default {
         this.fetchClaims();
         })
         .catch(error => {
-          console.error("审批失败:", error);
+          console.error("审批失败");
         });
     },
     // 驳回申请
@@ -104,7 +104,7 @@ export default {
           this.fetchClaims();
         })
         .catch(error => {
-          console.error("驳回失败:", error);
+          console.error("驳回失败");
         });
     },
   },
