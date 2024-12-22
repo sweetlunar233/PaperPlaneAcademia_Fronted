@@ -31,6 +31,7 @@
 <script>
 import { Login } from "@/api/user";
 import axios from "axios";
+import { getCurrentInstance } from "vue";
 
 export default {
   data() {
@@ -49,11 +50,7 @@ export default {
     submitLoginForm() {
       var promise = Login(this.loginForm.username,this.loginForm.password);
         promise.then((result) => {
-          alert("登录成功！");
-            this.$root.loggedIn = true; // 修改根组件的登录状态
-            this.$root.OnlineUser = result.UserId; // 修改根组件的当前在线用户Id
-            console.log(this.$cookies.get('userId'));
-            console.log(result.UserId); 
+            alert("登录成功！");
             $cookies.set("userId", result.UserId);
             $cookies.set("username", result.username);
             this.$router.push("/home"); // 登录成功跳转到主页面
