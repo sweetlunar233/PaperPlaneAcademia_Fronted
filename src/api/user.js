@@ -44,3 +44,19 @@ export function getTotalPages(data) {
 export function fetchResults(data) {
     return post("/users/searchscholars/", data);
 }
+
+export function updateDescription(userId, description){
+    let data = {};
+    data.userId = userId;
+    data.description = description;
+    console.log(data);
+    return post("/users/updateDescription/",data);
+}
+
+export function updateResearchFields(userId, researchFields){
+    let data = {};
+    data.userId = userId;
+    data.researchFields = researchFields;
+    console.log(data);
+    return post("/users/updateResearchFields/",data);
+}

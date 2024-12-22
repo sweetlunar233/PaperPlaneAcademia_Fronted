@@ -56,6 +56,8 @@ export default {
                 alert("登录成功！");
                 this.$root.loggedIn = true; // 修改根组件的登录状态
                 this.$root.OnlineUser = result.UserId; // 修改根组件的当前在线用户Id
+                console.log(this.$cookies.get('userId'));
+                console.log(result.UserId);
                 $cookies.set("userId", result.UserId);
                 this.$router.push("/home"); // 登录成功跳转到主页面
               }
