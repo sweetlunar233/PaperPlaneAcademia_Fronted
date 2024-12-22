@@ -90,7 +90,18 @@ export default {
 
       try {
         // 跳转到 SearchRes.vue 页面并传递搜索文本
-        this.$router.push({ name: "searchRes", query: {"logic":null,"value":this.searchQuery,"scope":null} });
+        this.$router.push({ 
+          name: "searchRes", 
+          query: {
+            searchConditions: JSON.stringify([{
+              "logic": null, 
+              "value": this.searchQuery, 
+              "scope": null
+            }])
+          }
+        });
+
+
       } catch (error) {
         console.error("搜索请求失败：", error);
         alert("搜索失败，请稍后再试！");
