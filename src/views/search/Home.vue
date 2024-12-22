@@ -189,30 +189,30 @@ const gotoError = (userId) => {
 
 //动画
 // 目标数字数组
-const targetNumbers = [202233, 45322, 781120, 123456, 67890];
-targetNumbers.length = 0; // 清空原数组
-Object.values(statistic.value).forEach((value, index) => {
-  targetNumbers[index] = value;
-});
-const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
+// const targetNumbers = [202233, 45322, 781120, 123456, 67890];
+// targetNumbers.length = 0; // 清空原数组
+// Object.values(statistic.value).forEach((value, index) => {
+//   targetNumbers[index] = value;
+// });
+// const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
 
-// 动画设置
-const intervalTime = 50; // 每50毫秒更新一次
-const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
+// // 动画设置
+// const intervalTime = 50; // 每50毫秒更新一次
+// const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
 
-// 动画函数
-const startCounting = () => {
-  const intervals = targetNumbers.map((target, index) => {
-    return setInterval(() => {
-        if (numbers.value[index] < target) {
-            numbers.value[index] += increment;
-        } else {
-            numbers.value[index] = target;
-            clearInterval(intervals[index]); // 达到目标时停止
-        }
-    }, intervalTime);
-  });
-};
+// // 动画函数
+// const startCounting = () => {
+//   const intervals = targetNumbers.map((target, index) => {
+//     return setInterval(() => {
+//         if (numbers.value[index] < target) {
+//             numbers.value[index] += increment;
+//         } else {
+//             numbers.value[index] = target;
+//             clearInterval(intervals[index]); // 达到目标时停止
+//         }
+//     }, intervalTime);
+//   });
+// };
 
 
 
@@ -287,7 +287,7 @@ const initHome = (userId) => {
     });
 
     // 调用 startCounting
-    startCounting();
+    //startCounting();
 }
 
 initHome(userId.value);
@@ -328,7 +328,8 @@ initHome(userId.value);
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Authors</h3>
                               <!-- <h2 class="sub-number">{{ statistic.authorCount }}</h2> -->
-                              <h2 class="sub-number">{{ numbers[0] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[0] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.authorCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -340,7 +341,8 @@ initHome(userId.value);
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Papers</h3>
-                              <h2 class="sub-number">{{ numbers[1] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[1] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.organizationsCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -352,7 +354,8 @@ initHome(userId.value);
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Journals</h3>
-                              <h2 class="sub-number">{{ numbers[2] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[2] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.fieldsCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -364,7 +367,8 @@ initHome(userId.value);
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Groups</h3>
-                              <h2 class="sub-number">{{ numbers[3] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[3] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.journalCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -376,7 +380,8 @@ initHome(userId.value);
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Field</h3>
-                              <h2 class="sub-number">{{ numbers[4] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[4] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.paperCount }}</h2>
                           </div>
                       </div>
                   </div>
