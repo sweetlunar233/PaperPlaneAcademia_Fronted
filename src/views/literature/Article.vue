@@ -10,25 +10,28 @@
                 </div>
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
-                        <span>{{ author }}</span>
+                        <span>{{ author }}<sup>{{ authorToInstitution[index] }}</sup></span>
                         <span v-if="index != article.author.length">&ensp;, </span>
                     </span>
                 </div>
                 <div class="subtitle">
-                    <span>去作者空间：</span>
+                    <span v-if="article.scholarAuthor.length > 0">去作者空间：</span>
                     <span v-for="(author,index) in article.scholarAuthor">
                         <span class="hyperlink" @click="toGateway(author.id)">{{ author.name }}</span>
-                        <span v-if="index != article.author.length">&ensp;, </span>
+                        <span v-if="index != article.author.length - 1">&ensp;, </span>
                     </span>
                 </div>
-                <div class="subtitle">
-                    <span v-if="article.institution">{{ article.institution }}</span>
+                <div class="subtitle" style="padding-right: 0%">
+                    <span v-for="(tmp,index) in institutionNoRepeat">
+                        {{ index + 1 }}.&ensp;{{ tmp }}
+                        <span v-if="index != institutionNoRepeat.length - 1">&ensp;, </span>
+                    </span>
                 </div>
                 <div class="subtitle">
                     <span v-if="article.year">{{ article.year }}</span>
                     <span v-if="article.journal.name">&ensp;{{ article.journal.name }}</span>
-                    <span v-if="article.journal.volume"> | Volume：{{ article.journal.volume }}, </span>
-                    <span v-if="article.journal.first_page">pp：{{ article.journal.first_page }}</span>
+                    <span v-if="article.journal.volume"> | Volume：{{ article.journal.volume }}</span>
+                    <span v-if="article.journal.first_page">, pp：{{ article.journal.first_page }}</span>
                     <span v-if="article.journal.last_page">-{{ article.journal.last_page }}</span>
                 </div>
                 <div class="subtitle">
@@ -117,6 +120,9 @@
                             <div class="tab-tip" v-if="article.citation.length>0">
                                 由于版权限制，此处可能仅展示部分相关论文
                             </div>
+                            <div class="tab-tip" v-else>
+                                暂无引证文献.
+                            </div>
                             <el-scrollbar height="350px">
                                 <el-row v-for="(ref,index) in article.citation" class="reference-block" @click="toArticle(ref.articleId)">
                                     <el-col :span="1" style="text-align: left;">
@@ -168,14 +174,14 @@
                 <el-divider />
                 <div>
                     <div class="abstract-title">领域</div>
-                    <div v-for="(field,index) in article.fields" @click="toField(field.fieldId)" class="field">
-                        - <span class="hyperlink">{{ field.name }}</span>
+                    <div v-for="(field,index) in article.fields" class="field">
+                        - <span class="hyperlink">{{ field }}</span>
                     </div>
                 </div>
                 <el-divider />
                 <div>
                     <div class="abstract-title">相关文献</div>
-                    <div v-for="(rela,index) in article.relation" @click="toArticle(rela.articleId)" class="field">
+                    <div v-if="article.relation.length > 0" v-for="(rela,index) in article.relation" @click="toArticle(rela.articleId)" class="field">
                         <span class="hyperlink">{{ rela.name }}</span>
                         <div class="relation-author">
                             <span v-for="(author,index2) in rela.authors">
@@ -190,6 +196,9 @@
                                 </span>
                             </span>
                         </div>
+                    </div>
+                    <div v-else class="tab-tip" style="padding-top: 2%;">
+                        暂无相关文献.
                     </div>
                 </div>
             </el-col>
@@ -220,7 +229,7 @@ export default{
                 title:"Scalable Defect Detection via Traversal on Code Graph",
                 author:["Zhengyao Liu","Xitong Zhong","Xingjing Deng","Shuo Hong","Xiang Gao","Hailong Sun"],
                 scholarAuthor:[{name:"Zhengyao Liu",id:1},{name:"Xitong Zhong",id:2},{name:"Xingjing Deng",id:3},{name:"Shuo Hong",id:4},{name:"Xiang Gao",id:5},{name:"Hailong Sun",id:5}],
-                institution:"Beihang University",
+                institution:["Beihang University"],
                 year:"2021",
                 DOI:"10.1007/978-3-030-87358-5_40",
                 abstract:"Detecting defects and vulnerabilities in the early stage has long been a challenge in software engineering. Static analysis, a technique that inspects code without execution, has emerged as a key strategy to address this challenge. Among recent advancements,the use of graph-based representations, particularly Code Property Graph (CPG), has gained traction due to its comprehensive depiction of code structure and semantics. Despite the progress,existing graph-based analysis tools still face performance and scalability issues. The main bottleneck lies in the size and complexity of CPG, which makes analyzing large codebases inefficient and memory-consuming. Also, query rules used by the current tools can be over-specific. Hence, we introduce QVoG, a graph-based static analysis platform for detecting defects and vulnerabilities. It employs a compressed CPG representation to maintain a reasonable graph size, thereby enhancing the overall query efficiency. Based on the CPG, it also offers a declarative query language to simplify the queries. Furthermore, it takes a step forward to integrate machine learning to enhance the generality of vulnerability detection. For projects consisting of 1,000,000+ lines of code, QVoG can complete analysis in approximately 15 minutes, as opposed to 19 minutes with CodeQL.",
@@ -357,11 +366,22 @@ export default{
             isStar:false,
             isLoading:false,
             userId:0,
+            institutionNoRepeat:[], 
+            authorToInstitution:[],// 作者和机构的对应关系
         }
     },
     methods: {
         download(){
-            window.open(this.article.download, '_blank');
+            if(this.article.download != null){
+                window.open(this.article.download, '_blank');
+            }
+            else{
+                ElMessage({
+                    message: '暂无下载链接.',
+                    type: 'warning',
+                    plain: true,
+                });
+            }
         },
 
         star(){
@@ -443,13 +463,37 @@ export default{
             let tmp = "[1] ";
 
             // 拼接作者信息
-            tmp += this.formatAuthors() + '. ';
+            let authors = this.formatAuthors();
+            tmp += authors ? authors + '. ' : '';  // 如果没有作者信息，直接不显示。
 
             // 拼接文章标题
-            tmp += `${this.article.title}[J]. `;
+            tmp += this.article.title ? `"${this.article.title}"[J]. ` : '[无标题][J]. ';  // 如果没有标题，使用[无标题]
 
             // 拼接期刊信息
-            tmp += `${this.article.journal.name}, ${this.article.year}, ${this.article.journal.volume}(${this.article.journal.first_page}): ${this.article.journal.first_page}-${this.article.journal.last_page}. `;
+            if (this.article.journal) {
+                const journalName = this.article.journal.name || '';  // 如果期刊名缺失，则省略
+                const year = this.article.year || '';  // 如果年份缺失，则省略
+                const volume = this.article.journal.volume ? `${this.article.journal.volume}` : '';  // 卷号缺失则省略
+                const issue = this.article.journal.issue ? `(${this.article.journal.issue})` : '';  // 期号缺失则省略
+                const firstPage = this.article.journal.first_page || '';  // 起始页缺失则省略
+                const lastPage = this.article.journal.last_page || '';  // 终止页缺失则省略
+
+                // 期刊信息拼接
+                if (journalName) {
+                    tmp += `${journalName}, `;
+                }
+                if (year) {
+                    tmp += `${year}, `;
+                }
+                if (volume || issue) {
+                    tmp += `${volume}${issue}`;
+                }
+                if (firstPage && lastPage) {
+                    tmp += `: ${firstPage}-${lastPage}. `;
+                } else if (firstPage) {
+                    tmp += `: ${firstPage}. `;
+                }
+            }
 
             // 拼接DOI信息
             if (this.article.DOI) {
@@ -460,7 +504,6 @@ export default{
 
             return tmp;
         },
-
         // 格式化作者信息
         formatAuthors() {
             if (this.article.author.length === 1) {
@@ -478,7 +521,6 @@ export default{
         this.id = this.$route.query.paperId;
         this.isLoading = true;
         this.userId = this.$cookies.get('userId');
-        console.log(this.userId)
 
         var promise = GetArticle(this.id);
         promise
@@ -494,6 +536,16 @@ export default{
                 this.article = result.article;
                 this.isLoading = false;
                 this.quotation = this.formatGB7714();
+                this.institutionNoRepeat = [...new Set(this.article.institution)];
+                var i = 0;
+                for(;i < this.article.author.length;i++){
+                    var j = 0;
+                    for(;j < this.institutionNoRepeat.length;j++){
+                        if(this.article.institution[i] === this.institutionNoRepeat[j]){
+                            this.authorToInstitution.push(j + 1);
+                        }
+                    }
+                }
             }
         })
         .finally(() => {
@@ -536,6 +588,10 @@ export default{
 .article .hyperlink:hover {
     color: rgb(31, 124, 196);
     cursor: pointer;
+}
+
+.article .hyperlink-noHover {
+    color: #409EFF;
 }
 
 .article .subtitle {
@@ -635,6 +691,5 @@ export default{
 
 .article .field:hover {
     background: #f4f9ff;
-    cursor: pointer;
 }
 </style>
