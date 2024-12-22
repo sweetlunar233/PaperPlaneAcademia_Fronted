@@ -190,15 +190,9 @@ export default {
           email: '',
           //workPlace: '',
           field: '',
-<<<<<<< HEAD
-          selectedScholarId: null,
-          //newPapers: [],
-          userId: this.$cookies.get('userId')
-=======
           claimedPapers: [],
           newPapers: [],
           userId: this.$cookies.get('userId'),
->>>>>>> 8fb1346a75c5e2ae09e9d405f68b7c44ac628154
       },
       
       scholarsList: [
