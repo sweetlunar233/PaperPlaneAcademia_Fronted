@@ -116,9 +116,9 @@
       submitSearch() {
             // 构造 searchData 格式的数据
         const searchData = this.advancedFields.map(field => ({
-          logic: field.logic, // 保留原来的逻辑
-          value: field.value,  // 保留原来的值
-          scope: field.scope   // 保留原来的范围
+          logic: field.logic||null, // 保留原来的逻辑
+          value: field.value||null,  // 保留原来的值
+          scope: field.scope||null   // 保留原来的范围
         }));
 
         // 将 searchType 和 searchKeyword 作为额外的条件添加到 searchData 中
