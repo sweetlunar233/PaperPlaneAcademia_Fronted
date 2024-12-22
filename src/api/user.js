@@ -44,3 +44,7 @@ export function getTotalPages(data) {
 export function fetchResults(data) {
     return post("/users/searchscholars/", data);
 }
+
+export function updateUserFollow(data) {
+    return post("/user/follow/", data);
+}

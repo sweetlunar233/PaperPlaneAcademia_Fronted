@@ -197,18 +197,20 @@ export default {
     // 切换关注状态
     toggleFollow() {
       this.isFollowed = !this.isFollowed;
-
+      
       // 调用后端接口来更新关注状态
-      axios.post('/user/follow', {
-        currentUserId: this.$root.OnlineUser, // 当前用户 ID
+      var promise = updateUserFollow({
+        currentUserId: this.$cookies.get('userId'), // 当前用户 ID
         targetUserId: this.$route.query.userId, // 目标用户 ID
-      })
-          .then(response => {
-            console.log('关注状态更新成功', response.data);
-          })
-          .catch(error => {
-            console.error('关注状态更新失败', error);
-          });
+      });
+      promise.then((result) => {
+          console.log('关注状态更新成功', response.data);
+        })
+        .catch(error => {
+          console.error('关注状态更新失败', error);
+        });
+
+      
     },
 
     // 集中处理所有数据获取请求
