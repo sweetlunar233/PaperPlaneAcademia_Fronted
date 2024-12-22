@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { platformOverview } from "@/api/user";
 import axios from "axios";
 
 export default {
@@ -29,17 +30,15 @@ export default {
     };
   },
   async created() {
-    try {
-      const response = await axios.get("/user/platform-overview/");
-      if (response.status === 200 && response.data) {
-        this.statistics[0].value = response.data.totalUsers || 0;
-        this.statistics[1].value = response.data.totalPapers || 0;
-        this.statistics[2].value = response.data.totalAuthors || 0;
-        this.statistics[3].value = response.data.totalScholars || 0;
+    var promise = platformOverview();
+    promise.then((result)=>{
+      if (result.status === 200 && result.data) {
+        this.statistics[0].value = result.data.totalUsers || 0;
+        this.statistics[1].value = result.data.totalPapers || 0;
+        this.statistics[2].value = result.data.totalAuthors || 0;
+        this.statistics[3].value = result.data.totalScholars || 0;
       }
-    } catch (error) {
-      console.error("获取平台概况数据失败:", error);
-    }
+    });
   },
 };
 </script>
