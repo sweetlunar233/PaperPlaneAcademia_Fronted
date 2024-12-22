@@ -10,9 +10,9 @@
 
         <!-- 高级搜索按钮和学者搜索按钮 -->
         <div class="advanced-search">
-          <el-button type="text" @click="goToAdvSearch">高级搜索</el-button>
+          <el-button class="TieZhu-button" link @click="goToAdvSearch">高级搜索</el-button>
           <!-- 新增学者搜索按钮 -->
-          <el-button type="text" @click="goToSearchScholar">学者搜索</el-button>
+          <el-button class="TieZhu-button" link @click="goToSearchScholar">学者搜索</el-button>
         </div>
 
         <!-- 中间搜索框 -->
@@ -195,5 +195,14 @@ export default {
 
 html {
   overflow-y: scroll; /* 防止滚动条跳动 */
+}
+
+.TieZhu-button{
+  color: red;
+}
+
+.TieZhu-button :hover{
+  color: white;
+  cursor: pointer;
 }
 </style>

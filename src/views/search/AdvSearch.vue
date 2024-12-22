@@ -6,7 +6,7 @@
       <!-- 高级搜索 -->
       <el-main>
         <el-card class="custom-card">
-          <h2 style="display: flex;justify-content: center ; font-size: 45px;">AdvancedSearch<svg t="1732093185852" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2792" width="32" height="32"><path d="M974.966667 91.46a21.333333 21.333333 0 0 0-21.713334-5.033333l-896 298.666666a21.333333 21.333333 0 0 0-4.226666 38.533334L256 545.413333V832a21.333333 21.333333 0 0 0 36.42 15.086667L448 691.506667l240.913333 240.913333a21.333333 21.333333 0 0 0 35.426667-8.666667l256-810.666666a21.333333 21.333333 0 0 0-5.373333-21.626667z" fill="#5C5C66" p-id="2793"></path></svg></h2>
+          <h2 style="display: flex;justify-content: center ; font-size: 45px; color: white;">AdvancedSearch<svg t="1732093185852" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2792" width="32" height="32"><path d="M974.966667 91.46a21.333333 21.333333 0 0 0-21.713334-5.033333l-896 298.666666a21.333333 21.333333 0 0 0-4.226666 38.533334L256 545.413333V832a21.333333 21.333333 0 0 0 36.42 15.086667L448 691.506667l240.913333 240.913333a21.333333 21.333333 0 0 0 35.426667-8.666667l256-810.666666a21.333333 21.333333 0 0 0-5.373333-21.626667z" fill="rgb(121.3, 187.1, 255)" p-id="2793"></path></svg></h2>
           <div class="basic-search">
             <el-select v-model="searchType" placeholder="类型" style="width: 100px;">
               <el-option
@@ -165,10 +165,11 @@
     margin: 10px 0;
   }
   .custom-card {
-  background-color: #f0f8ff; /* 浅蓝色背景 */
-  border-radius: 8px;       /* 圆角 */
-  padding: 20px;            /* 内边距 */
-  border: 1px solid #dcdcdc; /* 可选：设置边框 */
+    background:url(../../assets/images/advSearch.png);
+    background-color: #f0f8ff; /* 浅蓝色背景 */
+    border-radius: 8px;       /* 圆角 */
+    padding: 20px;            /* 内边距 */
+    border: 1px solid #dcdcdc; /* 可选：设置边框 */
 }
 .search-row {
   display: flex;
