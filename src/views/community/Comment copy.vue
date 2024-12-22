@@ -23,7 +23,8 @@
       </el-col>
       
       <!-- 评论列表 -->
-      <el-col class="postComment"  :span="16">
+      <el-col class="postComment"  :span="16" v-loading="isLoading"
+      element-loading-background="rgba(244, 246, 247,0.8)">
         <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
           评论
         </h2>
@@ -87,7 +88,7 @@
 </template>
 
 <script>
-import { GetComment } from '@/api/comment';
+import { GetComment, LikeComment, Publish } from '@/api/comment';
 import { ElMessage } from 'element-plus';
 
 export default {
@@ -101,7 +102,6 @@ export default {
           content: "这是评论内容。",
           likes: 10,
           avatar:0,
-          replies: [], // 新增字段，用于存储回复
         },
         {
           id: 2,
@@ -109,12 +109,11 @@ export default {
           content: "这是另一条评论。",
           likes: 5,
           avatar:2,
-          replies: [], // 新增字段，用于存储回复
         },
         
       ],
-      replyText: {}, // 用于存储每条评论的回复输入框内容
-      replyingTo: null, // 当前正在回复的评论ID
+      // replyText: {}, // 用于存储每条评论的回复输入框内容
+      // replyingTo: null, // 当前正在回复的评论ID
       availableAvatars: [ // 可供选择的头像
         'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
         'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
@@ -127,59 +126,71 @@ export default {
       username:"",
       avatar:0,
       paperId:0,
+      isLoading:false,
     };
   },
   methods: {
     submitComment() {
       if (this.commentText.trim()) {
-        this.comments.push({
-          id: this.comments.length + 1,
-          username: "新用户",
-          content: this.commentText,
-          likes: 0,
-          replies: [],
-        });
+        this.isLoading = true;
+        var tmp;
+        var promise = Publish(this.paperId,this.userId,this.commentText);
+        promise.then((result) => {
+          tmp = {
+            id:result.commentId,
+            username:this.username,
+            content:this.commentText,
+            likes:0,
+            avatar:this.avatar,
+          }
+          this.comments.push(tmp);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        })
         this.commentText = "";
       } else {
         this.$message.warning("评论内容不能为空！");
       }
     },
-    viewReplies(id) {
-      this.$message.info(`查看评论 ${id} 的回复`);
-    },
+    // viewReplies(id) {
+    //   this.$message.info(`查看评论 ${id} 的回复`);
+    // },
     likeComment(id) {
       const comment = this.comments.find((comment) => comment.id === id);
       if (comment) {
         comment.likes++;
       }
+
+      var promise = LikeComment(id);
     },
     navigateToArticle(articleId) {
       // 跳转到文章页面逻辑
       console.log(`跳转到文章页面，文章 ID: ${articleId}`);
       this.$router.push('/article/${articleId}');
     },
-    startReply(commentId) {
-      this.replyingTo = commentId; // 设置当前正在回复的评论ID
-      if (!this.replyText[commentId]) {
-        this.replyText[commentId] = ""; // 初始化输入框内容
-      }
-    },
-    submitReply(commentId) {
-      const replyContent = this.replyText[commentId]?.trim();
-      if (replyContent) {
-        const comment = this.comments.find((c) => c.id === commentId);
-        if (comment) {
-          comment.replies.push({
-            username: "当前用户", // 替换为实际用户名
-            content: replyContent,
-          });
-          this.replyText[commentId] = ""; // 清空输入框
-          this.replyingTo = null; // 重置回复状态
-        }
-      } else {
-        this.$message.warning("回复内容不能为空！");
-      }
-    },
+    // startReply(commentId) {
+    //   this.replyingTo = commentId; // 设置当前正在回复的评论ID
+    //   if (!this.replyText[commentId]) {
+    //     this.replyText[commentId] = ""; // 初始化输入框内容
+    //   }
+    // },
+    // submitReply(commentId) {
+    //   const replyContent = this.replyText[commentId]?.trim();
+    //   if (replyContent) {
+    //     const comment = this.comments.find((c) => c.id === commentId);
+    //     if (comment) {
+    //       comment.replies.push({
+    //         username: "当前用户", // 替换为实际用户名
+    //         content: replyContent,
+    //       });
+    //       this.replyText[commentId] = ""; // 清空输入框
+    //       this.replyingTo = null; // 重置回复状态
+    //     }
+    //   } else {
+    //     this.$message.warning("回复内容不能为空！");
+    //   }
+    // },
   },
   mounted(){
     this.userId = this.$cookies.get("userId");
@@ -199,6 +210,9 @@ export default {
             plain: true,
         });
       }
+    })
+    .finally(() =>{
+      this.isLoading = false;
     })
   }
 }
