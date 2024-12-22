@@ -35,7 +35,7 @@
             <el-button @click="goToRegister">注册</el-button>
           </template>
           <template v-else>
-            <span style="font-family: 'Microsoft YaHei', sans-serif;padding-top: 1%;" @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
+            <span style="font-family: 'Microsoft YaHei', sans-serif;padding-top: 1%;text-decoration: underline;" @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
             <el-button @click="logout">注销</el-button>
           </template>
         </div>
