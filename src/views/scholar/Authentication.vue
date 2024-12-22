@@ -181,7 +181,7 @@ import { Authenticate,fetchScholars } from '@/api/claim';
 export default {
   data() {
     return {
-      step: 2,
+      step: 1,
       steps: ["个人信息", "门户认领", "等待审核"],
       formData: {
           name: '',
@@ -401,7 +401,6 @@ export default {
   },
 
   created() {
-    this.fetchScholarsByName();
   },
 };
 
