@@ -28,9 +28,9 @@
           </el-checkbox-group>
         </div>
       </div>
-    <div >
-      <button style="width:90%;height:50px;font-size:18px;color:var(--theme-color);background-color:var(--back-color);border: 2px solid var(--button-color);border-radius: 5px;">应用筛选条件</button>
-    </div>
+      <div style="position: fixed; bottom: 20px; left: 35px;">
+        <button class="apply-filter-button" >应用筛选条件</button>
+      </div>
     </el-affix>
 
     <div class="results-section">
@@ -163,6 +163,10 @@ export default {
     },
 
     fetchFilters() {
+      console.log({
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+      })
       var response = fetchFilters({
         searchConditions: this.searchConditions,
         dateRange: this.dateRange,
@@ -592,7 +596,18 @@ export default {
   padding-left:10px;
   margin-right: 20px;
 }
-.button{
-
+.apply-filter-button{
+  width:210px;
+  height:50px;
+  font-size:18px;
+  color:var(--theme-color);
+  background-color:var(--back-color);
+  border: 2px solid var(--button-color);
+  border-radius: 5px;
+}
+.apply-filter-button:hover {
+  background-color: var(--gray-color);
+  border-color: var(--theme-color);
+  cursor: pointer;
 }
 </style>

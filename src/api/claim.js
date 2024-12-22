@@ -15,7 +15,7 @@ export function approveClaims(claimId){
     return post(`/claims/${claimId}/approve`);
 }
 
-export function submitRejections(claimId, reason){
+export function rejectClaims(claimId, reason){
     return post(`/claims/${claimId}/reject`, reason);
 }
 

@@ -114,6 +114,7 @@
           this.advancedFields.splice(index, 1);
         }
       },
+      
       submitSearch() {
             // 构造 searchData 格式的数据
         const searchData = this.advancedFields.map(field => ({
@@ -130,11 +131,17 @@
             scope: this.searchType // 将 searchType 作为 scope
           });
         }
+        const formatDate = (date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // 只保留 'yyyy-mm-dd' 部分
+  };
 
+  const formattedDateRange = this.dateRange ? this.dateRange.map(date => formatDate(date)) : [];
         // 创建 payload，包含搜索条件和日期范围
         const payload = {
           searchConditions: searchData,
-          dateRange: this.dateRange
+          dateRange: formattedDateRange,
         };
 
         console.log('搜索提交数据:', payload);

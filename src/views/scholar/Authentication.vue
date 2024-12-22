@@ -190,13 +190,13 @@ export default {
           email: '',
           //workPlace: '',
           field: '',
-          selectedScholarId: null,
+          selectedScholarId: '-1',
           //newPapers: [],
           userId: this.$cookies.get('userId')
       },
       
       scholarsList: [
-          { Id:"001", name: "作者1", authorOrganization: "buaa", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
+          { Id:"42873", name: "作者1", authorOrganization: "buaa", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
           { Id:"002", name: "作者2", authorOrganization: "北京航空航天大学", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
       ],
       
@@ -239,7 +239,7 @@ export default {
     nextStep() {
       if(this.step==1){
         this.$refs.form.validate((valid) => {
-        console.log(this.formData)
+        
         if (valid) {
           this.fetchScholarsByName();
           this.step++;
@@ -262,8 +262,9 @@ export default {
       }
     },
     submitForm() {
+      console.log(this.formData)
       var response = Authenticate(this.formData);
-
+      
       response
       .then(data => {
         console.log("Authenticate", data);
@@ -374,7 +375,7 @@ export default {
     // },
     selectScholar(scholar) {
       if(this.formData.selectedScholarId == scholar.Id){
-        this.formData.selectedScholarId = null;
+        this.formData.selectedScholarId = '-1';
       }else{
         this.formData.selectedScholarId = scholar.Id;
       }
