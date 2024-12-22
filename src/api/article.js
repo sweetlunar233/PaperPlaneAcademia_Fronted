@@ -22,13 +22,13 @@ export function PostStar(id,paperId,isStar){
 }
 
 export function fetchFilters(data){
-    return post("papers/filterdata",data);
+    return post("papers/filterdata/",data);
 }
 
 export function getTotalPages(data) {
-    return post("/papers/getpage", data);
+    return post("/papers/getpage/", data);
 }
 
 export function fetchResults(data) {
-    return post("/papers/search", data);
+    return post("/papers/search/", data);
 }
