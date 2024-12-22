@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getClaims, approveClaim, rejectClaim } from "@/api/claim"; // 根据你的接口调整
+import { getClaims, approveClaims, rejectClaims } from "@/api/claim"; // 根据你的接口调整
 
 export default {
   data() {
@@ -83,7 +83,7 @@ export default {
 
     // 通过申请
     approveClaim(claimId) {
-      var promise = approveClaim(claimId); // 调用后端接口
+      var promise = approveClaims(claimId); // 调用后端接口
       promise
         .then((response) => {
           if (response.data.status === "success") {
@@ -107,7 +107,7 @@ export default {
     // 提交驳回理由
     submitRejection() {
       const reason = this.rejectReason;
-      var promise = rejectClaim(this.selectedClaimId, reason); // 提交驳回理由
+      var promise = rejectClaims(this.selectedClaimId, reason); // 提交驳回理由
       promise
         .then((response) => {
           if (response.data.status === "success") {
