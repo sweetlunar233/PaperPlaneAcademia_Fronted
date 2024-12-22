@@ -77,6 +77,7 @@ export default {
       this.username = "";
       this.OnlineUser = 0;
       $cookies.remove('userId');
+      $cookies.remove('username');
       alert("已注销！");
       this.$router.push("/home");
     },
@@ -104,6 +105,9 @@ export default {
     goToSearchScholar() {
       this.$router.push("/searchScholar"); // 跳转到学者搜索页面
     },
+    checkLoginStatus() {
+      
+    }
   },
   mounted() {
     this.checkLoginStatus(); // 组件加载时检查登录状态

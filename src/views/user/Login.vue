@@ -47,26 +47,17 @@ export default {
   },
   methods: {
     submitLoginForm() {
-      try {
-        var promise = Login(this.loginForm.username,this.loginForm.password);
+      var promise = Login(this.loginForm.username,this.loginForm.password);
         promise.then((result) => {
-          if( result && result.status === "success"){
-            alert("登录成功！");
+          alert("登录成功！");
             this.$root.loggedIn = true; // 修改根组件的登录状态
             this.$root.OnlineUser = result.UserId; // 修改根组件的当前在线用户Id
-            // console.log(this.$cookies.get('userId'));
-            // console.log(result.UserId);
+            console.log(this.$cookies.get('userId'));
+            console.log(result.UserId); 
             $cookies.set("userId", result.UserId);
+            $cookies.set("username", result.username);
             this.$router.push("/home"); // 登录成功跳转到主页面
-          }
-          else{
-            alert(result);
-          }
         })
-      } catch (error) {
-        console.error("登录失败:", error);
-        alert("登录失败，请检查网络连接或稍后重试。");
-      }
     },
   },
 };

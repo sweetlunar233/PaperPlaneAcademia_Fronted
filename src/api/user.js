@@ -67,3 +67,7 @@ export function updateResearchFields(userId, researchFields){
     console.log(data);
     return post("/users/updateResearchFields/",data);
 }
+
+export function platformOverview(){
+    return get("/user/platform-overview/");
+}
