@@ -87,6 +87,9 @@
 </template>
 
 <script>
+import { GetComment } from '@/api/comment';
+import { ElMessage } from 'element-plus';
+
 export default {
   data() {
     return {
@@ -123,6 +126,7 @@ export default {
       userId:0,
       username:"",
       avator:0,
+      paperId:0,
     };
   },
   methods: {
@@ -178,7 +182,23 @@ export default {
     },
   },
   mounted(){
-    this.userId = this.$cookies.get("userId")
+    this.userId = this.$cookies.get("userId");
+    this.username = this.$cookies.get("username");
+    this.paperId = this.$route.query.paperId;
+
+    var promise = GetComment(this.paperId);
+    promise.then((result) =>{
+      if(result.comments){
+        this.comments = result.comments;
+      }
+      else{
+        ElMessage({
+            message: '获取评论失败',
+            type: 'error',
+            plain: true,
+        });
+      }
+    })
   }
 }
 </script>
