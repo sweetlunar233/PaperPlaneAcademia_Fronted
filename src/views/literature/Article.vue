@@ -355,7 +355,7 @@ export default{
             // quoteDialog:false,
             isStar:false,
             isLoading:false,
-            OnlineUser:0,
+            userId:0,
         }
     },
     methods: {
@@ -365,12 +365,12 @@ export default{
 
         star(){
             this.isStar = true;
-            var promise = PostStar(this.OnlineUser,this.id,this.isStar);
+            var promise = PostStar(this.userId,this.id,this.isStar);
         },
 
         undoStar(){
             this.isStar = false;
-            var promise = PostStar(this.OnlineUser,this.id,this.isStar);
+            var promise = PostStar(this.userId,this.id,this.isStar);
         },
 
         async share(){
@@ -475,9 +475,9 @@ export default{
 
     mounted(){
         this.id = this.$route.query.paperId;
-        this.OnlineUser = this.$root.OnlineUser;
-        console.log(this.OnlineUser);
         this.isLoading = true;
+        this.userId = this.$root.OnlineUser;
+        console.log(this.userId)
 
         var promise = GetArticle(this.id);
         promise
@@ -490,7 +490,7 @@ export default{
             console.log(this.article)
         })
 
-        promise = GetStar(this.OnlineUser,this.id);
+        promise = GetStar(this.userId,this.id);
         promise
         .then((result) => {
             this.isStar = result.isStar;
