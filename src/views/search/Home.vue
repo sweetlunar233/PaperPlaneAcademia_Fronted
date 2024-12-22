@@ -1,6 +1,6 @@
 <!-- 首页 -->
 <script setup>
-import { ref, onMounted, inject } from 'vue';
+import { ref, onMounted, inject, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { getCurrentInstance } from 'vue';
 const router = useRouter();
@@ -165,51 +165,49 @@ const gotoError = (userId) => {
 }
 
 const initHome = (userId) => {
-    top_articles.value = [];
-    recommended_articles.value = [];
-    statistic.value = { // 重置 statistic
-      authorCount: 0,
-      organizationsCount: 0,
-      fieldsCount: 0,
-      journalCount: 0,
-      paperCount: 0
-    }; 
-    
-    var promise = GetTopArticles();
-    promise.then((result)=>{
-        result.articles.forEach(element => {
-            top_articles.value.push(element);
-        });
-    });
+  top_articles.value = [];
+  recommended_articles.value = [];
+  statistic.value = { // 重置 statistic
+    authorCount: 0,
+    organizationsCount: 0,
+    fieldsCount: 0,
+    journalCount: 0,
+    paperCount: 0
+  }; 
+  
+  var promise = GetTopArticles();
+  promise.then((result)=>{
+      result.articles.forEach(element => {
+          top_articles.value.push(element);
+      });
+  });
 
-    var promise = GetRecommendedArticles();
-    promise.then((result)=>{
-        result.articles.forEach(element => {
-            recommended_articles.value.push(element);
-        });
-    });
+  var promise = GetRecommendedArticles();
+  promise.then((result)=>{
+      result.articles.forEach(element => {
+          recommended_articles.value.push(element);
+      });
+  });
 
-    var promise = GetStatistics();
-    promise.then((result)=>{
-      statistic.value.authorCount = result.authorCount.toLocaleString();
-      statistic.value.organizationsCount = result.organizationsCount.toLocaleString();
-      statistic.value.fieldsCount = result.fieldsCount.toLocaleString();
-      statistic.value.journalCount = result.journalCount.toLocaleString();
-      statistic.value.paperCount = result.paperCount.toLocaleString();
-    });
+  var promise = GetStatistics();
+  promise.then((result)=>{
+    statistic.value.authorCount = result.authorCount;
+    statistic.value.organizationsCount = result.organizationsCount;
+    statistic.value.fieldsCount = result.fieldsCount;
+    statistic.value.journalCount = result.journalCount;
+    statistic.value.paperCount = result.paperCount;
+    console.log("hello")
+    console.log(statistic.value)
+  })
+  .catch(error => {
+    console.error("GetStatistics失败", error);
+  });
 }
-
-initHome(userId.value);
-
-
 
 //动画
 // 目标数字数组
-const targetNumbers = [202233, 45322, 781120, 123456, 67890];
-targetNumbers.length = 0; // 清空原数组
-Object.values(statistic.value).forEach((value, index) => {
-  targetNumbers[index] = value;
-});
+const targetNumbers = [0, 0, 0, 0, 0];
+
 const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
 
 // 动画设置
@@ -218,6 +216,10 @@ const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小
 
 // 动画函数
 const startCounting = () => {
+  Object.values(statistic.value).forEach((value, index) => {
+  console.log(value)
+  targetNumbers[index] = value;
+})
   const intervals = targetNumbers.map((target, index) => {
     return setInterval(() => {
         // if(index == 0 || index == 4){
@@ -248,6 +250,7 @@ const startCounting = () => {
 
 // 页面加载完成后开始动画
 onMounted(() => {
+  initHome(userId.value);
   startCounting();
 });
 
