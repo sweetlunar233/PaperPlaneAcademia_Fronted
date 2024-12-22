@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import PlatformOverview from "@/views/admin/PlatformOverview.vue";
 import ClaimReview from "@/views/admin/ClaimReview.vue";
 import PlatformScholars from "@/views/admin/PlatformScholars.vue";
+import ReviewResearcher from "@/views/admin/ReviewResearcher.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +65,7 @@ const router = createRouter({
         { path: "overview", name: "overview", component: PlatformOverview },
         { path: "review", name: "review", component: ClaimReview },
         { path: "scholars", name: "scholars", component: PlatformScholars },
+        { path: "reviewResearcher", name: "reviewResearcher", component: ReviewResearcher },
       ],
     },
     {
