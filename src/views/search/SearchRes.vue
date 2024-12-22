@@ -28,6 +28,9 @@
           </el-checkbox-group>
         </div>
       </div>
+    <div >
+      <button style="width:90%;height:50px;font-size:18px;color:var(--theme-color);background-color:var(--back-color);border: 2px solid var(--button-color);border-radius: 5px;">应用筛选条件</button>
+    </div>
     </el-affix>
 
     <div class="results-section">
@@ -183,7 +186,7 @@ export default {
         dateRange: this.dateRange,
         filter: {
           keys: [...this.selectedKeywords],
-          years: this.selectedYears.map(year => year.toString()),
+          years: this.selectedYears.map(year => year.getFullYear().toString()),
           authorOrganizations: [...this.selectedAuthors]
         }
       });
@@ -206,7 +209,7 @@ export default {
         dateRange: this.dateRange,
         filter: {
           keys: [...this.selectedKeywords],
-          years: this.selectedYears.map(year => year.toString()),
+          years: this.selectedYears.map(year => year.getFullYear().toString()),
           authorOrganizations: [...this.selectedAuthors]
         },
         sort: this.sortBy * this.sortDown,
@@ -588,5 +591,8 @@ export default {
 .filter-selections{
   padding-left:10px;
   margin-right: 20px;
+}
+.button{
+
 }
 </style>
