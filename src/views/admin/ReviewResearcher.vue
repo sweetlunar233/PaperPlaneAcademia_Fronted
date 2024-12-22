@@ -1,15 +1,18 @@
 <template>
   <div>
-    <h2>审核科研人员申请</h2>
-    <el-table :data="pagedApplications" border style="width: 100%">
-      <el-table-column prop="username" label="用户名" min-width="120"></el-table-column>
+    <h2>审核认领门户申请</h2>
+    <el-table :data="pagedClaims" border style="width: 100%">
+      <el-table-column prop="name" label="姓名" min-width="120"></el-table-column>
+      <el-table-column prop="otherName" label="其他名字" min-width="120"></el-table-column>
+      <el-table-column prop="gender" label="性别" min-width="80"></el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="200"></el-table-column>
-      <el-table-column prop="organization" label="所在机构" min-width="200"></el-table-column>
-      <el-table-column prop="reason" label="申请理由" min-width="300"></el-table-column>
+      <el-table-column prop="field" label="学科领域" min-width="150"></el-table-column>
+      <el-table-column prop="selectedScholarId" label="选择的学者ID" min-width="180"></el-table-column>
+      <el-table-column prop="userId" label="用户ID" min-width="100"></el-table-column>
       <el-table-column label="操作" align="center" min-width="150">
         <template #default="{ row }">
-          <el-button type="success" @click="approveApplication(row.applicationId)">通过</el-button>
-          <el-button type="danger" @click="rejectApplication(row)">驳回</el-button>
+          <el-button type="success" @click="approveClaim(row.id)">通过</el-button>
+          <el-button type="danger" @click="rejectClaim(row)">驳回</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -17,7 +20,7 @@
     <el-pagination
       v-model:current-page="currentPage"
       :page-size="pageSize"
-      :total="totalApplications"
+      :total="totalClaims"
       @current-change="handlePageChange"
       style="margin-top: 20px"
     ></el-pagination>
@@ -34,43 +37,42 @@
 </template>
 
 <script>
-import { getApplications, approveApplication, rejectApplication } from "@/api/claim"; // 根据你的接口调整
+import { getClaims, approveClaim, rejectClaim } from "@/api/claim"; // 根据你的接口调整
 
 export default {
   data() {
     return {
-      applications: [], // 存储所有科研人员申请
+      claims: [], // 存储所有认领申请
       currentPage: 1,
       pageSize: 10,
-      totalApplications: 0,
+      totalClaims: 0,
       rejectDialogVisible: false,
       rejectReason: "",
-      selectedApplicationId: null, // 当前选择的申请ID
+      selectedClaimId: null, // 当前选择的认领申请ID
     };
   },
   computed: {
-    pagedApplications() {
+    pagedClaims() {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
-      return this.applications.slice(start, end);
+      return this.claims.slice(start, end);
     },
   },
   methods: {
-    // 获取科研人员申请列表
-    fetchApplications() {
-      // 通过调用 API 获取数据
-      var promise = getApplications();
+    // 获取认领申请列表
+    fetchClaims() {
+      var promise = getClaims();
       promise
         .then((response) => {
           if (response.status === "success") {
-            this.applications = response.data.data;
-            this.totalApplications = this.applications.length;
+            this.claims = response.data.claims;
+            this.totalClaims = response.data.total;
           } else {
-            console.error("获取科研人员申请失败:", response.data.message);
+            console.error("获取认领申请失败:", response.data.message);
           }
         })
         .catch((error) => {
-          console.error("获取科研人员申请失败:", error);
+          console.error("获取认领申请失败:", error);
         });
     },
 
@@ -80,13 +82,13 @@ export default {
     },
 
     // 通过申请
-    approveApplication(applicationId) {
-      var promise = approveApplication(applicationId); // 调用后端接口
+    approveClaim(claimId) {
+      var promise = approveClaim(claimId); // 调用后端接口
       promise
         .then((response) => {
           if (response.data.status === "success") {
-            alert("科研人员申请已通过");
-            this.fetchApplications();
+            alert("认领申请已通过");
+            this.fetchClaims();
           } else {
             alert("审批失败：" + response.data.message);
           }
@@ -97,21 +99,21 @@ export default {
     },
 
     // 驳回申请
-    rejectApplication(row) {
-      this.selectedApplicationId = row.applicationId; // 存储当前选中申请的applicationId
+    rejectClaim(row) {
+      this.selectedClaimId = row.id; // 存储当前选中认领申请的ID
       this.rejectDialogVisible = true;
     },
 
     // 提交驳回理由
     submitRejection() {
       const reason = this.rejectReason;
-      var promise = rejectApplication(this.selectedApplicationId, reason); // 提交驳回理由
+      var promise = rejectClaim(this.selectedClaimId, reason); // 提交驳回理由
       promise
         .then((response) => {
           if (response.data.status === "success") {
-            alert("科研人员申请已驳回");
+            alert("认领申请已驳回");
             this.rejectDialogVisible = false;
-            this.fetchApplications();
+            this.fetchClaims();
           } else {
             alert("驳回失败：" + response.data.message);
           }
@@ -122,7 +124,7 @@ export default {
     },
   },
   created() {
-    this.fetchApplications();
+    this.fetchClaims();
   },
 };
 </script>
