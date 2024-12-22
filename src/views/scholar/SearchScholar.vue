@@ -11,7 +11,7 @@
             style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;"
           >
             <!-- 运算符选择 -->
-            <el-select v-show="index > 0" v-model="condition.operator" placeholder="逻辑运算" style="width: 80px;">
+            <el-select v-if="index > 0" v-model="condition.operator" placeholder="逻辑运算" style="width: 80px;">
               <el-option label="AND" value="AND"></el-option>
               <el-option label="OR" value="OR"></el-option>
               <el-option label="NOT" value="NOT"></el-option>
@@ -75,12 +75,9 @@
     },
     methods: {
       // 添加新条件
-      addCondition() {
-        this.authorConditions.push({
-          operator: "AND",
-          value: "",
-          scope: "name",
-        });
+      addCondition(index) {
+        console.log('Adding field at index:', index);
+        this.authorConditions.splice(index + 1, 0, { value: "" });
       },
   
       // 移除条件

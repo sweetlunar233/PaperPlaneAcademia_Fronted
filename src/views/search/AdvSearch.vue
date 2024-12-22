@@ -106,6 +106,7 @@
     },
     methods: {
       addField(index) {
+        console.log('Adding field at index:', index);
         this.advancedFields.splice(index + 1, 0, { value: "" });
       },
       removeField(index) {
