@@ -8,7 +8,7 @@
         <div style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
           发表评论
         </div>
-        <el-avatar :size="100" src='https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain'></el-avatar>
+        <el-avatar :size="100" :src="availableAvatars[avator]"></el-avatar>
         <el-form style="padding-top: 3%;">
           <el-form-item>
             <el-input
@@ -24,65 +24,62 @@
       
       <!-- 评论列表 -->
       <el-col class="postComment"  :span="16">
-  <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
-    评论
-  </h2>
-  <div style="height: 1px; background-color: #dcdfe6; margin-bottom: 16px;"></div>
-  <div v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
-    <el-row gutter="20" type="flex" align="top">
-      <el-col :span="1">
-        <el-avatar
-          size="50"
-          src="https://via.placeholder.com/50"
-        ></el-avatar>
-      </el-col>
-      <el-col :span="21">
-        <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}</p>
-        <p style="color: #606266; margin-top: 8px; margin-left: 5px;">{{ comment.content }}</p>
-        <el-row type="flex" align="middle" style="margin-top: 8px;">
-          <el-button
-            type="text"
-            size="small"
-            @click="startReply(comment.id)"
-          >
-            回复
-          </el-button>
-          <el-button
-            type="text"
-            size="small"
-            @click="likeComment(comment.id)"
-            style="margin-left: 5px;"
-          >
-          <svg t="1732007549904" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1623" width="16" height="16"><path d="M734.426667 981.333333H320a149.333333 149.333333 0 0 1-149.333333-149.333333V546.46c0-100.666667 73.28-179.106667 126.786666-236.4l6-6.446667c68.52-73.56 74-133.906667 74-205.153333 0-25.746667 12.04-39.333333 22.14-46.186667C411.26 44.333333 424.326667 42.666667 433.233333 42.666667c20.993333 0 52.946667 9.473333 79.66 36.066666 20.553333 20.453333 45.053333 58.42 45.053334 123.113334 0 29.566667-7.18 62.666667-13.206667 85.2-7.8 29.213333-18.56 59.253333-30.28 84.573333a10.666667 10.666667 0 0 0 0.666667 10.373333 10.28 10.28 0 0 0 8.873333 4.833334h0.1l275.153333-2.22h0.666667a85.333333 85.333333 0 0 1 84.333333 98.306666l-65.546666 426.06A85.333333 85.333333 0 0 1 734.426667 981.333333zM433.233333 85.333333c-12.186667 0-13.133333 5.44-13.133333 13.126667 0 42.133333-2.26 77.706667-13.286667 114.373333C394.133333 255 370.54 294.206667 334.666667 332.666667l-6 6.513333C277.266667 394.186667 213.333333 462.666667 213.333333 546.46V832c0 58.813333 47.853333 106.666667 106.666667 106.666667h414.426667a42.433333 42.433333 0 0 0 42.173333-36.18l65.546667-426.06 21.086666 3.24-21.086666-3.24a42.666667 42.666667 0 0 0-42.146667-49.153334h-0.346667l-275.153333 2.22a53.333333 53.333333 0 0 1-48.74-75.8c22.913333-49.486667 39.54-113.333333 39.54-151.846666C515.28 113.813333 460 85.333333 433.233333 85.333333z" fill="#5C5C66" p-id="1624"></path></svg>{{ comment.likes }}
-          </el-button>
-        </el-row>
+        <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
+          评论
+        </h2>
+        <div style="height: 1px; background-color: #dcdfe6; margin-bottom: 16px;"></div>
+        <div v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
+          <el-row gutter="20" type="flex" align="top">
+            <el-col :span="1">
+              <el-avatar size="50" :src="availableAvatars[comment.avator]"></el-avatar>
+            </el-col>
+            <el-col :span="21">
+              <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}</p>
+              <p style="color: #606266; margin-top: 8px; margin-left: 5px;">{{ comment.content }}</p>
+              <el-row type="flex" align="middle" style="margin-top: 8px;">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="startReply(comment.id)"
+                >
+                  回复
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="likeComment(comment.id)"
+                  style="margin-left: 5px;"
+                >
+                <svg t="1732007549904" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1623" width="16" height="16"><path d="M734.426667 981.333333H320a149.333333 149.333333 0 0 1-149.333333-149.333333V546.46c0-100.666667 73.28-179.106667 126.786666-236.4l6-6.446667c68.52-73.56 74-133.906667 74-205.153333 0-25.746667 12.04-39.333333 22.14-46.186667C411.26 44.333333 424.326667 42.666667 433.233333 42.666667c20.993333 0 52.946667 9.473333 79.66 36.066666 20.553333 20.453333 45.053333 58.42 45.053334 123.113334 0 29.566667-7.18 62.666667-13.206667 85.2-7.8 29.213333-18.56 59.253333-30.28 84.573333a10.666667 10.666667 0 0 0 0.666667 10.373333 10.28 10.28 0 0 0 8.873333 4.833334h0.1l275.153333-2.22h0.666667a85.333333 85.333333 0 0 1 84.333333 98.306666l-65.546666 426.06A85.333333 85.333333 0 0 1 734.426667 981.333333zM433.233333 85.333333c-12.186667 0-13.133333 5.44-13.133333 13.126667 0 42.133333-2.26 77.706667-13.286667 114.373333C394.133333 255 370.54 294.206667 334.666667 332.666667l-6 6.513333C277.266667 394.186667 213.333333 462.666667 213.333333 546.46V832c0 58.813333 47.853333 106.666667 106.666667 106.666667h414.426667a42.433333 42.433333 0 0 0 42.173333-36.18l65.546667-426.06 21.086666 3.24-21.086666-3.24a42.666667 42.666667 0 0 0-42.146667-49.153334h-0.346667l-275.153333 2.22a53.333333 53.333333 0 0 1-48.74-75.8c22.913333-49.486667 39.54-113.333333 39.54-151.846666C515.28 113.813333 460 85.333333 433.233333 85.333333z" fill="#5C5C66" p-id="1624"></path></svg>{{ comment.likes }}
+                </el-button>
+              </el-row>
 
-        <!-- 回复输入框 -->
-        <div v-if="replyingTo === comment.id" style="margin-top: 8px;">
-          <el-input
-            type="textarea"
-            rows="2"
-            v-model="replyText[comment.id]"
-            placeholder="输入回复内容"
-            style="margin-bottom: 8px;"
-          ></el-input>
-          <el-button
-            type="primary"
-            size="small"
-            @click="submitReply(comment.id)"
-          >
-            发表回复
-          </el-button>
-        </div>
+              <!-- 回复输入框 -->
+              <div v-if="replyingTo === comment.id" style="margin-top: 8px;">
+                <el-input
+                  type="textarea"
+                  rows="2"
+                  v-model="replyText[comment.id]"
+                  placeholder="输入回复内容"
+                  style="margin-bottom: 8px;"
+                ></el-input>
+                <el-button
+                  type="primary"
+                  size="small"
+                  @click="submitReply(comment.id)"
+                >
+                  发表回复
+                </el-button>
+              </div>
 
-        <!-- 展示回复 -->
-        <div v-for="(reply, replyIndex) in comment.replies" :key="replyIndex" style="margin-left: 20px; margin-top: 12px;">
-          <p style="font-size: 14px; font-weight: bold; margin: 0;">{{ reply.username }}</p>
-          <p style="color: #606266; font-size: 12px; margin-top: 4px;">{{ reply.content }}</p>
+              <!-- 展示回复 -->
+              <div v-for="(reply, replyIndex) in comment.replies" :key="replyIndex" style="margin-left: 20px; margin-top: 12px;">
+                <p style="font-size: 14px; font-weight: bold; margin: 0;">{{ reply.username }}</p>
+                <p style="color: #606266; font-size: 12px; margin-top: 4px;">{{ reply.content }}</p>
+              </div>
+            </el-col>
+          </el-row>
         </div>
-      </el-col>
-    </el-row>
-  </div>
       </el-col>
 
     </el-row>
@@ -153,10 +150,10 @@ export default {
       }
     },
     navigateToArticle(articleId) {
-    // 跳转到文章页面逻辑
-    console.log(`跳转到文章页面，文章 ID: ${articleId}`);
-    this.$router.push('/article/${articleId}');
-  },
+      // 跳转到文章页面逻辑
+      console.log(`跳转到文章页面，文章 ID: ${articleId}`);
+      this.$router.push('/article/${articleId}');
+    },
     startReply(commentId) {
       this.replyingTo = commentId; // 设置当前正在回复的评论ID
       if (!this.replyText[commentId]) {
@@ -181,7 +178,7 @@ export default {
     },
   },
   mounted(){
-    
+    this.userId = this.$cookies.get("userId")
   }
 }
 </script>
