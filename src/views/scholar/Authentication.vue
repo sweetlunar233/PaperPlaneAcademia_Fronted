@@ -180,6 +180,7 @@
   
 <script>
 import { Authenticate } from '@/api/claim';
+import { searchByName } from '@/api/article';
 export default {
   data() {
     return {
@@ -194,7 +195,7 @@ export default {
           field: '',
           claimedPapers: [],
           newPapers: [],
-          userId: this.$root.OnlineUser,
+          userId: this.$cookies.get('userId')
       },
       papersList: [
           { title: "论文1标题", date: "2023-08-1", journal: "期刊名",authors: "张三, 李四" },
@@ -292,16 +293,19 @@ export default {
       }
       console.log("搜索论文");
       if (authorNames.length > 0) {
-        const requestBody = {
-            "names": authorNames
-        };
-          this.$axios.post('/papers/searchbyname', requestBody).then(response => {
-              this.papersList = response.data;
-          }).catch(error => {
-              console.error("获取论文数据失败", error);
-          });
+        var response = searchByName(authorNames);
+
+        response
+        .then((data) => {
+        console.log("searchByName res", data);
+        if(data.status == "error"){
+          console.error("Error searchByName");
+        }else{
+          this.papersList =data;
+        }
+        });
       } else {
-          console.log('没有可搜索的作者名');
+        console.log('没有可搜索的作者名');
       }
     },
 

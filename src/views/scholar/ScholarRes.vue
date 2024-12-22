@@ -85,7 +85,7 @@ export default {
       
       searchConditions: {},
       userId: this.$root.OnlineUser,
-      router:useRouter(),
+      router: this.$cookies.get('userId')
     };
   },
   computed: {
