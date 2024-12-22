@@ -8,7 +8,6 @@
                 <div class="title">
                     {{ field.name }}
                 </div>
-
             </el-col>
         </el-row>
         <el-row>
@@ -74,10 +73,11 @@
             
             <el-col :span="6" class="otherInfo">
                 <el-row style="text-align: center;">
-                    <el-col :span="12">
+                    <el-col :span="11">
                         <el-statistic title="论文量" :value="field.worksCount" value-style="color:#67C23A"/>
                     </el-col>
-                    <el-col :span="12">
+                    <el-divider direction="vertical" style="height: 60px;"/>
+                    <el-col :span="11">
                         <el-statistic title="被引量" :value="field.citedCound" value-style="color:#E6A23C;"/>
                     </el-col>
                 </el-row>
@@ -118,13 +118,14 @@ export default{
             isLoading:false,
             isFold:false,
             activeTab:"second",
+            router:useRouter(),
         }
     },
     methods: {
 
         toField(id){
             // 获取目标 URL
-            const targetUrl = this.router.resolve({ path: '/field', query: { id: this.id } }).href;
+            const targetUrl = this.router.resolve({ path: '/field', query: { id: id } }).href;
             // 使用 window.open 打开新窗口
             window.open(targetUrl, '_blank');
         },
@@ -168,6 +169,7 @@ export default{
     padding-left: 20px;
     margin-left: 12%;
     margin-right: 20%;
+    padding-bottom: 2%;
 }
 
 .article .title {
@@ -284,6 +286,7 @@ export default{
     padding-left: 2%;
     padding-right: 2%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04);
+    height: 130px;
 }
 
 .article .field {
