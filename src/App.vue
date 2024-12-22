@@ -5,12 +5,14 @@
       <el-header>
         <!-- 左侧 Logo -->
         <div class="logo" @click="goToHome">
-          Academia
+          PaperPlane
         </div>
 
-        <!-- 高级搜索按钮 -->
+        <!-- 高级搜索按钮和学者搜索按钮 -->
         <div class="advanced-search">
           <el-button type="text" @click="goToAdvSearch">高级搜索</el-button>
+          <!-- 新增学者搜索按钮 -->
+          <el-button type="text" @click="goToSearchScholar">学者搜索</el-button>
         </div>
 
         <!-- 中间搜索框 -->
@@ -33,7 +35,7 @@
             <el-button @click="goToRegister">注册</el-button>
           </template>
           <template v-else>
-            <span @click="goToMyGateway">欢迎, {{ username }}</span>
+            <span @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
             <el-button @click="logout">注销</el-button>
           </template>
         </div>
@@ -46,6 +48,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import {GetMyUserData} from "@/api/user.js";
 export default {
   data() {
     return {
@@ -56,19 +60,6 @@ export default {
     };
   },
   methods: {
-    async checkLoginStatus() {
-      try {
-        const response = await axios.get("/user/userData"); // 假设后端提供登录状态接口
-        if (response != null) {
-          this.loggedIn = true;
-          this.username = response.UserInfo.name; // 获取用户名
-        } else {
-          this.loggedIn = false;
-        }
-      } catch (error) {
-        console.error("获取登录状态失败：", error);
-      }
-    },
     goToHome() {
       this.$router.push("/home"); // 跳转到主页
     },
@@ -86,35 +77,45 @@ export default {
       this.username = "";
       this.OnlineUser = 0;
       $cookies.remove('userId');
+      $cookies.remove('username');
       alert("已注销！");
       this.$router.push("/home");
     },
     async onSearch() {
-      if (this.searchQuery.trim() !== "") {
-        try {
-          const response = await axios.post("/search", {
-            query: this.searchQuery, // 发送的搜索内容
-          });
-          if (response.data.success) {
-            alert(`搜索结果：${response.data.results}`);
-            this.$router.push({ path: "/search", query: { q: this.searchQuery } });
-          } else {
-            alert("未找到相关内容");
-          }
-        } catch (error) {
-          console.error("搜索请求失败：", error);
-          alert("搜索失败，请稍后再试！");
-        }
-      } else {
-        alert("请输入搜索内容！");
+      // 检查搜索文本是否已填写
+      if (this.searchQuery.trim() === "") {
+        this.$message.warning("请输入搜索内容");
+        return;
+      }
+
+      try {
+        // 跳转到 SearchRes.vue 页面并传递搜索文本
+        this.$router.push({ name: "searchRes", query: { q: this.searchQuery } });
+      } catch (error) {
+        console.error("搜索请求失败：", error);
+        alert("搜索失败，请稍后再试！");
       }
     },
+
+
     goToAdvSearch() {
       this.$router.push("/advsearch"); // 跳转到高级搜索页面
     },
+    // 新增跳转到学者搜索页面的方法
+    goToSearchScholar() {
+      this.$router.push("/searchScholar"); // 跳转到学者搜索页面
+    },
+    checkLoginStatus() {
+      this.username = this.$cookies.get("username");
+      this.OnlineUser = this.$cookies.get("userId");
+      this.loggedIn = true;
+      if(this.username == undefined){
+        this.loggedIn = false;
+      }
+      console.log(this.OnlineUser)
+    }
   },
   mounted() {
-    $cookies.set("userId", 1);
     this.checkLoginStatus(); // 组件加载时检查登录状态
   },
 };
@@ -166,6 +167,11 @@ export default {
 .advanced-search,
 .auth-buttons {
   flex-shrink: 0; /* 固定宽度，避免被压缩 */
+}
+
+.advanced-search {
+  display: flex;
+  gap: 20px; /* 增加按钮之间的间距 */
 }
 
 .auth-buttons {

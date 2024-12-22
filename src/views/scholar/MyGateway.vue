@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="this.availableAvatars[userInfo.photoUrl - 1]" @click="showAvatarDialog = true" class="profile-photo-img"  />
+        <img :src="this.availableAvatars[userInfo.photoUrl]" @click="showAvatarDialog = true" class="profile-photo-img"  />
       </div>
       <el-dialog
           title="选择头像"
@@ -183,7 +183,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
-import {GetMyUserData, UpdateAvatar} from "@/api/user.js";
+import {GetMyUserData, UpdateAvatar, updateDescription, updateResearchFields} from "@/api/user.js";
 
 export default {
   data() {
@@ -260,8 +260,8 @@ export default {
     editDescription() {
       const newDescription = prompt('请输入新的简介', this.userInfo.description);
       if (newDescription !== null) {
-        axios.put('/users/updateDescription/', { userId: this.$root.OnlineUser, description: newDescription })
-            .then(response => {
+       var promise = updateDescription(this.$cookies.get('userId'), newDescription);
+            promise.then(response => {
               this.userInfo.description = newDescription;
               console.log('简介更新成功', response.data);
             })
@@ -273,11 +273,11 @@ export default {
 
     // 修改研究领域
     editResearchFields() {
-      const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields.join(', '));
+      const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields);
       if (newResearchFields !== null) {
         const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        axios.put('/users/updateResearchFields/', { userId: this.$root.OnlineUser, researchFields: updatedFields })
-            .then(response => {
+        var promise = updateResearchFields(this.$cookies.get('userId'), updatedFields);
+        promise.then(response => {
               this.userInfo.researchFields = updatedFields;
               console.log('研究领域更新成功', response.data);
             })
@@ -289,7 +289,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchUserData() {
-      const userId = this.$root.OnlineUser;
+      const userId = this.$cookies.get('userId');
       var promise = GetMyUserData(userId);
       promise.then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles

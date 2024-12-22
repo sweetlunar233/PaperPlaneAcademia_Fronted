@@ -31,6 +31,7 @@
 <script>
 import { Login } from "@/api/user";
 import axios from "axios";
+import { getCurrentInstance } from "vue";
 
 export default {
   data() {
@@ -46,31 +47,20 @@ export default {
     };
   },
   methods: {
-    submitLoginForm(formName) {
-      this.$refs[formName].validate(async (valid) => {
-        if (valid) {
-          try {
-            var promise = Login(this.loginForm.username,this.loginForm.password);
-            promise.then((result) => {
-              if( result && result.status === "success"){
-                alert("登录成功！");
-                this.$root.loggedIn = true; // 修改根组件的登录状态
-                this.$root.OnlineUser = result.UserId; // 修改根组件的当前在线用户Id
-                $cookies.set("userId", result.UserId);
-                this.$router.push("/home"); // 登录成功跳转到主页面
-              }
-              else{
-                alert(result);
-              }
-            })
-          } catch (error) {
-            console.error("登录失败:", error);
-            alert("登录失败，请检查网络连接或稍后重试。");
-          }
-        } else {
-          console.log("error submit!!");
-        }
-      });
+    submitLoginForm() {
+      var promise = Login(this.loginForm.username,this.loginForm.password);
+        promise.then((result) => {
+            if(result.status === "success"){
+              alert("登录成功！");
+              this.$cookies.set("userId", result.UserId);
+              this.$cookies.set("username", result.username);
+              this.$cookies.set("avatar",result.avatarId);
+              this.$router.push("/home"); // 登录成功跳转到主页面
+            }
+            else{
+              alert(result.message);
+            }
+        })
     },
   },
 };
