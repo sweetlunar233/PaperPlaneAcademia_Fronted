@@ -286,6 +286,36 @@ initHome(userId.value);
 
 
 
+// 定义 truncate 函数，接收标题作为参数
+function truncate(title) {
+  let words = title.split(' ') // 将标题按空格分割成单词数组
+  let truncated = '' // 存储截断后的标题
+  let charCount = 0 // 当前字符数
+
+  // 遍历每个单词，逐个添加，直到字符数超过限制
+  for (let word of words) {
+    // 当前字符数加上这个单词的长度（如果有空格，需要加1）
+    if (charCount + word.length + (truncated ? 1 : 0) <= 90) {
+      // 如果字符数不超过限制，则添加该单词
+      truncated += (truncated ? ' ' : '') + word
+      charCount += word.length + (truncated ? 1 : 0) // 更新字符数
+    } else {
+      break // 一旦超过字符限制就跳出循环
+    }
+  }
+
+  // 如果标题总字符数超过90，添加省略号
+  if (charCount < title.length) {
+    truncated += '...'
+  }
+
+  return truncated
+}
+
+
+
+
+
 
 // 页面加载完成后开始动画
 onMounted(() => {
@@ -388,36 +418,32 @@ onMounted(() => {
                 <el-tab-pane label="推荐文献" name="hot-gate-articles" style="text-align: left">
                     <div class="articles">
                         <div class="articles-body">
+                            <br>
                             <div v-for="(article, index) in top_articles" v-bind:key="index">
-                                <div style="text-align: left">
-                                    <div style="margin-bottom: 10px">
-                                        <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
-                                    </div>
-                                    <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                        <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
-                                        <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
-                                    </span>
-                                    <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
+                                <div class="card">
+                                  <div style="text-align: left">
+                                      <div style="margin-bottom: 10px">
+                                          <span class="title" @click="gotoPaper(article.paperId)">{{ truncate(article.paperTitle) }}</span>
+                                      </div>
+                                      <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
+                                          <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
+                                          <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
+                                      </span>
+                                      <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
+                                  </div>
+
+                                  <div style="text-align:left;margin-top:10px;">
+                                      <span class="abstract">{{ FormatString(article.abstract) }}</span>
+                                  </div>
+
+                                  <div class="citation-count">
+                                      <span>{{ article.collectNum }}&nbsp;被收藏</span>
+                                      <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
+                                  </div>
                                 </div>
 
-                                <!-- <div style="text-align: left; margin-top: 10px;">
-                                    <span v-for="(user, index2) in article.users" :key="user" class="author-name">
-                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
-                                        <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
-                                        <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
-                                    </span>
-                                </div> -->
-
-                                <div style="text-align:left;margin-top:10px;">
-                                    <span class="abstract">{{ FormatString(article.abstract) }}</span>
-                                </div>
-
-                                <div class="citation-count">
-                                    <span>{{ article.collectNum }}&nbsp;被收藏</span>
-                                    <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
-                                </div>
-
-                                <el-divider v-if="index < top_articles.length - 1"></el-divider>
+                                <el-divider></el-divider>
+                                <!-- <el-divider v-if="index < top_articles.length - 1"></el-divider> -->
                             </div>
                         </div>
                     </div>
@@ -425,36 +451,32 @@ onMounted(() => {
                 <el-tab-pane label="热门文献" name="push-sword-articles" style="text-align: left">
                   <div class="articles">
                         <div class="articles-body">
+                            <br>
                             <div v-for="(article, index) in recommended_articles" v-bind:key="index">
-                                <div style="text-align: left">
-                                    <div style="margin-bottom: 10px">
-                                        <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
-                                    </div>
-                                    <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                      <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
-                                      <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
-                                    </span>
-                                    <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
+                                <div class="card">
+                                  <div style="text-align: left">
+                                      <div style="margin-bottom: 10px">
+                                          <span class="title" @click="gotoPaper(article.paperId)">{{ truncate(article.paperTitle) }}</span>
+                                      </div>
+                                      <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
+                                        <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
+                                        <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
+                                      </span>
+                                      <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
+                                  </div>
+
+                                  <div style="text-align:left;margin-top:10px;">
+                                      <span class="abstract">{{ FormatString(article.abstract) }}</span>
+                                  </div>
+
+                                  <div class="citation-count">
+                                      <span>{{ article.collectNum }}&nbsp;被收藏</span>
+                                      <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
+                                  </div>
                                 </div>
 
-                                <!-- <div style="text-align: left; margin-top: 10px;">
-                                    <span v-for="(user, index2) in article.users" :key="user" class="author-name">
-                                        <span style="cursor:auto; color: black;">去作者空间:&nbsp;&nbsp;</span>
-                                        <span @click="gotoScholar(user.userId)"><u>{{ user.userName }}</u></span>
-                                        <span v-if="index2 < article.authors.length-1">&nbsp;&nbsp;</span>
-                                    </span>
-                                </div> -->
-
-                                <div style="text-align:left;margin-top:10px;">
-                                    <span class="abstract">{{ FormatString(article.abstract) }}</span>
-                                </div>
-
-                                <div class="citation-count">
-                                    <span>{{ article.collectNum }}&nbsp;被收藏</span>
-                                    <span>&nbsp;·&nbsp;{{ article.citationNum }}&nbsp;被引用</span>
-                                </div>
-
-                                <el-divider v-if="index < recommended_articles.length - 1"></el-divider>
+                                <el-divider></el-divider>
+                                <!-- <el-divider v-if="index < recommended_articles.length - 1"></el-divider> -->
                             </div>
                         </div>
                     </div>
@@ -462,18 +484,22 @@ onMounted(() => {
                 <el-tab-pane label="科研机构" name="organization" style="text-align: left">
                   <div class="articles">
                         <div class="articles-body">
+                            <br>
                             <div v-for="(organization, index) in organizations" v-bind:key="index">
-                                <div style="text-align: left">
-                                    <div>
-                                        <span class="title">{{ organization.organizationName }}</span>
-                                    </div>
+                                <div>
+                                  <div style="text-align: left; margin-top: 5px;">
+                                      <div>
+                                          <span class="title">{{ organization.organizationName }}</span>
+                                      </div>
+                                  </div>
+
+                                  <div class="citation-count" style="text-align: left; margin-bottom: 5px;">
+                                      <span>成果数： {{ organization.works_number }}</span>
+                                  </div>
                                 </div>
 
-                                <div class="citation-count">
-                                    <span>成果数： {{ organization.works_number }}</span>
-                                </div>
-
-                                <el-divider v-if="index < organizations.length - 1"></el-divider>
+                                <el-divider></el-divider>
+                                <!-- <el-divider v-if="index < organizations.length - 1"></el-divider> -->
                             </div>
                         </div>
                     </div>
@@ -481,22 +507,26 @@ onMounted(() => {
                 <el-tab-pane label="科研领域" name="field" style="text-align: left">
                   <div class="articles">
                         <div class="articles-body">
+                            <br>
                             <div v-for="(field, index) in fields" v-bind:key="index">
-                                <div style="text-align: left">
-                                    <div>
-                                        <span class="title">{{ field.fieldName }}</span>
-                                    </div>
-                                    <div style="margin-top: 10px;">
-                                      <span>TOP引用量文章：</span>
-                                      <span class="author-name" @click="gotoPaper(field.topArticleId)"><u>{{ field.topArticleName }}</u></span>
-                                    </div>
+                                <div>
+                                  <div style="text-align: left;">
+                                      <div>
+                                          <span class="title">{{ field.fieldName }}</span>
+                                      </div>
+                                      <div style="margin-top: 10px;">
+                                        <span>TOP引用量文章：</span>
+                                        <span class="author-name" @click="gotoPaper(field.topArticleId)"><u>{{ field.topArticleName }}</u></span>
+                                      </div>
+                                  </div>
+
+                                  <div class="citation-count">
+                                      <span>成果数： {{ field.works_number }}</span>
+                                  </div>
                                 </div>
 
-                                <div class="citation-count">
-                                    <span>成果数： {{ field.works_number }}</span>
-                                </div>
-
-                                <el-divider v-if="index < fields.length - 1"></el-divider>
+                                <el-divider></el-divider>
+                                <!-- <el-divider v-if="index < fields.length - 1"></el-divider> -->
                             </div>
                         </div>
                     </div>
@@ -508,6 +538,19 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+.card {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #bebebe,
+             -5px -5px 10px #ffffff;
+}
 
 .loader {
   width: 44.8px;

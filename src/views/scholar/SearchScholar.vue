@@ -112,7 +112,7 @@
   
       // 移除条件
       removeCondition(index) {
-        if (this.authorConditions.length <=2) {
+        if (this.authorConditions.length <=1) {
         alert('不能删除');
         return;  // 不允许继续添加
     }
