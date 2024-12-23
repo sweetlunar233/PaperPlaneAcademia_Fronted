@@ -220,8 +220,7 @@ export default{
             id:0,
             article:{
                 title:"Scalable Defect Detection via Traversal on Code Graph",
-                author:["Zhengyao Liu","Xitong Zhong","Xingjing Deng","Shuo Hong","Xiang Gao","Hailong Sun"],
-                scholarAuthor:[{name:"Zhengyao Liu",id:1},{name:"Xitong Zhong",id:2},{name:"Xingjing Deng",id:3},{name:"Shuo Hong",id:4},{name:"Xiang Gao",id:5},{name:"Hailong Sun",id:5}],
+                author:[{authorName:"Zhengyao Liu",id:1},{authorName:"Xitong Zhong",id:2},{authorName:"Xingjing Deng",id:3},{authorName:"Shuo Hong",id:4},{authorName:"Xiang Gao",id:5},{authorName:"Hailong Sun",id:5}],
                 institution:["Beihang University"],
                 year:"2021",
                 DOI:"10.1007/978-3-030-87358-5_40",
@@ -534,12 +533,20 @@ export default{
                 this.isLoading = false;
                 this.quotation = this.formatGB7714();
                 this.institutionNoRepeat = [...new Set(this.article.institution)];
-                var i = 0;
-                for(;i < this.article.author.length;i++){
-                    var j = 0;
-                    for(;j < this.institutionNoRepeat.length;j++){
-                        if(this.article.institution[i] === this.institutionNoRepeat[j]){
-                            this.authorToInstitution.push(j + 1);
+                if(this.institutionNoRepeat.length > 0){
+                    var i = 0;
+                    for(;i < this.article.author.length;i++){
+                        var j = 0;
+                        var isTurn = false;
+                        for(;j < this.institutionNoRepeat.length;j++){
+                            if(this.article.institution[i] === this.institutionNoRepeat[j]){
+                                this.authorToInstitution.push(j + 1);
+                                isTurn = true;
+                                break;
+                            }
+                        }
+                        if(!isTurn){
+                            this.authorToInstitution.push(Math.floor(Math.random() * this.institutionNoRepeat.length) + 1)
                         }
                     }
                 }
