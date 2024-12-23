@@ -167,10 +167,6 @@
             <span class="user-info-label">机构：</span>
             <span class="user-info-value">{{ userInfo.institution }}</span>
           </div>
-          <div class="user-info-item">
-            <span class="user-info-label">邮箱：</span>
-            <span class="user-info-value">{{ userInfo.email }}</span>
-          </div>
         </div>
       </div>
       <div class = "right">
@@ -202,8 +198,8 @@ export default {
       userInfo: {
         name: '',
         photoUrl: 3,
-        description: '',
-        researchFields: [],
+        description: '该用户很神秘',
+        researchFields: ["该用户很神秘"],
         registerTime: '',
         institution: '',
         status: '',
@@ -342,6 +338,7 @@ html, body {
   display: flex;
   align-items: flex-start;
   padding: 20px;
+  gap: 20px;
   /* background-color: #e6f7ff;  浅蓝色背景 */
   background-image: url('https://img.zcool.cn/community/015b315c73bb4ba801203d22796b80.jpg');
   background-size: cover;
@@ -431,7 +428,8 @@ html, body {
 .sidebar {
   position: fixed;
   top: 350px; /* 定位在页面上方 */
-  width: 200px;
+  left: 10px;
+  width: 240px;
   background-color: #ffffff; /* 白色背景 */
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -455,6 +453,7 @@ html, body {
 
 .sidebar li:hover {
   background-color: #e0f7fa; /* 淡蓝色背景 */
+  color: black;
 }
 
 .sidebar .active {
@@ -560,12 +559,12 @@ html, body {
 .user-info-card {
   position: fixed;
   top: 450px; /* 定位在页面上方 */
-  right: 30px;
+  right: 10px;
   background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 200px; /* 固定卡片宽度 */
+  width: 240px; /* 固定卡片宽度 */
 }
 
 .user-info-card-content {
@@ -593,12 +592,12 @@ html, body {
 .follow-card {
   position: fixed;
   top: 350px; /* 定位在页面上方 */
-  right: 30px;
+  right: 10px;
   background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 200px; /* 固定卡片宽度 */
+  width: 240px; /* 固定卡片宽度 */
 }
 
 .follow-card-content {
