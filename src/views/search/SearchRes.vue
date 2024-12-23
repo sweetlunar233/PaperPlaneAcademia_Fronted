@@ -145,8 +145,20 @@ export default {
       return Array.isArray(conditions) ? conditions : [conditions].filter(Boolean);
     },
     dateRange() {
-      const range = JSON.parse(decodeURIComponent(this.$route.query.dateRange))
-      return Array.isArray(range) ? range : [range].filter(Boolean);
+      const queryParam = this.$route.query.dateRange;
+
+    if (queryParam) {
+      try {
+        const range = JSON.parse(decodeURIComponent(queryParam));
+
+        return Array.isArray(range) ? range : [range];
+      } catch (e) {
+        console.error('Failed to parse dateRange:', e);
+        return [null, null];
+      }
+    } else {
+      return [null, null];
+    }
     }
   },
   methods: {

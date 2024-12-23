@@ -203,15 +203,15 @@ export default {
     
     var promise = GetComment(this.paperId);
     promise.then((result) =>{
-      if(result.comments){
-        this.comments = result.comments;
-      }
-      else{
+      if(result.comments === null){
         ElMessage({
             message: '获取评论失败',
             type: 'error',
             plain: true,
         });
+      }
+      else{
+        this.comments = result.comments;
       }
     })
     .finally(() =>{
