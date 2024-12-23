@@ -146,10 +146,6 @@
             <span class="user-info-label">机构：</span>
             <span class="user-info-value">{{ userInfo.institution }}</span>
           </div>
-          <div class="user-info-item">
-            <span class="user-info-label">邮箱：</span>
-            <span class="user-info-value">{{ userInfo.email }}</span>
-          </div>
         </div>
       </div>
       <div class = "right">
@@ -272,7 +268,6 @@ html, body {
   display: flex;
   align-items: flex-start;
   padding: 20px;
-  /* background-color: #e6f7ff;  浅蓝色背景 */
   background-image: url('https://img.zcool.cn/community/015b315c73bb4ba801203d22796b80.jpg');
   background-size: cover;
   background-position: center;

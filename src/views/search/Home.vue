@@ -14,17 +14,13 @@ const top_articles = ref([
   {
     authors: [
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
-    ],
-    users: [
-      {
-        userId: "123456",
-        userName: "WAACJIJI"
-      }
     ],
     paperId: "123456",
     paperTitle: "ABCDE",
@@ -36,17 +32,13 @@ const top_articles = ref([
   {
     authors: [
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
-    ],
-    users: [
-      {
-        userId: "123456",
-        userName: "WAACJIJI"
-      }
     ],
     paperId: "123456",
     paperTitle: "ABCDE",
@@ -58,17 +50,13 @@ const top_articles = ref([
   {
     authors: [
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
-    ],
-    users: [
-      {
-        userId: "123456",
-        userName: "WAACJIJI"
-      }
     ],
     paperId: "123456",
     paperTitle: "ABCDE",
@@ -82,17 +70,13 @@ const recommended_articles = ref([
   {
     authors: [
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
       {
+        userId: "111",
         userName: "Sergei Belousov"
       },
-    ],
-    users: [
-      {
-        userId: "123456",
-        userName: "WAACJIJI"
-      }
     ],
     paperId: "123456",
     paperTitle: "ABCDE",
@@ -406,7 +390,7 @@ onMounted(() => {
 
         <div class="recommend">
             <el-tabs v-model="topOrRec">
-                <el-tab-pane label="热门文献" name="hot-gate-articles" style="text-align: left">
+                <el-tab-pane label="推荐文献" name="hot-gate-articles" style="text-align: left">
                     <div class="articles">
                         <div class="articles-body">
                             <div v-for="(article, index) in top_articles" v-bind:key="index">
@@ -415,7 +399,7 @@ onMounted(() => {
                                         <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                        <span style="color: gray; cursor: default;"><u>{{ author.userName }}</u></span>
+                                        <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
                                         <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
@@ -443,7 +427,7 @@ onMounted(() => {
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="推荐文献" name="push-bitch-articles" style="text-align: left">
+                <el-tab-pane label="热门文献" name="push-sword-articles" style="text-align: left">
                   <div class="articles">
                         <div class="articles-body">
                             <div v-for="(article, index) in recommended_articles" v-bind:key="index">
@@ -452,7 +436,7 @@ onMounted(() => {
                                         <span class="title" @click="gotoPaper(article.paperId)">{{ article.paperTitle }}</span>
                                     </div>
                                     <span v-for="(author, index1) in article.authors" :key="author" class="author-name">
-                                      <span style="color: gray; cursor: default;"><u>{{ author.userName }}</u></span>
+                                      <span @click="gotoScholar(author.userId)"><u>{{ author.userName }}</u></span>
                                       <span v-if="index1 < article.authors.length-1">&nbsp;&nbsp;</span>
                                     </span>
                                     <span class="publish-year">&nbsp;&nbsp;·&nbsp;&nbsp;{{ article.year }}</span>
