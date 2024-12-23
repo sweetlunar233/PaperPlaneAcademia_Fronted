@@ -5,9 +5,9 @@
       <el-table-column prop="name" label="姓名" min-width="120"></el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="200"></el-table-column>
       <el-table-column prop="institution" label="机构" min-width="150"></el-table-column>
-      <el-table-column label="选择的学者ID" min-width="180">
+      <el-table-column label="选择的学者" min-width="180">
         <template #default="{ row }" >
-          <span class="hyperlink" @click="toGateway(row.selectScholarId)">{{ row.selectScholarId }}</span>
+          <span class="hyperlink" @click="toGateway(row.selectScholarId)">学者主页</span>
         </template>
       </el-table-column>
       <el-table-column prop="userId" label="用户ID" min-width="100"></el-table-column>
