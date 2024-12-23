@@ -53,12 +53,19 @@
   
         <el-form :model="formData" ref="form" v-if="step === 2" style="position: absolute; width: 100%; margin: 100px 15% 100px 10%;">
           <div class="label">门户认领</div>
-          <div class="dsc">
+          <div class="dsc" v-if="scholarsList.length>0">
               已根据您的姓名搜索到了系统中如下
               <span class="scholar-count"><i>{{ scholarsList.length }}</i></span>
               个匹配的门户信息, 点击选择
           </div>
-          <el-form-item class="claimed-scholars-container">
+          <div v-if="scholarsList.length==0" style="width: 100%;margin-top:50px">
+            <el-result
+              icon="error"
+              title="没有查找到与您的信息匹配的认证门户!"
+              sub-title="您可以点击右下角按钮返回上一步，修改您的信息"
+            ></el-result>
+          </div>
+          <el-form-item class="claimed-scholars-container" v-if="scholarsList.length>0">
             <div 
               v-for="(scholar, Id) in scholarsList" 
               :class="{ selected: formData.selectedScholarId == scholar.Id }"
@@ -302,7 +309,8 @@ export default {
         if(data.status == "error"){
           console.error("Error fetchScholars");
         }else{
-          this.scholarsList = data;
+          this.scholarsList = data.matched_scholars;
+          console.log(this.scholarsList)
         }
         });
     },

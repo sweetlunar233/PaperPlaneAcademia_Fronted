@@ -190,9 +190,15 @@ export default {
     sortBy() {
       this.currentPage = 1;
       this.fetchResults();
+    },
+    sortDown() {
+      this.currentPage = 1;
+      this.fetchResults();
     }
   },
   mounted() {
+    this.currentPage = 1;
+    this.getTotalPages();
     this.fetchResults();
   }
 };

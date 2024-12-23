@@ -5,7 +5,7 @@
         <div class="filter-title">关键词</div>
         <div class="filter-selections">
         <el-checkbox-group v-model="selectedKeywords" fill="var(--button-color)">
-          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="var(--button-color)"></el-checkbox>
+          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="var(--button-color)" style="font-size: 14px;"></el-checkbox>
         </el-checkbox-group></div>
       </div>
 
@@ -22,9 +22,9 @@
 
       <div class="block">
         <div class="filter-title">作者单位</div>
-        <div class="filter-selections">
-          <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)">
-            <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
+        <div class="filter-selections" >
+          <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)" >
+            <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization style="word-break: break-all;"></el-checkbox>
           </el-checkbox-group>
         </div>
       </div>
@@ -424,8 +424,9 @@ export default {
   min-width: 250px;
   max-width: 250px;
   border-right: 2px solid var(--gray-color);
-  position: sticky;
   height: 86vh;
+  overflow-y: auto;
+  
 }
 
 .results-section {
