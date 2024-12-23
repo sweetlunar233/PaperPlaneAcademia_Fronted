@@ -55,6 +55,8 @@ export default {
               this.$cookies.set("userId", result.UserId);
               this.$cookies.set("username", result.username);
               this.$cookies.set("avatar",result.avatarId);
+              // 更新 App.vue 状态
+              this.$root.checkLoginStatus();  // 调用 checkLoginStatus 更新状态
               if(this.loginForm.username === "root"){
                 this.$router.push("/Admin");// 管理员上号
               }else{
