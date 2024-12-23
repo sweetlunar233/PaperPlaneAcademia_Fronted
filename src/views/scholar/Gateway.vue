@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="this.availableAvatars[userInfo.photoUrl] || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" alt="用户头像" />
+        <img :src="this.availableAvatars[userInfo.photoUrl] || 'https://picx.zhimg.com/v2-c9e8de65838441813b8631a8495c7622_xll.jpg?source=32738c0c&needBackground=1'" alt="用户头像" />
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
