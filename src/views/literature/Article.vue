@@ -168,7 +168,7 @@
                 <div>
                     <div class="abstract-title">领域</div>
                     <div v-for="(field,index) in article.fields" class="field">
-                        - <span class="hyperlink" @click="toField(field.fieldId)">{{ field.name }}</span>
+                        - <span class="hyperlink" @click="toField(field.id)">{{ field.name }}</span>
                     </div>
                 </div>
                 <el-divider />
@@ -317,23 +317,23 @@ export default{
                 fields:[
                     {
                         name:"Computer",
-                        fieldId:5,
+                        id:"10",
                     },
                     {
                         name:"Arithmetic",
-                        fieldId:6,
+                        id:"10",
                     },
                     {
                         name:"Software",
-                        fieldId:7,
+                        id:"10",
                     },
                     {
                         name:"Auto",
-                        fieldId:8,
+                        id:"10",
                     },
                     {
                         name:"CPG",
-                        fieldId:10,
+                        id:"10",
                     },
                 ],
                 relation:[

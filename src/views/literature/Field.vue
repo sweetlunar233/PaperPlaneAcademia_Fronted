@@ -95,7 +95,7 @@ export default{
     
     data(){
         return{
-            id:0,
+            id:"",
             field:{
                 name:"机器学习",
                 worksCount:230,
@@ -153,6 +153,7 @@ export default{
 
     mounted(){
         this.id = this.$route.query.id;
+        console.log(this.id)
         this.isLoading = true;
 
         var promise = GetField(this.id);
