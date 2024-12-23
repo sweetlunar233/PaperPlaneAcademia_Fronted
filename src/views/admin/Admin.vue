@@ -24,10 +24,14 @@
 </template>
 
 <script>
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+
 export default {
   data() {
     return {
       activeMenu: "overview", // 默认激活的平台概况页面
+      router:useRouter(),
     };
   },
   methods: {
@@ -35,6 +39,18 @@ export default {
       this.activeMenu = index;
       this.$router.push({ name: index }); // 根据选项切换路由
     },
+  },
+
+  mounted(){
+    var isAdmin = this.$cookies.get("username") === 'admin';
+    if(!isAdmin){
+      this.router.push({path:'/login'});
+      ElMessage({
+        message: '请登陆管理员账号！',
+        type: 'error',
+        plain: true,
+      });
+    }
   },
 };
 </script>

@@ -382,7 +382,6 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            console.log(this.isStar)
         },
 
         undoStar(){
@@ -503,8 +502,6 @@ export default{
                 tmp += `DOI: ${this.article.DOI}.`;
             }
 
-            console.log(tmp);
-
             return tmp;
         },
         // 格式化作者信息
@@ -560,7 +557,7 @@ export default{
             }
         })
         .finally(() => {
-            console.log(this.article)
+            
         })
 
         promise = GetStar(this.userId,this.id);

@@ -17,6 +17,7 @@
 <script>
 import { platformOverview } from "@/api/user";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -27,6 +28,7 @@ export default {
         { label: "作者数量", value: 0 },
         { label: "入驻学者数量", value: 0 },
       ],
+      router:useRouter(),
     };
   },
   async created() {
@@ -39,6 +41,17 @@ export default {
         this.statistics[3].value = result.data.totalScholars || 0;
       }
     });
+  },
+  mounted(){
+    var isAdmin = this.$cookies.get("username") === 'admin';
+    if(!isAdmin){
+      this.router.push({path:'/login'});
+      ElMessage({
+        message: '请登陆管理员账号！',
+        type: 'error',
+        plain: true,
+      });
+    }
   },
 };
 </script>

@@ -36,6 +36,7 @@
 <script>
 import { getClaims } from "@/api/claim";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -47,6 +48,7 @@ export default {
       rejectDialogVisible: false,
       rejectReason: "",
       selectedClaimId: null, // 当前选择的申请ID
+      router:useRouter(),
     };
   },
   computed: {
@@ -110,6 +112,17 @@ export default {
   },
   created() {
     this.fetchClaims();
+  },
+  mounted(){
+    var isAdmin = this.$cookies.get("username") === 'admin';
+    if(!isAdmin){
+      this.router.push({path:'/login'});
+      ElMessage({
+        message: '请登陆管理员账号！',
+        type: 'error',
+        plain: true,
+      });
+    }
   },
 };
 </script>

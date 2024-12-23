@@ -34,6 +34,7 @@
 
 <script>
 import { fatchScholars_api } from "@/api/user.js";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -42,6 +43,7 @@ export default {
       totalScholars: 0, // 入驻学者总数
       currentPage: 1, // 当前页
       pageSize: 10, // 每页显示条数
+      router:useRouter(),
     };
   },
   computed: {
@@ -74,6 +76,17 @@ export default {
   created() {
     this.fetchScholars(); // 页面加载时自动请求数据
   },
+  mounted(){
+    var isAdmin = this.$cookies.get("username") === 'admin';
+    if(!isAdmin){
+      this.router.push({path:'/login'});
+      ElMessage({
+        message: '请登陆管理员账号！',
+        type: 'error',
+        plain: true,
+      });
+    }
+  }
 };
 </script>
 
