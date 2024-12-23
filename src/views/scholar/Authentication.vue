@@ -43,9 +43,9 @@
           <el-form-item label="电子邮箱" prop="email">
             <el-input v-model="formData.email" placeholder="请输入电子邮箱"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="工作单位" prop="workPlace" required>
-            <el-input v-model="formData.workPlace" placeholder="请输入工作单位"></el-input>
-          </el-form-item> -->
+          <el-form-item label="工作单位" prop="organization" required>
+            <el-input v-model="formData.organization" placeholder="请输入工作单位全称"></el-input>
+          </el-form-item>
           <!-- <el-form-item label="研究领域" prop="field">
             <el-input v-model="formData.field" placeholder="多个领域名称用“;”隔开"></el-input>
           </el-form-item> -->
@@ -188,7 +188,7 @@ export default {
           otherName:'',
           gender: '',
           email: '',
-          //workPlace: '',
+          organization: '',
           //field: '',
           selectedScholarId: '-1',
           //newPapers: [],
@@ -203,7 +203,7 @@ export default {
       rules: {
         name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
         gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
-        //workPlace: [{ required: true, message: '请输入工作单位', trigger: 'blur' }]
+        organization: [{ required: true, message: '请输入工作单位', trigger: 'blur' }]
       },
       // paperRules: {
       //   title: [{ required: true, message: '请输入论文标题', trigger: 'blur' }],
@@ -287,9 +287,14 @@ export default {
         const namesArray = otherName.split(/[\u3002\uff1b\uff0c,;]/).map(n => n.trim()).filter(Boolean);
         authorNames = authorNames.concat(namesArray);
       }
-      console.log("搜索认证门户", authorNames);
-      if (authorNames.length > 0) {
-        var response = fetchScholars(authorNames);
+      console.log("搜索认证门户", {
+          organization:this.formData.organization,
+          authorNames:authorNames
+        });
+        var response = fetchScholars({
+          organization:this.formData.organization,
+          authorNames:authorNames
+        });
 
         response
         .then((data) => {
@@ -300,9 +305,6 @@ export default {
           this.scholarsList = data;
         }
         });
-      } else {
-        console.log('没有可搜索的作者名');
-      }
     },
 
     // handleRemove(file, fileList) {
