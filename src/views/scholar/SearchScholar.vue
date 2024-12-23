@@ -85,6 +85,10 @@
   
       // 移除条件
       removeCondition(index) {
+        if (this.authorConditions.length <=1) {
+        alert('不能删除');
+        return;  // 不允许继续添加
+    }
         this.authorConditions.splice(index, 1);
       },
   
