@@ -203,8 +203,8 @@ export default {
       },
       
       scholarsList: [
-          { Id:"42873", name: "作者1", authorOrganization: "buaa", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
-          { Id:"002", name: "作者2", authorOrganization: "北京航空航天大学", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
+        //{ Id:"42873", name: "作者1", authorOrganization: "buaa", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
+        //{ Id:"002", name: "作者2", authorOrganization: "北京航空航天大学", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
       ],
       
       rules: {

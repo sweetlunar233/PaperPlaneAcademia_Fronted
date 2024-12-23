@@ -111,6 +111,7 @@ export default {
     },
 
     async getTotalPages() {
+      console.log({searchConditions:this.searchConditions})
       var response = getTotalPages({
         searchConditions: this.searchConditions
       });

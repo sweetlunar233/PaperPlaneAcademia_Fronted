@@ -4,8 +4,8 @@
       <div class="block">
         <div class="filter-title">关键词</div>
         <div class="filter-selections">
-        <el-checkbox-group v-model="selectedKeywords" fill="var(--button-color)">
-          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="var(--button-color)" style="font-size: 14px;"></el-checkbox>
+        <el-checkbox-group v-model="selectedKeywords" fill="var(--button-color)" size="small">
+          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="var(--button-color)"></el-checkbox>
         </el-checkbox-group></div>
       </div>
 
@@ -22,14 +22,14 @@
 
       <div class="block">
         <div class="filter-title">作者单位</div>
-        <div class="filter-selections" >
-          <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)" >
-            <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization style="word-break: break-all;"></el-checkbox>
+        <div class="filter-selections">
+          <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)" size="small">
+            <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
           </el-checkbox-group>
         </div>
       </div>
-      <div style="position: fixed; bottom: 20px; left: 35px;">
-        <button class="apply-filter-button" >应用筛选条件</button>
+      <div style="position: fixed; bottom: 20px; left: 55px;">
+        <button class="apply-filter-button" @click="apply()">应用筛选条件</button>
       </div>
     </el-affix>
 
@@ -98,7 +98,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16">
                 <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/>
               </svg></button> -->
-            <button @click="downloadPaper(paper)" class="action-btn"><el-icon :size="18"><Download /></el-icon></button>
+            <button @click.stop="downloadPaper(paper)" class="action-btn"><el-icon :size="18"><Download /></el-icon></button>
           </div>
         </div>
       </div>
@@ -326,36 +326,27 @@ export default {
       })
     },
 
-    downloadPaper(paper) {
-      console.log('下载论文:', paper);
+    downloadPaper(paper){
+      if(paper.download != null){
+          window.open(paper.download, '_blank');
+      }
+      else{
+          ElMessage({
+              message: '暂无下载链接.',
+              type: 'warning',
+              plain: true,
+          });
+      }
+    },
+
+    apply(){
+      this.currentPage = 1;
+      this.getTotalPages();
+      this.fetchResults();
     }
   },
 
   watch: {
-    selectedKeywords: {
-      handler() {
-        this.currentPage = 1;
-        this.getTotalPages();
-        this.fetchResults();
-      },
-      deep: true
-    },
-    selectedYears: {
-      handler() {
-        this.currentPage = 1;
-        this.getTotalPages();
-        this.fetchResults();
-      },
-      deep: true
-    },
-    selectedAuthors: {
-      handler() {
-        this.currentPage = 1;
-        this.getTotalPages();
-        this.fetchResults();
-      },
-      deep: true
-    },
     
     currentPage: {
       handler() {
@@ -417,16 +408,18 @@ export default {
 .search-container {
   display: flex;
   margin: 20px;
+  height:80vh;
 }
 
 .search-filters {
-  width: 250px;
-  min-width: 250px;
-  max-width: 250px;
+  width: 300px;
   border-right: 2px solid var(--gray-color);
+  position: sticky;
   height: 86vh;
-  overflow-y: auto;
-  
+  word-wrap:break-word;  
+  word-break:break-all;  
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .results-section {
