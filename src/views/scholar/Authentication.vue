@@ -46,9 +46,9 @@
           <!-- <el-form-item label="工作单位" prop="workPlace" required>
             <el-input v-model="formData.workPlace" placeholder="请输入工作单位"></el-input>
           </el-form-item> -->
-          <el-form-item label="研究领域" prop="field">
+          <!-- <el-form-item label="研究领域" prop="field">
             <el-input v-model="formData.field" placeholder="多个领域名称用“;”隔开"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
   
         <el-form :model="formData" ref="form" v-if="step === 2" style="position: absolute; width: 100%; margin: 100px 15% 100px 10%;">
@@ -189,7 +189,7 @@ export default {
           gender: '',
           email: '',
           //workPlace: '',
-          field: '',
+          //field: '',
           selectedScholarId: '-1',
           //newPapers: [],
           userId: this.$cookies.get('userId')
