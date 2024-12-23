@@ -34,7 +34,7 @@
                 </div>
                 <div class="articleDetail">
                     <el-tabs v-model="activeTab" @tab-click="toComment">
-                        <el-tab-pane label="关键字" name="second">
+                        <el-tab-pane label="关键字" name="first">
                             <div class="tab-tip">
                                 共 {{ field.keywords.length }} 条
                             </div>
@@ -50,7 +50,7 @@
                                 </el-row>
                             </el-scrollbar>
                         </el-tab-pane>
-                        <el-tab-pane label="同级领域" name="third">
+                        <el-tab-pane label="同级领域" name="second">
                             <div class="tab-tip">
                                 共 {{ field.siblings.length }} 条
                             </div>
@@ -61,6 +61,26 @@
                                 <el-row v-for="(ref,index) in field.siblings" class="reference-block" @click="toField(ref.id)">
                                     <el-col :span="22">
                                         - <span class="hyperlink">{{ ref.display_name }}</span>
+                                    </el-col>
+                                </el-row>
+                            </el-scrollbar>
+                        </el-tab-pane>
+                        <el-tab-pane label="相关文章" name="third">
+                            <div v-if="field.article">
+                                <div class="tab-tip">
+                                共 {{ field.article.length }} 条
+                                </div>
+                                <div class="tab-tip" v-if="field.article.length==0">
+                                    暂无相关文章.
+                                </div>
+                            </div>
+                            <div class="tab-tip" v-else>
+                                暂无相关文章.
+                            </div>
+                            <el-scrollbar height="350px">
+                                <el-row v-if="field.article" v-for="(ref,index) in field.article" class="reference-block" @click="toField(ref.id)">
+                                    <el-col :span="22">
+                                        - <span class="hyperlink">{{ ref.title }}</span>
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
@@ -116,7 +136,7 @@ export default{
             },
             isLoading:false,
             isFold:false,
-            activeTab:"second",
+            activeTab:"first",
             router:useRouter(),
         }
     },

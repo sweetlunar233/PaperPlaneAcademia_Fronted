@@ -27,10 +27,14 @@ export function getApplications() {
   
   // 通过科研人员申请
   export function approveApplication(applicationId) {
-    return post(`/claims/applications/${applicationId}/approve/`);
+    let data = {};
+    data.applicationId = applicationId;
+    return post('/claims/applications/approve/',data);
   }
   
   // 驳回科研人员申请
-  export function rejectApplication(applicationId, reason) {
-    return post(`/claims/applications/${applicationId}/reject/`, { reason });
+  export function rejectApplication(applicationId) {
+    let data = {};
+    data.applicationId = applicationId;
+    return post(`/claims/applications/reject/`, data);
   }

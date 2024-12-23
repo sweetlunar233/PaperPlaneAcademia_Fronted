@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2>审核认领</h2>
-    <el-table :data="pagedClaims" border style="width: 100%">
-      <el-table-column prop="username" label="用户名" min-width="120"></el-table-column>
+    <el-table :data="pagedClaims" stripe style="width: 100%">
+      <el-table-column prop="name" label="用户名" min-width="120"></el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="200"></el-table-column>
-      <el-table-column prop="organization" label="所在机构" min-width="200"></el-table-column>
+      <el-table-column prop="insititution" label="所在机构" min-width="200"></el-table-column>
       <el-table-column prop="content" label="认领内容" min-width="300"></el-table-column>
       <el-table-column label="操作" align="center" min-width="150">
         <template #default="{ row }">
