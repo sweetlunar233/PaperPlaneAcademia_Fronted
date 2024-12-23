@@ -1,11 +1,15 @@
 <template>
   <div>
     <h2>审核认领门户申请</h2>
-    <el-table :data="pagedClaims" stripe  style="width: 100%">
+    <el-table :data="pagedClaims" stripe  style="width: 100%"  v-loading="isLoading">
       <el-table-column prop="name" label="姓名" min-width="120"></el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="200"></el-table-column>
       <el-table-column prop="institution" label="机构" min-width="150"></el-table-column>
-      <el-table-column prop="selecterScholarId" label="选择的学者ID" min-width="180"></el-table-column>
+      <el-table-column label="选择的学者" min-width="180">
+        <template #default="{ row }" >
+          <span class="hyperlink" @click="toGateway(row.selectScholarId)">学者主页</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="userId" label="用户ID" min-width="100"></el-table-column>
       <el-table-column label="操作" :align="center" min-width="150">
         <template #default="{ row }">
@@ -43,12 +47,12 @@ export default {
     return {
       claims: [
         {
-          id:55,
-          name:"TieZhu",
-          email:"dcx1378832571@163.com",
-          institution:"北航",
-          selecterScholarId:255,
-          userId:13,
+          id:0,
+          name:"",
+          email:"",
+          institution:"",
+          selecterScholarId:0,
+          userId:0,
         },
       ], // 存储所有认领申请
       currentPage: 1,
@@ -58,6 +62,7 @@ export default {
       // rejectReason: "",
       selectedClaimId: null, // 当前选择的认领申请ID
       router:useRouter(),
+      isLoading:false,
     };
   },
   computed: {
@@ -74,8 +79,10 @@ export default {
       promise
         .then((result) => {
           if (result.status === "success") {
-            this.claims = result.claims;
-            this.totalClaims = result.total;
+            this.claims = result.data.claims;
+            this.totalClaims = this.claims.length;
+            console.log(result);
+            this.isLoading = false;
           } else {
             ElMessage({
               message: "获取认领申请失败",
@@ -96,13 +103,14 @@ export default {
       var promise = approveApplication(claimId); // 调用后端接口
       promise
         .then((result) => {
-          if (result.data.status === "success") {
+          console.log(result);
+          if (result.status === "success") {
             ElMessage({
               message: "认领申请已通过",
               type: 'success',
               plain: true,
             });
-            this.fetchClaims();
+            window.location.reload();
           } else {
             ElMessage({
               message: "审批失败,请重新操作！",
@@ -134,7 +142,7 @@ export default {
               plain: true,
             });
             // this.rejectDialogVisible = false;
-            this.fetchClaims();
+            window.location.reload();
           } else {
             ElMessage({
               message: "驳回失败,请重新操作！",
@@ -144,9 +152,16 @@ export default {
           }
         })
     },
+    toGateway(id){
+      // 获取目标 URL
+      const targetUrl = this.router.resolve({ path: '/gateway', query:{id:id} }).href;
+      // 使用 window.open 打开新窗口
+      window.open(targetUrl, '_blank');
+    }
   },
   created() {
-    // this.fetchClaims();
+    this.isLoading = true;
+    this.fetchClaims();
   },
   mounted(){
     var isAdmin = this.$cookies.get("username") === 'admin';
@@ -167,4 +182,14 @@ export default {
 .el-table .el-table__cell {
   text-align: center;
 }
+
+.el-table .hyperlink {
+    color: #409EFF;
+}
+
+.el-table .hyperlink:hover {
+    color: rgb(31, 124, 196);
+    cursor: pointer;
+}
+
 </style>
