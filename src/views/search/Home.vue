@@ -177,32 +177,32 @@ const gotoError = (userId) => {
 }
 
 
-//动画
+// 动画
 // 目标数字数组
-// const targetNumbers = [202233, 45322, 781120, 123456, 67890];
-// targetNumbers.length = 0; // 清空原数组
-// Object.values(statistic.value).forEach((value, index) => {
-//   targetNumbers[index] = value;
-// });
-// const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
+const targetNumbers = [202233, 45322, 781120, 123456, 67890];
+targetNumbers.length = 0; // 清空原数组
+Object.values(statistic.value).forEach((value, index) => {
+  targetNumbers[index] = value;
+});
+const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
 
-// // 动画设置
-// const intervalTime = 50; // 每50毫秒更新一次
-// const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
+// 动画设置
+const intervalTime = 50; // 每50毫秒更新一次
+const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
 
-// // 动画函数
-// const startCounting = () => {
-//   const intervals = targetNumbers.map((target, index) => {
-//     return setInterval(() => {
-//         if (numbers.value[index] < target) {
-//             numbers.value[index] += increment;
-//         } else {
-//             numbers.value[index] = target;
-//             clearInterval(intervals[index]); // 达到目标时停止
-//         }
-//     }, intervalTime);
-//   });
-// };
+// 动画函数
+const startCounting = () => {
+  const intervals = targetNumbers.map((target, index) => {
+    return setInterval(() => {
+        if (numbers.value[index] < target) {
+            numbers.value[index] += increment;
+        } else {
+            numbers.value[index] = target;
+            clearInterval(intervals[index]); // 达到目标时停止
+        }
+    }, intervalTime);
+  });
+};
 
 
 
@@ -235,34 +235,34 @@ const initHome = (userId) => {
             recommended_articles.value.push(element);
         });
     });
-    console.log("1234");
-    var promise = GetStatistics();
-    promise.then((result)=>{
-        console.log(statistic.value.authorCount);
-        console.log(statistic.value.organizationsCount);
-        console.log(statistic.value.fieldsCount);
-        console.log(statistic.value.journalCount);
-        console.log(statistic.value.paperCount);
-        console.log("1234");
-        console.log(result.authorCount);
-        console.log(result.organizationsCount);
-        console.log(result.fieldsCount);
-        console.log(result.journalCount);
-        console.log(result.paperCount);
-        statistic.value = {
-          authorCount: result.authorCount,
-          organizationsCount: result.organizationsCount,
-          fieldsCount: result.fieldsCount,
-          journalCount: result.journalCount,
-          paperCount: result.paperCount
-        }
-        console.log("1234");
-        console.log(statistic.value.authorCount);
-        console.log(statistic.value.organizationsCount);
-        console.log(statistic.value.fieldsCount);
-        console.log(statistic.value.journalCount);
-        console.log(statistic.value.paperCount);
-    });
+    // console.log("1234");
+    // var promise = GetStatistics();
+    // promise.then((result)=>{
+    //     console.log(statistic.value.authorCount);
+    //     console.log(statistic.value.organizationsCount);
+    //     console.log(statistic.value.fieldsCount);
+    //     console.log(statistic.value.journalCount);
+    //     console.log(statistic.value.paperCount);
+    //     console.log("1234");
+    //     console.log(result.authorCount);
+    //     console.log(result.organizationsCount);
+    //     console.log(result.fieldsCount);
+    //     console.log(result.journalCount);
+    //     console.log(result.paperCount);
+    //     statistic.value = {
+    //       authorCount: result.authorCount,
+    //       organizationsCount: result.organizationsCount,
+    //       fieldsCount: result.fieldsCount,
+    //       journalCount: result.journalCount,
+    //       paperCount: result.paperCount
+    //     }
+    //     console.log("1234");
+    //     console.log(statistic.value.authorCount);
+    //     console.log(statistic.value.organizationsCount);
+    //     console.log(statistic.value.fieldsCount);
+    //     console.log(statistic.value.journalCount);
+    //     console.log(statistic.value.paperCount);
+    // });
 
     var promise = GetOrganizations();
     promise.then((result)=>{
@@ -279,12 +279,9 @@ const initHome = (userId) => {
     });
 
     isLoading.value = false;
-
-    // 调用 startCounting
-    //startCounting();
 }
 
-
+initHome(userId.value);
 
 
 
@@ -292,8 +289,7 @@ const initHome = (userId) => {
 
 // 页面加载完成后开始动画
 onMounted(() => {
-  initHome(userId.value);
-  //startCounting();
+  startCounting();
 });
 
 </script>
@@ -326,8 +322,8 @@ onMounted(() => {
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Authors</h3>
                               <!-- <h2 class="sub-number">{{ statistic.authorCount }}</h2> -->
-                              <!-- <h2 class="sub-number">{{ numbers[0] }}</h2> -->
-                              <h2 class="sub-number">{{ statistic.authorCount }}</h2>
+                              <h2 class="sub-number">{{ numbers[0] }}</h2>
+                              <!-- <h2 class="sub-number">{{ statistic.authorCount }}</h2> -->
                           </div>
                       </div>
                   </div>
@@ -339,8 +335,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Papers</h3>
-                              <!-- <h2 class="sub-number">{{ numbers[1] }}</h2> -->
-                              <h2 class="sub-number">{{ statistic.organizationsCount }}</h2>
+                              <h2 class="sub-number">{{ numbers[1] }}</h2>
+                              <!-- <h2 class="sub-number">{{ statistic.organizationsCount }}</h2> -->
                           </div>
                       </div>
                   </div>
@@ -352,8 +348,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Journals</h3>
-                              <!-- <h2 class="sub-number">{{ numbers[2] }}</h2> -->
-                              <h2 class="sub-number">{{ statistic.fieldsCount }}</h2>
+                              <h2 class="sub-number">{{ numbers[2] }}</h2>
+                              <!-- <h2 class="sub-number">{{ statistic.fieldsCount }}</h2> -->
                           </div>
                       </div>
                   </div>
@@ -365,8 +361,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Groups</h3>
-                              <!-- <h2 class="sub-number">{{ numbers[3] }}</h2> -->
-                              <h2 class="sub-number">{{ statistic.journalCount }}</h2>
+                              <h2 class="sub-number">{{ numbers[3] }}</h2>
+                              <!-- <h2 class="sub-number">{{ statistic.journalCount }}</h2> -->
                           </div>
                       </div>
                   </div>
@@ -378,8 +374,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Field</h3>
-                              <!-- <h2 class="sub-number">{{ numbers[4] }}</h2> -->
-                              <h2 class="sub-number">{{ statistic.paperCount }}</h2>
+                              <h2 class="sub-number">{{ numbers[4] }}</h2>
+                              <!-- <h2 class="sub-number">{{ statistic.paperCount }}</h2> -->
                           </div>
                       </div>
                   </div>

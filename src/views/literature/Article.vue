@@ -28,7 +28,7 @@
                     <span v-if="article.journal.last_page">-{{ article.journal.last_page }}</span>
                 </div>
                 <div class="subtitle">
-                    <span v-if="article.DOI">DOI: <span class="hyperlink">{{ article.DOI }}</span></span>
+                    <span v-if="article.DOI">DOI: <span class="hyperlink" @click="toDOI()">{{ article.DOI }}</span></span>
                 </div>
                 <div class="button">
                     <el-tooltip class="item" effect="light" content="下载" placement="bottom">
@@ -453,6 +453,10 @@ export default{
             const targetUrl = this.router.resolve({ path: '/gateway', query:{id:id} }).href;
             // 使用 window.open 打开新窗口
             window.open(targetUrl, '_blank');
+        },
+
+        toDOI(){
+            window.open(this.article.DOI, '_blank');
         },
 
         formatGB7714() {
