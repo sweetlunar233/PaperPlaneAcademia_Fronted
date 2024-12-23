@@ -51,6 +51,9 @@ export default {
         plain: true,
       });
     }
+    else{
+      this.activeMenu = this.$route.name;
+    }
   },
 };
 </script>
