@@ -183,7 +183,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
-import {editResearchFields, GetMyUserData, UpdateAvatar, updateDescription, updateResearchFields} from "@/api/user.js";
+import {GetMyUserData, UpdateAvatar, updateDescription, updateResearchFields} from "@/api/user.js";
 
 export default {
   data() {

@@ -162,7 +162,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
-import {GetOtherUserData, Login} from "@/api/user.js";
+import {GetOtherUserData, Login, updateUserFollow} from "@/api/user.js";
 
 export default {
   data() {
@@ -207,16 +207,13 @@ export default {
       this.isFollowed = !this.isFollowed;
 
       // 调用后端接口来更新关注状态
-      axios.post('/user/follow', {
-        currentUserId: this.$cookies.get('userId'), // 当前用户 ID
-        targetUserId: this.$route.query.userId, // 目标用户 ID
-      })
-          .then(response => {
-            console.log('关注状态更新成功', response.data);
-          })
-          .catch(error => {
-            console.error('关注状态更新失败', error);
-          });
+      var promise = updateUserFollow(this.$cookies.get('userId'), this.$route.query.userId);
+      promise.then((result) => {
+          console.log('关注状态更新成功', result.data);
+        })
+        .catch(error => {
+          console.error('关注状态更新失败', error);
+        });
     },
 
     // 集中处理所有数据获取请求

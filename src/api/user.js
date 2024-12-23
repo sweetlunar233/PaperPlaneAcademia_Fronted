@@ -45,6 +45,13 @@ export function fetchResults(data) {
     return post("/users/searchscholars/", data);
 }
 
+export function updateUserFollow(currentUserId, targetUserId) {
+    let data = {};
+    data.currentUserId = currentUserId;
+    data.targetUserId = targetUserId;
+    return post("/user/follow/", data);
+}
+
 export function updateDescription(userId, description){
     let data = {};
     data.userId = userId;
@@ -60,3 +67,11 @@ export function updateResearchFields(userId, researchFields){
     console.log(data);
     return post("/users/updateResearchFields/",data);
 }
+
+export function platformOverview(){
+    return get("/user/platform-overview/");
+}
+
+export function fatchScholars_api() {
+    return get('/users/scholars/')  // 你可以根据自己的实际后端接口调整路径
+  }

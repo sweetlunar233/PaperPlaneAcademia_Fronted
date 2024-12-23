@@ -5,7 +5,9 @@ import { useRouter } from 'vue-router';
 import { getCurrentInstance } from 'vue';
 const router = useRouter();
 
-import { GetTopArticles, GetRecommendedArticles, GetStatistics } from '../../api/home.js'
+import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../../api/home.js'
+
+const isLoading = ref(false);
 
 const topOrRec = ref("hot-gate-articles");
 const top_articles = ref([
@@ -101,6 +103,32 @@ const recommended_articles = ref([
   }
 ]);
 
+const organizations = ref([
+  {
+    organizationName: "ABC",
+    works_number: 66,
+  },
+  {
+    organizationName: "ABC",
+    works_number: 66,
+  }
+])
+
+const fields = ref([
+  {
+    fieldName: "ABC",
+    topArticleName: "Article1",
+    topArticleId: "1",
+    works_number: 66,
+  },
+  {
+    fieldName: "ABC",
+    topArticleName: "Article2",
+    topArticleId: "1",
+    works_number: 66,
+  }
+])
+
 const statistic = ref({
   authorCount: 20502,
   organizationsCount: 16479,
@@ -164,9 +192,42 @@ const gotoError = (userId) => {
   });
 }
 
+
+//动画
+// 目标数字数组
+// const targetNumbers = [202233, 45322, 781120, 123456, 67890];
+// targetNumbers.length = 0; // 清空原数组
+// Object.values(statistic.value).forEach((value, index) => {
+//   targetNumbers[index] = value;
+// });
+// const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
+
+// // 动画设置
+// const intervalTime = 50; // 每50毫秒更新一次
+// const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
+
+// // 动画函数
+// const startCounting = () => {
+//   const intervals = targetNumbers.map((target, index) => {
+//     return setInterval(() => {
+//         if (numbers.value[index] < target) {
+//             numbers.value[index] += increment;
+//         } else {
+//             numbers.value[index] = target;
+//             clearInterval(intervals[index]); // 达到目标时停止
+//         }
+//     }, intervalTime);
+//   });
+// };
+
+
+
 const initHome = (userId) => {
     top_articles.value = [];
     recommended_articles.value = [];
+    organizations.value = [];
+    fields.value = [];
+
     statistic.value = { // 重置 statistic
       authorCount: 0,
       organizationsCount: 0,
@@ -174,6 +235,8 @@ const initHome = (userId) => {
       journalCount: 0,
       paperCount: 0
     }; 
+
+    isLoading.value = true;
     
     var promise = GetTopArticles();
     promise.then((result)=>{
@@ -188,80 +251,81 @@ const initHome = (userId) => {
             recommended_articles.value.push(element);
         });
     });
-
+    console.log("1234");
     var promise = GetStatistics();
     promise.then((result)=>{
-      statistic.value.authorCount = result.authorCount.toLocaleString();
-      statistic.value.organizationsCount = result.organizationsCount.toLocaleString();
-      statistic.value.fieldsCount = result.fieldsCount.toLocaleString();
-      statistic.value.journalCount = result.journalCount.toLocaleString();
-      statistic.value.paperCount = result.paperCount.toLocaleString();
+        console.log(statistic.value.authorCount);
+        console.log(statistic.value.organizationsCount);
+        console.log(statistic.value.fieldsCount);
+        console.log(statistic.value.journalCount);
+        console.log(statistic.value.paperCount);
+        console.log("1234");
+        console.log(result.authorCount);
+        console.log(result.organizationsCount);
+        console.log(result.fieldsCount);
+        console.log(result.journalCount);
+        console.log(result.paperCount);
+        statistic.value = {
+          authorCount: result.authorCount,
+          organizationsCount: result.organizationsCount,
+          fieldsCount: result.fieldsCount,
+          journalCount: result.journalCount,
+          paperCount: result.paperCount
+        }
+        console.log("1234");
+        console.log(statistic.value.authorCount);
+        console.log(statistic.value.organizationsCount);
+        console.log(statistic.value.fieldsCount);
+        console.log(statistic.value.journalCount);
+        console.log(statistic.value.paperCount);
     });
+
+    var promise = GetOrganizations();
+    promise.then((result)=>{
+        result.organizations.forEach(element => {
+            organizations.value.push(element);
+        });
+    });
+
+    var promise = GetFields();
+    promise.then((result)=>{
+        result.fields.forEach(element => {
+            fields.value.push(element);
+        });
+    });
+
+    isLoading.value = false;
+
+    // 调用 startCounting
+    //startCounting();
 }
 
-initHome(userId.value);
 
 
 
-//动画
-// 目标数字数组
-const targetNumbers = [202233, 45322, 781120, 123456, 67890];
-targetNumbers.length = 0; // 清空原数组
-Object.values(statistic.value).forEach((value, index) => {
-  targetNumbers[index] = value;
-});
-const numbers = ref(targetNumbers.map(() => 0)); // 初始化所有数字为0
 
-// 动画设置
-const intervalTime = 50; // 每50毫秒更新一次
-const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小可以控制速度
 
-// 动画函数
-const startCounting = () => {
-  const intervals = targetNumbers.map((target, index) => {
-    return setInterval(() => {
-        // if(index == 0 || index == 4){
-        //     if (numbers.value[index] < target) {
-        //         numbers.value[index] += increment * 8;
-        //     } else {
-        //         numbers.value[index] = target;
-        //         clearInterval(intervals[index]); // 达到目标时停止
-        //     }
-        // }
-        // else{
-        //     if (numbers.value[index] < target) {
-        //         numbers.value[index] += increment;
-        //     } else {
-        //         numbers.value[index] = target;
-        //         clearInterval(intervals[index]); // 达到目标时停止
-        //     }
-        // }
-        if (numbers.value[index] < target) {
-            numbers.value[index] += increment;
-        } else {
-            numbers.value[index] = target;
-            clearInterval(intervals[index]); // 达到目标时停止
-        }
-    }, intervalTime);
-  });
-};
 
 // 页面加载完成后开始动画
 onMounted(() => {
-  startCounting();
+  initHome(userId.value);
+  //startCounting();
 });
 
 </script>
 
 <template>
-<div class="home">
+<div class="home" style="background-color:#EBEEF5" v-loading="isLoading"
+    element-loading-background="rgba(244, 246, 247,0.8)">
     <!-- <div class="background">
         <img src="../../assets/images/home/bg.jpg" alt="" class="background-img">
     </div> -->
     <div class="main">
         <div class="uphalf">
           <div class="title-and-input">
-              <div class="bigtitle">Paper Wing Academia</div>
+              <div class="bigtitle">
+                <span>PaperPlane&nbsp;Academia</span>
+              </div>
               <div class="loader" @click="gotoError"></div>
               <div class="input-box">
                   <!-- <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p> -->
@@ -278,7 +342,8 @@ onMounted(() => {
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Authors</h3>
                               <!-- <h2 class="sub-number">{{ statistic.authorCount }}</h2> -->
-                              <h2 class="sub-number">{{ numbers[0] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[0] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.authorCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -290,7 +355,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Papers</h3>
-                              <h2 class="sub-number">{{ numbers[1] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[1] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.organizationsCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -302,7 +368,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Journals</h3>
-                              <h2 class="sub-number">{{ numbers[2] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[2] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.fieldsCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -314,7 +381,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Groups</h3>
-                              <h2 class="sub-number">{{ numbers[3] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[3] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.journalCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -326,7 +394,8 @@ onMounted(() => {
                           </div>
                           <div style="padding: 10px;">
                               <h3 class="sub-title">Field</h3>
-                              <h2 class="sub-number">{{ numbers[4] }}</h2>
+                              <!-- <h2 class="sub-number">{{ numbers[4] }}</h2> -->
+                              <h2 class="sub-number">{{ statistic.paperCount }}</h2>
                           </div>
                       </div>
                   </div>
@@ -410,6 +479,48 @@ onMounted(() => {
                         </div>
                     </div>
                 </el-tab-pane>
+                <el-tab-pane label="科研机构" name="organization" style="text-align: left">
+                  <div class="articles">
+                        <div class="articles-body">
+                            <div v-for="(organization, index) in organizations" v-bind:key="index">
+                                <div style="text-align: left">
+                                    <div>
+                                        <span class="title">{{ organization.organizationName }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="citation-count">
+                                    <span>成果数： {{ organization.works_number }}</span>
+                                </div>
+
+                                <el-divider v-if="index < organizations.length - 1"></el-divider>
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="科研领域" name="field" style="text-align: left">
+                  <div class="articles">
+                        <div class="articles-body">
+                            <div v-for="(field, index) in fields" v-bind:key="index">
+                                <div style="text-align: left">
+                                    <div>
+                                        <span class="title">{{ field.fieldName }}</span>
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                      <span>TOP引用量文章：</span>
+                                      <span class="author-name" @click="gotoPaper(field.topArticleId)"><u>{{ field.topArticleName }}</u></span>
+                                    </div>
+                                </div>
+
+                                <div class="citation-count">
+                                    <span>成果数： {{ field.works_number }}</span>
+                                </div>
+
+                                <el-divider v-if="index < fields.length - 1"></el-divider>
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane>
             </el-tabs>
         </div>
     </div>
@@ -472,7 +583,7 @@ onMounted(() => {
 
 .home .uphalf {
   padding-bottom: 60px;
-  background: url("../../assets/images/bg2.png") no-repeat;
+  background: url("../../assets/images/bg2.jpg") no-repeat;
   background-size: cover;
 }
 
@@ -492,11 +603,26 @@ onMounted(() => {
 
 .home .bigtitle {
   /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
-  font-size: 60px;
+  font-size: 80px;
   padding-top: 100px;/*空白在这*/
   color: white;
   font-weight: 600;
+  padding-bottom: 110px;
+  display: inline-block;
+  text-shadow: 
+    10px 10px 5px black, 
+    /* -2px -2px 3px black,  */
+    /* 5px -5px 5px black, */
+    -5px 5px 5px black;
+}
 
+.home .bigtitle1 {
+  /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
+  font-size: 80px;
+  padding-top: 100px;/*空白在这*/
+  color: black;
+  font-weight: 600;
+  padding-bottom: 110px;
   display: inline-block;
 }
 
@@ -607,4 +733,3 @@ onMounted(() => {
     font-size: 14px;
 }
 </style>
-
