@@ -52,7 +52,6 @@
     <div class="main-content">
       <div class="sidebar">
         <ul>
-          <li @click="setTab('我的文章')" :class="{ active: activeTab === '我的文章' }">我的文章</li>
           <li @click="setTab('我的收藏')" :class="{ active: activeTab === '我的收藏' }">我的收藏</li>
           <li @click="setTab('我的评论')" :class="{ active: activeTab === '我的评论' }">我的评论</li>
         </ul>
@@ -60,37 +59,6 @@
       <div class = "left">
       </div>
       <div class="content">
-        <div v-if="activeTab === '我的文章'">
-          <h2>我的文章</h2>
-          <div v-if="articles.length > 0">
-            <div v-for="(article, index) in articles" :key="index" class="article-item">
-              <div class="article-card">
-                <div class="article-header">
-                  <h3>{{ article.title }}</h3>
-                </div>
-                <div class="article-content">
-                  <div class="article-info">
-                    <p><strong>作者：</strong>{{ article.authors }}</p>
-                    <p><strong>机构：</strong>{{ article.institutions }}</p>
-                    <p><strong>发表期刊：</strong>{{ article.journal }}</p>
-                  </div>
-                  <div class="article-meta">
-                    <p><strong>发表时间：</strong>{{ article.publishTime }}</p>
-                    <p><strong>DOI：</strong><a :href="article.doi" target="_blank">{{ article.doi }}</a></p>
-                    <p><strong>引用次数：</strong>{{ article.citationCount }}</p>
-                    <p><strong>收藏数：</strong>{{ article.favoriteCount }}</p>
-                  </div>
-                </div>
-                <div class="article-footer">
-                  <button @click="viewDetails(article)" class="view-button">查看详情</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <p>您还没有发表任何文章。</p>
-          </div>
-        </div>
         <div v-if="activeTab === '我的收藏'">
           <h2>我的收藏</h2>
           <div v-if="favoriteArticles.length > 0">
@@ -146,18 +114,6 @@
           </div>
         </div>
       </div>
-      <div class="follow-card">
-        <div class="follow-card-content">
-          <div class="follow-item">
-            <span class="follow-label">关注人数：</span>
-            <span class="follow-number">{{ userInfo.followingCount }}</span>
-          </div>
-          <div class="follow-item">
-            <span class="follow-label">粉丝人数：</span>
-            <span class="follow-number">{{ userInfo.followerCount }}</span>
-          </div>
-        </div>
-      </div>
       <div class="user-info-card">
         <div class="user-info-card-content">
           <div class="user-info-item">
@@ -189,7 +145,7 @@ import {GetMyUserData, UpdateAvatar, updateDescription, updateResearchFields} fr
 export default {
   data() {
     return {
-      activeTab: "我的文章", // 默认激活动态选项卡
+      activeTab: "我的收藏", // 默认激活动态选项卡
       showAvatarDialog: false,
       selectedAvatar: null, // 当前选择的头像
       isAuthenticated: false,
@@ -239,7 +195,7 @@ export default {
     confirmAvatar() {
       if (this.selectedAvatar) {
         // 找到选中头像的编号
-        const avatarIndex = this.availableAvatars.indexOf(this.selectedAvatar) + 1; // 编号从 1 开始
+        const avatarIndex = this.availableAvatars.indexOf(this.selectedAvatar); // 编号从 1 开始
         var promise = UpdateAvatar(this.$route.query.userId, avatarIndex)
         // 调用后端接口
         promise.then(response => {
@@ -303,6 +259,7 @@ export default {
       promise.then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
             const { userInfo, isAuthenticated, favoriteArticles, comments, articles } = response;
+            console.log(1);
             // 更新数据
             this.userInfo = userInfo;
             this.isAuthenticated = isAuthenticated;
@@ -572,7 +529,7 @@ html, body {
 /* 用户信息卡片样式 */
 .user-info-card {
   position: fixed;
-  top: 450px; /* 定位在页面上方 */
+  top: 350px; /* 定位在页面上方 */
   right: 10px;
   background-color: #ffffff;
   border-radius: 10px;
@@ -603,38 +560,6 @@ html, body {
   font-weight: bold;
 }
 
-.follow-card {
-  position: fixed;
-  top: 350px; /* 定位在页面上方 */
-  right: 10px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 240px; /* 固定卡片宽度 */
-}
-
-.follow-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.follow-item {
-  display: flex;
-  justify-content: space-between;
-}
-
-.follow-label {
-  font-size: 18px;
-  color: #555;
-}
-
-.follow-number {
-  font-size: 20px;
-  color: #0066cc;
-  font-weight: bold;
-}
 
 .tab-title {
   font-size: 24px;

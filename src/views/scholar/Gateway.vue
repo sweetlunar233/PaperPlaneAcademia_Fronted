@@ -7,18 +7,13 @@
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
-          <p><strong>简介：</strong>{{ userInfo.description }}
+          <p><strong>OrcId：</strong>{{ userInfo.orcid }}
           </p>
-          <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
+          <p><strong>可能出现的其他名称：</strong>{{ userInfo.alternative_names }}
           </p>
-        <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
-        <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
+        <p><strong>学术作品数量：</strong>{{ userInfo.works_count }}</p>
+        <p><strong>被引用次数：</strong>{{ userInfo.email }}</p>
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
-      </div>
-      <div class="button-container">
-        <button @click="toggleFollow" class="follow-button">
-          {{ isFollowed ? '✔ 已关注' : '+ 关注' }}
-        </button>
       </div>
     </div>
 
@@ -26,43 +21,49 @@
     <div class="main-content">
       <div class="sidebar">
         <ul>
-          <li @click="setTab('TA的文章')" :class="{ active: activeTab === 'TA的文章' }">TA的文章</li>
+          <li @click="setTab('TA的专家网络')" :class="{ active: activeTab === 'TA的专家网络' }">TA的专家网络</li>
           <li @click="setTab('TA的机构')" :class="{ active: activeTab === 'TA的机构' }">TA的机构</li>
-          <li @click="setTab('TA的评论')" :class="{ active: activeTab === 'TA的评论' }">TA的评论</li>
+          <li @click="setTab('TA的贡献')" :class="{ active: activeTab === 'TA的贡献' }">TA的贡献</li>
         </ul>
       </div>
       <div class = "left">
       </div>
       <div class="content">
-        <div v-if="activeTab === 'TA的文章'">
-          <h2>TA的文章</h2>
-          <div v-if="articles.length > 0">
-            <div v-for="(article, index) in articles" :key="index" class="article-item">
-              <div class="article-card">
-                <div class="article-header">
-                  <h3>{{ article.title }}</h3>
-                </div>
-                <div class="article-content">
-                  <div class="article-info">
-                    <p><strong>作者：</strong>{{ article.authors }}</p>
-                    <p><strong>机构：</strong>{{ article.institutions }}</p>
-                    <p><strong>发表期刊：</strong>{{ article.journal }}</p>
-                  </div>
-                  <div class="article-meta">
-                    <p><strong>发表时间：</strong>{{ article.publishTime }}</p>
-                    <p><strong>DOI：</strong><a :href="article.doi" target="_blank">{{ article.doi }}</a></p>
-                    <p><strong>引用次数：</strong>{{ article.citationCount }}</p>
-                    <p><strong>收藏数：</strong>{{ article.favoriteCount }}</p>
-                  </div>
-                </div>
-                <div class="article-footer">
-                  <button @click="viewDetails(article)" class="view-button">查看详情</button>
-                </div>
+        <div v-if="activeTab === 'TA的专家网络'">
+          <div class="expert-network">
+            <!-- SVG 连线 -->
+            <svg class="connection-lines" xmlns="http://www.w3.org/2000/svg" :width="canvasSize" :height="canvasSize">
+              <line
+                  v-for="(expert, index) in experts"
+                  :key="'line-' + index"
+                  :x1="centerX"
+                  :y1="centerY"
+                  :x2="centerX + Math.cos((index / experts.length) * 2 * Math.PI) * radius"
+                  :y2="centerY + Math.sin((index / experts.length) * 2 * Math.PI) * radius"
+                  stroke="#ccc"
+                  stroke-width="2"
+                  stroke-dasharray="5,5"
+              />
+            </svg>
+
+            <!-- 中心专家头像 -->
+            <div class="center-avatar">
+              <img :src="centerExpert.avatar" alt="中心专家" />
+              <p>{{ centerExpert.name }}</p>
+            </div>
+
+            <!-- 外围专家头像 -->
+            <div>
+              <div
+                  v-for="(expert, index) in experts"
+                  :key="'expert-' + index"
+                  class="expert-avatar"
+                  :style="getAvatarStyle(index)"
+              >
+                <img :src="expert.avatar" :alt="expert.name" />
+                <p class="expert-name">{{ expert.name }}</p>
               </div>
             </div>
-          </div>
-          <div v-else>
-            <p>TA还没有发表任何文章。</p>
           </div>
         </div>
         <div v-if="activeTab === 'TA的机构'">
@@ -96,8 +97,8 @@
             <p>TA还没有收藏任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === 'TA的评论'">
-          <h2 class="tab-title">TA的评论</h2>
+        <div v-if="activeTab === 'TA的贡献'">
+          <h2 class="tab-title">TA的贡献</h2>
           <div v-if="comments.length > 0" class="comments-list">
             <div v-for="(comment, index) in comments" :key="index" class="comment-item">
               <div class="comment-card">
@@ -162,8 +163,24 @@ import {GetScholarData, updateUserFollow} from "@/api/user.js";
 export default {
   data() {
     return {
-      activeTab: "TA的文章", // 默认激活动态选项卡
-      isFollowed: null,
+      centerX: 300,
+      centerY: 300,
+      radius: 200,
+      canvasSize: 600,
+      centerExpert: {
+        id: 0,
+        name: "专家中心",
+        avatar: "https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain",
+      },
+      experts: [
+        { id: 1, name: "专家 A", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 2, name: "专家 B", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 3, name: "专家 C", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 4, name: "专家 D", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 5, name: "专家 E", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 6, name: "专家 F", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+      ],
+      activeTab: "TA的专家网络", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
         'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
         'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
@@ -175,40 +192,44 @@ export default {
       userInfo: {
         name: '',
         photoUrl: '',
-        description: '',
-        researchFields: [],
+        orcid:'',
+        alternative_names: [],
         registerTime: '',
         institution: '',
         status: '',
-        papersCount: 0,
-        email: '',
+        works_count: 0,
+        cited_by_count: 0,
         phoneNumber: '',
-        followingCount: 0,
-        followerCount: 0,
       },
-      favoriteArticles: [],
-      comments: [],
       articles: [],
     };
   },
+  computed: {
+    centerX() {
+      return 300; // 中心点的 X 坐标
+    },
+    centerY() {
+      return 300; // 中心点的 Y 坐标
+    },
+  },
   methods: {
+    getAvatarStyle(index) {
+      const angle = (index / this.experts.length) * 2 * Math.PI;
+      const x = this.centerX + Math.cos(angle) * this.radius - 30;
+      const y = this.centerY + Math.sin(angle) * this.radius - 30;
+      return {
+        position: "absolute",
+        top: `${y}px`,
+        left: `${x}px`,
+        width: "60px",
+        height: "60px",
+        textAlign: "center",
+        transform: "translate(-50%, -50%)",
+      };
+    },
     // 设置选项卡
     setTab(tab) {
       this.activeTab = tab;
-    },
-
-    // 切换关注状态
-    toggleFollow() {
-      this.isFollowed = !this.isFollowed;
-
-      // 调用后端接口来更新关注状态
-      var promise = updateUserFollow(this.$cookies.get('userId'), this.$route.query.userId);
-      promise.then((result) => {
-          console.log('关注状态更新成功', result.data);
-        })
-        .catch(error => {
-          console.error('关注状态更新失败', error);
-        });
     },
 
     // 集中处理所有数据获取请求
@@ -224,7 +245,6 @@ export default {
           this.favoriteArticles = favoriteArticles;
           this.comments = comments;
           this.articles = articles;
-          this.isFollowed = isFollowed;
         })
         .catch(error => {
           console.error('获取数据失败', error);
@@ -257,6 +277,75 @@ html, body {
   background-color: #f0f7ff; /* 浅蓝色背景 */
 }
 
+.expert-network {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, #f0f0f0, #e6e6e6); /* 背景渐变 */
+  border-radius: 50%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* 连线样式 */
+.connection-lines {
+  position: absolute;
+  z-index: 0;
+}
+
+/* 中心专家样式 */
+.center-avatar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1;
+}
+
+.center-avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5);
+}
+
+.center-avatar p {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 外围专家样式 */
+.expert-avatar {
+  position: absolute;
+  text-align: center;
+  z-index: 1;
+}
+
+.expert-avatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.expert-avatar img:hover {
+  transform: scale(1.1);
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5);
+}
+
+.expert-name {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
 .profile-page {
   display: flex;
   flex-direction: column;
