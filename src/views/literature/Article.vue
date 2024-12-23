@@ -557,7 +557,7 @@ export default{
             }
         })
         .finally(() => {
-            
+            console.log(this.article)
         })
 
         promise = GetStar(this.userId,this.id);
