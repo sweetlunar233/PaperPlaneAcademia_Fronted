@@ -158,6 +158,8 @@
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
             <span class="user-info-value">{{ userInfo?.institution }}</span>
+            <span class="user-info-label">机构国籍：</span>
+            <span class="user-info-value">{{ userInfo?.institution_country }}</span>
           </div>
         </div>
       </div>
@@ -229,7 +231,7 @@ export default {
         alternative_names: ['a'],
         works_count: 0,
         cited_count: 0,
-        institution_country: '',
+        institution_country: 'CN',
       },
       articles: [],
     };
@@ -274,8 +276,10 @@ export default {
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
           const { userInfo, articles, experts, contributions} = response;
           // 更新数据
+          console.log(response)
           this.userInfo = userInfo;
           this.centerExpert.name = userInfo.name;
+          
           this.centerExpert.id = userInfo.orcid;
           this.articles = articles;
           this.experts = experts;
