@@ -95,7 +95,7 @@ export default{
     
     data(){
         return{
-            id:0,
+            id:"",
             field:{
                 name:"机器学习",
                 worksCount:230,
@@ -123,10 +123,16 @@ export default{
     methods: {
 
         toField(id){
-            // 获取目标 URL
-            const targetUrl = this.router.resolve({ path: '/field', query: { id: id } }).href;
-            // 使用 window.open 打开新窗口
-            window.open(targetUrl, '_blank');
+            if(id != -1){
+                // 获取目标 URL
+                const targetUrl = this.router.resolve({ path: '/field', query: { id: id } }).href;
+                // 使用 window.open 打开新窗口
+                window.open(targetUrl, '_blank');
+            }
+            else{
+                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                window.open(id, '_blank');
+            }
         },
 
         changeFoldState(){
@@ -153,16 +159,14 @@ export default{
 
     mounted(){
         this.id = this.$route.query.id;
+        console.log(this.id)
         this.isLoading = true;
 
         var promise = GetField(this.id);
         promise.then((result) => {
             if(result.status === "error"){
-                ElMessage({
-                    message: '该领域不存在！',
-                    type: 'error',
-                    plain: true,
-                });
+                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                window.open(this.id, '_blank');
             }
             else{
                 this.field = result.field;

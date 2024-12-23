@@ -75,15 +75,18 @@
                 </div>
                 <div class="articleDetail">
                     <el-tabs v-model="activeTab" @tab-click="toComment">
-                        <!-- <el-tab-pane label="参考文献" name="first">
-                            <div class="tab-tip">
+                        <el-tab-pane label="参考文献" name="first">
+                            <div class="tab-tip" v-if="article.reference">
                                 共 {{ article.reference.length }} 条
                             </div>
-                            <div class="tab-tip" v-if="article.reference.length>0">
+                            <div class="tab-tip" v-else>
+                                暂无该文章参考文献.
+                            </div>
+                            <div class="tab-tip" v-if="article.reference && article.reference.length>0">
                                 由于版权限制，此处可能仅展示部分相关论文
                             </div>
                             <el-scrollbar height="350px">
-                                <el-row v-for="(ref,index) in article.reference" class="reference-block" @click="toArticle(ref.articleId)">
+                                <el-row v-if="article.reference" v-for="(ref,index) in article.reference" class="reference-block" @click="toArticle(ref.articleId)">
                                     <el-col :span="1" style="text-align: left;">
                                         [{{ index + 1 }}] 
                                     </el-col>
@@ -105,8 +108,8 @@
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
-                        </el-tab-pane> -->
-                        <el-tab-pane label="引证文献" name="second">
+                        </el-tab-pane>
+                        <!-- <el-tab-pane label="引证文献" name="second">
                             <div class="tab-tip">
                                 共 {{ article.citation.length }} 条
                             </div>
@@ -139,7 +142,7 @@
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                         <el-tab-pane label="文章评论" name="third">
                             <div class="tab-tip">
                                 请前往弹出网页
@@ -168,7 +171,7 @@
                 <div>
                     <div class="abstract-title">领域</div>
                     <div v-for="(field,index) in article.fields" class="field">
-                        - <span class="hyperlink" @click="toField(field.fieldId)">{{ field.name }}</span>
+                        - <span class="hyperlink" @click="toField(field.id)">{{ field.name }}</span>
                     </div>
                 </div>
                 <el-divider />
@@ -317,23 +320,23 @@ export default{
                 fields:[
                     {
                         name:"Computer",
-                        fieldId:5,
+                        id:"10",
                     },
                     {
                         name:"Arithmetic",
-                        fieldId:6,
+                        id:"10",
                     },
                     {
                         name:"Software",
-                        fieldId:7,
+                        id:"10",
                     },
                     {
                         name:"Auto",
-                        fieldId:8,
+                        id:"10",
                     },
                     {
                         name:"CPG",
-                        fieldId:10,
+                        id:"10",
                     },
                 ],
                 relation:[
@@ -352,7 +355,7 @@ export default{
             },
             quotation:"",// 论文的引用
             isFold:true,
-            activeTab:"second",
+            activeTab:"first",
             router:useRouter(),
             // quoteDialog:false,
             isStar:false,
@@ -379,7 +382,6 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            console.log(this.isStar)
         },
 
         undoStar(){
@@ -500,8 +502,6 @@ export default{
                 tmp += `DOI: ${this.article.DOI}.`;
             }
 
-            console.log(tmp);
-
             return tmp;
         },
         // 格式化作者信息
@@ -557,14 +557,13 @@ export default{
             }
         })
         .finally(() => {
-            console.log(this.article)
+            
         })
 
         promise = GetStar(this.userId,this.id);
         promise
         .then((result) => {
             this.isStar = result.isStar;
-            console.log(result.isStar)
         })
 
     },
