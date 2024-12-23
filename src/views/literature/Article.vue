@@ -10,7 +10,7 @@
                 </div>
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
-                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.authorName }}<sup>{{ authorToInstitution[index] }}</sup></span>
+                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.authorName }}</span><sup>{{ authorToInstitution[index] }}</sup>
                         <span v-if="index != article.author.length">&ensp;, </span>
                     </span>
                 </div>
@@ -52,8 +52,8 @@
         <el-row>
             <el-col :span="16">
                 <div class="articleDetail">
+                    <div class="abstract-title">摘要</div>
                     <span v-if="article.abstract">
-                        <div class="abstract-title">摘要</div>
                         <span v-if="article.abstract.length > 780">
                             <span v-if="isFold">
                                 <span class="abstract-text">{{ article.abstract.substring(0,780) }}... </span>
@@ -69,7 +69,7 @@
                             <span v-else>{{ article.abstract }}</span>
                         </span>
                     </span>
-                    <span v-else>
+                    <span v-else class="tab-tip">
                         该文章无摘要信息.
                     </span>
                 </div>
