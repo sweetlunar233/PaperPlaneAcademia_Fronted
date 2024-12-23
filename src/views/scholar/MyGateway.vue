@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="this.availableAvatars[userInfo.photoUrl] || 'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain'" @click="showAvatarDialog = true" class="profile-photo-img"  />
+        <img :src="this.availableAvatars[userInfo.photoUrl]" @click="showAvatarDialog = true" class="profile-photo-img"  />
       </div>
       <el-dialog
           title="选择头像"
@@ -35,7 +35,7 @@
           <button class="edit-btn" @click="editDescription">修改</button>
         </p>
         <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
-          <button class="edit-btn" @click="editResearchFields">修改</button>
+<!--         <button class="edit-btn" @click="editResearchFields">修改</button>-->
         </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
@@ -201,8 +201,7 @@ export default {
         promise.then(response => {
               if (response.status) {
                 console.log(121)
-                this.userInfo.photoUrl = this.selectedAvatar; // 本地更新头像
-                alert('头像更新成功！');
+                this.userInfo.photoUrl = avatarIndex; // 本地更新头像
               } else {
                 alert(`头像更新失败：${response.data.message}`);
               }
