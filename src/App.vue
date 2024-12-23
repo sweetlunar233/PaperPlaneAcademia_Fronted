@@ -126,7 +126,6 @@ export default {
       } else {
         this.loggedIn = false;
       }
-      console.log(this.OnlineUser)
     }
 
   },
