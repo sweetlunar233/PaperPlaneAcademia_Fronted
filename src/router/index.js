@@ -18,11 +18,6 @@ const router = createRouter({
       component: () => import('../views/literature/Article.vue')
     },
     {
-      path:'/field',
-      name:'field',
-      component: () => import('../views/literature/Field.vue')
-    },
-    {
       path:'/authentication',
       name:'authentication',
       component: () => import('../views/scholar/Authentication.vue')
@@ -48,7 +43,7 @@ const router = createRouter({
       component: () => import('../views/search/AdvSearch.vue')
     },
     {
-      path:'/',
+      path:'/home',
       name:'home',
       component: () => import('../views/search/Home.vue')
     },

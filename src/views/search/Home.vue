@@ -226,7 +226,7 @@ const initHome = (userId) => {
     top_articles.value = [];
     recommended_articles.value = [];
     organizations.value = [];
-    // fields.value = [];
+    fields.value = [];
 
     statistic.value = { // 重置 statistic
       authorCount: 0,
