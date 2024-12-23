@@ -41,6 +41,11 @@
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
       </div>
+      <div class="button-container">
+        <button @click="toggleAuthenticate" class="button">
+          {{ isAuthenticated ? '✔ 已认证' : '去认证' }}
+        </button>
+      </div>
     </div>
 
     <!-- 主体内容 -->
@@ -48,8 +53,8 @@
       <div class="sidebar">
         <ul>
           <li @click="setTab('我的文章')" :class="{ active: activeTab === '我的文章' }">我的文章</li>
-          <li @click="setTab('我的收藏')" :class="{ active: activeTab === '我的收藏' }">收藏</li>
-          <li @click="setTab('我的评论')" :class="{ active: activeTab === '我的评论' }">评论</li>
+          <li @click="setTab('我的收藏')" :class="{ active: activeTab === '我的收藏' }">我的收藏</li>
+          <li @click="setTab('我的评论')" :class="{ active: activeTab === '我的评论' }">我的评论</li>
         </ul>
       </div>
       <div class = "left">
@@ -187,6 +192,7 @@ export default {
       activeTab: "我的文章", // 默认激活动态选项卡
       showAvatarDialog: false,
       selectedAvatar: null, // 当前选择的头像
+      isAuthenticated: false,
       availableAvatars: [ // 可供选择的头像
         'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
         'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
@@ -221,6 +227,13 @@ export default {
     },
     selectAvatar(avatar) {
       this.selectedAvatar = avatar;
+    },
+    toggleAuthenticate(){
+      if(!this.isAuthenticated){
+          router.push({
+            path: '/authentication',
+          });
+        }
     },
     // 确定选择
     confirmAvatar() {
@@ -289,9 +302,10 @@ export default {
       var promise = GetMyUserData(userId);
       promise.then(response => {
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-            const { userInfo, favoriteArticles, comments, articles } = response;
+            const { userInfo, isAuthenticated, favoriteArticles, comments, articles } = response;
             // 更新数据
             this.userInfo = userInfo;
+            this.isAuthenticated = isAuthenticated;
             this.favoriteArticles = favoriteArticles;
             this.comments = comments;
             this.articles = articles;
@@ -748,7 +762,34 @@ html, body {
   background-color: #555;
 }
 
+.button-container {
+  display: flex;
+  margin-top: 20px; /* 使按钮与其它信息之间有间距 */
+  align-self: flex-end; /* 将按钮放到右侧 */
+  margin-left: 45%;
+  gap: 30px;
+}
 
+.button {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  color: #ffffff;
+  font-size: 18px; /* 增加字体大小 */
+  font-weight: bold;
+  padding: 15px 30px; /* 增大按钮的内边距 */
+  border: none;
+  border-radius: 30px; /* 增加圆角 */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
 
+.button:hover {
+  background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
 
 </style>

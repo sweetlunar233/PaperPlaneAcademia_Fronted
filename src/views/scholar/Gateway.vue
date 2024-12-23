@@ -27,7 +27,7 @@
       <div class="sidebar">
         <ul>
           <li @click="setTab('TA的文章')" :class="{ active: activeTab === 'TA的文章' }">TA的文章</li>
-          <li @click="setTab('TA的收藏')" :class="{ active: activeTab === 'TA的收藏' }">TA的收藏</li>
+          <li @click="setTab('TA的机构')" :class="{ active: activeTab === 'TA的机构' }">TA的机构</li>
           <li @click="setTab('TA的评论')" :class="{ active: activeTab === 'TA的评论' }">TA的评论</li>
         </ul>
       </div>
@@ -65,8 +65,8 @@
             <p>TA还没有发表任何文章。</p>
           </div>
         </div>
-        <div v-if="activeTab === 'TA的收藏'">
-          <h2>TA的收藏</h2>
+        <div v-if="activeTab === 'TA的机构'">
+          <h2>TA的机构</h2>
           <div v-if="favoriteArticles.length > 0">
             <div v-for="(article, index) in favoriteArticles" :key="index" class="article-item">
               <div class="article-card">
@@ -156,9 +156,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import router from "@/router/index.js";
-import {GetOtherUserData, Login, updateUserFollow} from "@/api/user.js";
+import {GetScholarData, updateUserFollow} from "@/api/user.js";
 
 export default {
   data() {
@@ -213,10 +212,10 @@ export default {
     },
 
     // 集中处理所有数据获取请求
-    fetchUserData() {
+    fetchScholarData() {
       const currentUserId = this.$cookies.get('userId');
       const targetUserId = this.$route.query.userId;
-      var promise = GetOtherUserData(currentUserId, targetUserId);
+      var promise = GetScholarData(currentUserId, targetUserId);
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
           const { userInfo, favoriteArticles, comments, articles, isFollowed } = response;
@@ -242,7 +241,7 @@ export default {
   },
   mounted() {
     // 页面加载时获取所有数据
-    this.fetchUserData();
+    this.fetchScholarData();
   },
 };
 </script>
@@ -300,7 +299,6 @@ html, body {
   gap: 30px;
 }
 
-.message-button,
 .follow-button {
   background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
   color: #ffffff;
@@ -314,13 +312,11 @@ html, body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.message-button:hover,
 .follow-button:hover {
   background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.message-button:active,
 .follow-button:active {
   transform: scale(0.98);
 }
@@ -608,20 +604,8 @@ html, body {
 .comment-footer p {
   font-weight: bold;
 }
-.edit-btn {
-  background-color: #007bff;
-  color: white;
-  border: 1px solid #007bff;
-  border-radius: 3px;
-  padding: 5px 10px;
-  font-size: 14px;
-  cursor: pointer;
-  margin-left: 10px;
-}
 
-.edit-btn:hover {
-  background-color: #45a049;
-}
+
 
 
 </style>
