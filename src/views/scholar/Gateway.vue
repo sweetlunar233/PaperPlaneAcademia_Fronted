@@ -703,7 +703,7 @@ html, body {
   margin-bottom: 20px;
 }
 .sub-title {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: bold;
   color: grey;
   margin-left:10px;
