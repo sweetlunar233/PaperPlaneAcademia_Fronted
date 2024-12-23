@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router';
 import { getCurrentInstance } from 'vue';
 const router = useRouter();
 
+
+
 import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../../api/home.js'
 
 const isLoading = ref(false);
@@ -153,21 +155,23 @@ const FormatString = (value) => {
 }
 
 const gotoPaper = (paperId) => {
-    router.push({
-    path: '/article',
-    query: {
-        paperId: paperId
+    if(paperId !== ""){
+        router.push({
+          path: '/article',
+          query: {
+              paperId: paperId
+          }
+        });
     }
-  });
 }
 
 const gotoScholar = (userId) => {
     router.push({
-    path: '/gateway',
-    query: {
-        userId: userId
-    }
-  });
+      path: '/gateway',
+      query: {
+          userId: userId
+      }
+    });
 }
 
 const gotoError = (userId) => {
@@ -224,16 +228,17 @@ const initHome = (userId) => {
     
     var promise = GetTopArticles();
     promise.then((result)=>{
-        result.articles.forEach(element => {
-            top_articles.value.push(element);
-        });
+        for(const element of result.articles) {
+          top_articles.value.push(element);
+          console.log(element.paperId);
+        }
     });
 
     var promise = GetRecommendedArticles();
     promise.then((result)=>{
-        result.articles.forEach(element => {
-            recommended_articles.value.push(element);
-        });
+      for(const element of result.articles) {
+        recommended_articles.value.push(element);
+      }
     });
     // console.log("1234");
     // var promise = GetStatistics();
@@ -270,14 +275,12 @@ const initHome = (userId) => {
             organizations.value.push(element);
         });
     });
-
     var promise = GetFields();
     promise.then((result)=>{
         result.fields.forEach(element => {
             fields.value.push(element);
         });
     });
-
     isLoading.value = false;
 }
 
@@ -539,6 +542,13 @@ onMounted(() => {
 
 <style scoped>
 
+@font-face {
+  font-family: 'HFRace'; /* 自定义字体名称 */
+  src: url('@/assets/fonts/HFRace-2.ttf') format('truetype'); /* 引用 .ttf 文件 */
+  font-weight: normal;
+  font-style: normal;
+}
+
 .card {
   margin-left: 10px;
   margin-right: 10px;
@@ -637,17 +647,20 @@ onMounted(() => {
     /* -2px -2px 3px black,  */
     /* 5px -5px 5px black, */
     -5px 5px 5px black;
+
+  text-shadow:
+    -1px 1px 0 #000000,  
+    -2px 2px 0 #000000, 
+    -3px 3px 0 #000000, 
+    -4px 4px 0 #000000,
+    -5px 5px 0 #000000,  
+    -6px 6px 0 #000000,
+    -7px 7px 0 #000000,  
+    -8px 8px 0 #000000;
+
+    /* font-family: 'HFRace', sans-serif; */
 }
 
-.home .bigtitle1 {
-  /* font-family: "Asap SemiBold",tahoma,arial,"Hiragino Sans GB",\5b8b\4f53, sans-serif; */
-  font-size: 80px;
-  padding-top: 100px;/*空白在这*/
-  color: black;
-  font-weight: 600;
-  padding-bottom: 110px;
-  display: inline-block;
-}
 
 .home .sub-title {
   display:block;
@@ -655,6 +668,11 @@ onMounted(() => {
   font-weight:bold;
   margin-bottom:0 !important;
   color:black;
+  text-shadow: 
+    0.2px 0.2px 0.1px black, 
+    /* -2px -2px 3px black,  */
+    /* 5px -5px 5px black, */
+    -0.1px 0.1px 0.1px black;
 }
 
 .home .sub-number {

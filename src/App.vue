@@ -70,7 +70,12 @@ export default {
       this.$router.push("/register"); // 跳转到注册页面
     },
     goToMyGateway() {
-      this.$router.push("/MyGateway"); // 跳转到个人主页
+      if(this.username === 'admin'){
+        this.$router.push("/admin");
+      }
+      else{
+        this.$router.push("/MyGateway"); // 跳转到个人主页
+      }
     },
     async logout() {
       this.loggedIn = false;

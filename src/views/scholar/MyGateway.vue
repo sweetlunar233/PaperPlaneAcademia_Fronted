@@ -35,7 +35,7 @@
           <button class="edit-btn" @click="editDescription">修改</button>
         </p>
         <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
-          <button class="edit-btn" @click="editResearchFields">修改</button>
+<!--         <button class="edit-btn" @click="editResearchFields">修改</button>-->
         </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
@@ -140,7 +140,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
-import {GetMyUserData, UpdateAvatar, updateDescription, updateResearchFields} from "@/api/user.js";
+import {GetMyUserData, UpdateAvatar, updateDescription} from "@/api/user.js";
 
 export default {
   data() {
@@ -161,7 +161,7 @@ export default {
         name: '',
         photoUrl: 3,
         description: '该用户很神秘',
-        researchFields: ["该用户很神秘"],
+        researchFields: "该用户很神秘",
         registerTime: '',
         institution: '',
         status: '',
@@ -196,21 +196,19 @@ export default {
       if (this.selectedAvatar) {
         // 找到选中头像的编号
         const avatarIndex = this.availableAvatars.indexOf(this.selectedAvatar); // 编号从 1 开始
-        var promise = UpdateAvatar(this.$route.query.userId, avatarIndex)
+        var promise = UpdateAvatar(this.$cookies.get('userId'), avatarIndex)
         // 调用后端接口
         promise.then(response => {
-              if (response.data.status === 'success') {
-                this.userInfo.photoUrl = this.selectedAvatar; // 本地更新头像
-                alert('头像更新成功！');
+              if (response.status) {
+                console.log(121)
+                this.userInfo.photoUrl = avatarIndex; // 本地更新头像
               } else {
                 alert(`头像更新失败：${response.data.message}`);
               }
             })
             .catch(error => {
               console.error('头像更新失败:', error);
-              alert('头像更新失败，请稍后重试。');
             });
-
       } else {
         alert('请选择一个头像！');
       }
@@ -236,22 +234,6 @@ export default {
       }
     },
 
-    // 修改研究领域
-    editResearchFields() {
-      const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields);
-      if (newResearchFields !== null) {
-        const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        var promise = updateResearchFields(this.$cookies.get('userId'), updatedFields);
-        promise.then(response => {
-              this.userInfo.researchFields = updatedFields;
-              console.log('研究领域更新成功', response.data);
-            })
-            .catch(error => {
-              console.error('研究领域更新失败', error);
-            });
-      }
-    },
-
     // 集中处理所有数据获取请求
     fetchUserData() {
       const userId = this.$cookies.get('userId');
@@ -266,6 +248,8 @@ export default {
             this.favoriteArticles = favoriteArticles;
             this.comments = comments;
             this.articles = articles;
+            console.log(response);
+            console.log(userInfo);
           })
           .catch(error => {
             console.error('获取数据失败', error);

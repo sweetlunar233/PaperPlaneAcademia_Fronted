@@ -234,53 +234,53 @@ export default{
                     first_page:"5784",
                     last_page:"5784",
                 },
-                // reference: [
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
-                //                     articleId: 1,
-                //                     articleTitle: "Securing and sharing Elasticsearch resources with Read-onlyREST",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                //                 {
-                //                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
-                //                     articleId: 1,
-                //                     articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
-                //                 },
-                // ],
+                reference: [
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
+                                    articleId: 1,
+                                    articleTitle: "Securing and sharing Elasticsearch resources with Read-onlyREST",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                                {
+                                    authors: ["Sepp Hochreiter","Jürgen Schmidhuber","TieZhu Ding","ChenXi Ding","TieZhu Ding","TieZhu Ding"],
+                                    articleId: 1,
+                                    articleTitle: "BUAA VS TsingHua Xue YeYe Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo Bie Da Wo",
+                                },
+                ],
                 citation: [
                                 {
                                     authors: ["Sepp Hochreiter","Jürgen Schmidhuber"],
@@ -382,11 +382,13 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
+            this.article.starCnt++;
         },
 
         undoStar(){
             this.isStar = false;
             var promise = PostStar(this.userId,this.id,this.isStar);
+            this.article.starCnt--;
         },
 
         async share(){
@@ -557,7 +559,7 @@ export default{
             }
         })
         .finally(() => {
-            
+            console.log(this.article)
         })
 
         promise = GetStar(this.userId,this.id);
@@ -631,6 +633,7 @@ export default{
     margin-top: 3%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04);
 }
+
 
 .article .abstract-title {
     text-align: left;

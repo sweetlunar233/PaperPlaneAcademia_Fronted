@@ -3,17 +3,16 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="this.availableAvatars[userInfo.photoUrl] || 'https://picx.zhimg.com/v2-c9e8de65838441813b8631a8495c7622_xll.jpg?source=32738c0c&needBackground=1'" alt="用户头像" />
+        <img :src="getRandomAvatar()" alt="用户头像" />
       </div>
       <div class="user-info">
-        <h1 class="username">{{ userInfo.name }}</h1>
-          <p><strong>OrcId：</strong>{{ userInfo.orcid }}
+        <h1 class="username">{{ userInfo?.name }}</h1>
+          <p><strong>OrcId：</strong>{{ userInfo?.orcid }}
           </p>
-          <p><strong>可能出现的其他名称：</strong>{{ userInfo.alternative_names }}
+          <p><strong>可能出现的其他名称：</strong>{{ userInfo?.alternative_names[0] }}
           </p>
-        <p><strong>学术作品数量：</strong>{{ userInfo.works_count }}</p>
-        <p><strong>被引用次数：</strong>{{ userInfo.email }}</p>
-        <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
+        <p><strong>学术作品数量：</strong>{{ userInfo?.works_count }}</p>
+        <p><strong>被引用次数：</strong>{{ userInfo?.cited_count }}</p>
       </div>
     </div>
 
@@ -42,12 +41,13 @@
             <!-- 外围专家头像 -->
             <div>
               <div
-                  v-for="(expert, index) in experts"
-                  :key="'expert-' + index"
-                  class="expert-avatar"
-                  :style="getAvatarStyle(index)"
+                v-for="(expert, index) in experts"
+                :key="'expert-' + index"
+                class="expert-avatar"
+                :style="getAvatarStyle(index)"
+                @click="goToScholar(expert.id)"
               >
-                <img :src="expert.avatar" :alt="expert.name" />
+                <img :src="getRandomAvatar()" :alt="expert.name" />
                 <p class="expert-name">{{ expert.name }}</p>
               </div>
             </div>
@@ -69,26 +69,57 @@
         </div>
         <div v-if="activeTab === 'TA的贡献'">
           <h2 class="tab-title">TA的贡献</h2>
-          <div v-if="comments.length > 0" class="comments-list">
-            <div v-for="(comment, index) in comments" :key="index" class="comment-item">
-              <div class="comment-card">
-                <div class="comment-header">
-                  <h3>{{ comment.commenter }}</h3>
-                  <p class="paper-id">所属论文：<span>{{ comment.paperId }}</span></p>
-                  <p class="comment-time">{{ comment.time }}</p>
-                </div>
-                <div class="comment-content">
-                  <p>{{ comment.content }}</p>
-                </div>
-                <div class="comment-footer">
-                  <p><strong>点赞数：</strong>{{ comment.likeCount }}</p>
-                </div>
-              </div>
-            </div>
+          <div v-for="(contribution, index) in contributions" :key="index" class="contribution-item">
+    
+    <!-- 单个贡献项的卡片 -->
+    <el-card class="contribution-card">
+      <h2 class="sub-title">领域</h2>
+      <div class="fields">
+        <!-- 当前领域 -->
+        <div class="field current-field">
+          <span class="field-name1">{{ contribution.display_name }}</span>
+        </div>
+        <div class="field" v-if="contribution.subfield">
+          <span class="field-name2">to</span>
+        </div>
+
+        <!-- 上一个领域 -->
+        <div class="field subfield" v-if="contribution.subfield">
+          <span class="field-name2">{{ contribution.subfield.display_name }}</span>
+        </div>
+        
+        <div class="field" v-if="contribution.field">
+          <span class="field-name2">to</span>
+        </div>
+
+        <!-- 更广的领域 -->
+        <div class="field broader-field" v-if="contribution.field">
+          <span class="field-name3">{{ contribution.field.display_name }}</span>
+        </div>
+      </div>
+
+      <!-- 下方的domain和value -->
+      <div class="bottom-info">
+        <!-- Domain部分使用card包裹 -->
+        <el-card class="domain-card" style="display: inline-block; width: auto; max-width: 100%;">
+          <div class="domain">
+            <span>{{ contribution.domain }}</span>
           </div>
-          <div v-else>
-            <p>TA还没有发布任何评论。</p>
-          </div>
+        </el-card>
+
+        <!-- Value部分为环形进度条 -->
+        <div class="value">
+          <el-progress
+            :percentage="contribution.value"
+            type="circle"
+            :stroke-width="10"
+            
+          />
+        </div>
+      </div>
+    </el-card>
+    
+  </div>
         </div>
         <div v-if="activeTab === 'TA的文章'">
           <h2>TA的文章</h2>
@@ -122,31 +153,11 @@
           </div>
         </div>
       </div>
-      <div class="follow-card">
-        <div class="follow-card-content">
-          <div class="follow-item">
-            <span class="follow-label">关注人数：</span>
-            <span class="follow-number">{{ userInfo.followingCount }}</span>
-          </div>
-          <div class="follow-item">
-            <span class="follow-label">粉丝人数：</span>
-            <span class="follow-number">{{ userInfo.followerCount }}</span>
-          </div>
-        </div>
-      </div>
       <div class="user-info-card">
         <div class="user-info-card-content">
           <div class="user-info-item">
-            <span class="user-info-label">加入时间：</span>
-            <span class="user-info-value">{{ userInfo.registerTime }}</span>
-          </div>
-          <div class="user-info-item">
-            <span class="user-info-label">账户状态：</span>
-            <span class="user-info-value">{{ userInfo.status }}</span>
-          </div>
-          <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value">{{ userInfo.institution }}</span>
+            <span class="user-info-value">{{ userInfo?.institution }}</span>
           </div>
         </div>
       </div>
@@ -164,6 +175,34 @@ import {GetScholarData} from "@/api/user.js";
 export default {
   data() {
     return {
+      contributions:[
+        {
+        "display_name": "AI",
+        "subfield":{
+          display_name: "Software Engineering"
+        },
+        "field":{
+          display_name:"Computer Science"
+        },
+        "domain":"CS",
+        "value":"100"
+      },
+      {
+        "display_name": "AI2",
+        
+        "domain":"CcccccccccccccccccccccS2",
+        "value":"90"
+      },
+      {
+        "display_name": "AI3",
+        "subfield":{
+          display_name: "Software Engineering"
+        },
+        
+        "domain":"CS3",
+        "value":"80"
+      }
+    ],
       centerX: 300,
       centerY: 275,
       radius: 200,
@@ -171,17 +210,35 @@ export default {
       centerExpert: {
         id: 0,
         name: "专家中心",
-        avatar: "https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain",
+        avatar: 'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
       },
       experts: [
-        { id: 1, name: expertsArray[0], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 2, name:  expertsArray[1], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 3, name:  expertsArray[2], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 4, name:  expertsArray[3], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 5, name:  expertsArray[4], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 6, name:  expertsArray[5], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-      ],
-      activeTab: "TA的专家网络", // 默认激活动态选项卡
+        {
+            "id": "13",
+            "name": "熊大"
+        },
+        {
+            "id": "14",
+            "name": "熊二"
+        },
+        {
+            "id": "15",
+            "name": "张三"
+        },
+        {
+            "id": "16",
+            "name": "李四"
+        },
+        {
+            "id": "17",
+            "name": "王五"
+        },
+        {
+            "id": "1",
+            "name": "赵六"
+        }
+    ],
+      activeTab: "TA的贡献", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
         'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
         'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
@@ -191,25 +248,29 @@ export default {
         'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
       ],
       userInfo: {
-        name: '',
-        photoUrl: '',
-        description: '',
-        researchFields: [],
-        registerTime: '',
-        institution: '',
-        status: '',
-        papersCount: 0,
-        email: '',
-        phoneNumber: '',
-        followingCount: 0,
-        followerCount: 0,
+        name: 'a',
+        institution: 'a',
+        orcid: '1',
+        alternative_names: ['a'],
+        works_count: 0,
+        cited_count: 0,
+        institution_country: '',
       },
-      favoriteArticles: [],
-      comments: [],
       articles: [],
     };
   },
   methods: {
+    goToScholar(expertId) {
+      // 使用 Vue Router 跳转到学者详情页
+      this.$router.push({ path: '/gateway', query: { userId: expertId } });
+
+      // 或者如果是通过原生方式跳转
+      // window.location.href = `/scholar/${expertId}`;
+    },
+    getRandomAvatar() {
+    const randomIndex = Math.floor(Math.random() * this.availableAvatars.length);
+    return this.availableAvatars[randomIndex];
+  },
     getAvatarStyle(index) {
       const angle = (index / this.experts.length) * 2 * Math.PI;
       const x = this.centerX + Math.cos(angle) * this.radius;
@@ -235,14 +296,14 @@ export default {
       const targetUserId = this.$route.query.userId;
       var promise = GetScholarData(currentUserId, targetUserId);
       promise.then(response => {
-          // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-          const { userInfo, favoriteArticles, comments, articles, isFollowed, expertsArray } = response;
+          // 假设返回的数据结构包含 userInfo, articles
+          const { userInfo, articles, experts } = response;
           // 更新数据
           this.userInfo = userInfo;
-          this.favoriteArticles = favoriteArticles;
-          this.comments = comments;
+          this.centerExpert.name = userInfo.name;
+          this.centerExpert.id = userInfo.orcid;
           this.articles = articles;
-          this.expertsArray = experts;
+          this.experts = experts;
         })
         .catch(error => {
           console.error('获取数据失败', error);
@@ -632,6 +693,13 @@ html, body {
   color: #333;
   margin-bottom: 20px;
 }
+.sub-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: grey;
+  margin-left:10px;
+  margin-top: 10px;
+}
 
 /* 评论列表容器样式 */
 .comments-list {
@@ -693,7 +761,94 @@ html, body {
   font-weight: bold;
 }
 
+/*贡献样式*/
+.tab-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
+.contribution-item {
+  margin-bottom: 20px;
+}
+
+.contribution-card {
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fields {
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field {
+  
+  text-align: center;
+  flex: 1;
+}
+
+.field-name1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.field-name2 {
+  font-size: 28px;
+  font-weight: bold;
+}
+.field-name3 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.arrow {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 10%;
+}
+
+.bottom-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.domain {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  font-size: 32px;
+  font-weight: bolder;
+  color: #0056b3;
+}
+.domain-card {
+  margin-top: 40px;
+  height: 30%;
+  display: inline-block; 
+  width: auto; 
+  max-width: 50%;
+  white-space: nowrap; 
+  padding: 10px; 
+
+}
+
+.value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.value-badge {
+  font-size: 20px;
+  border-radius: 50%;
+  padding: 5px 10px;
+  background-color: #1890ff;
+  color: white;
+}
 
 
 </style>
