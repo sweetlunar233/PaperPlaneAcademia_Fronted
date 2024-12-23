@@ -22,8 +22,8 @@
       <div class="sidebar">
         <ul>
           <li @click="setTab('TA的专家网络')" :class="{ active: activeTab === 'TA的专家网络' }">TA的专家网络</li>
-          <li @click="setTab('TA的机构')" :class="{ active: activeTab === 'TA的机构' }">TA的机构</li>
           <li @click="setTab('TA的贡献')" :class="{ active: activeTab === 'TA的贡献' }">TA的贡献</li>
+          <li @click="setTab('TA的文章')" :class="{ active: activeTab === 'TA的文章' }">TA的文章</li>
         </ul>
       </div>
       <div class = "left">
@@ -31,20 +31,7 @@
       <div class="content">
         <div v-if="activeTab === 'TA的专家网络'">
           <div class="expert-network">
-            <!-- SVG 连线 -->
-            <svg class="connection-lines" xmlns="http://www.w3.org/2000/svg" :width="canvasSize" :height="canvasSize">
-              <line
-                  v-for="(expert, index) in experts"
-                  :key="'line-' + index"
-                  :x1="centerX"
-                  :y1="centerY"
-                  :x2="centerX + Math.cos((index / experts.length) * 2 * Math.PI) * radius"
-                  :y2="centerY + Math.sin((index / experts.length) * 2 * Math.PI) * radius"
-                  stroke="#ccc"
-                  stroke-width="2"
-                  stroke-dasharray="5,5"
-              />
-            </svg>
+
 
             <!-- 中心专家头像 -->
             <div class="center-avatar">
@@ -64,37 +51,20 @@
                 <p class="expert-name">{{ expert.name }}</p>
               </div>
             </div>
-          </div>
-        </div>
-        <div v-if="activeTab === 'TA的机构'">
-          <h2>TA的机构</h2>
-          <div v-if="favoriteArticles.length > 0">
-            <div v-for="(article, index) in favoriteArticles" :key="index" class="article-item">
-              <div class="article-card">
-                <div class="article-header">
-                  <h3>{{ article.title }}</h3>
-                </div>
-                <div class="article-content">
-                  <div class="article-info">
-                    <p><strong>作者：</strong>{{ article.authors }}</p>
-                    <p><strong>机构：</strong>{{ article.institutions }}</p>
-                    <p><strong>发表期刊：</strong>{{ article.journal }}</p>
-                  </div>
-                  <div class="article-meta">
-                    <p><strong>发表时间：</strong>{{ article.publishTime }}</p>
-                    <p><strong>DOI：</strong><a :href="article.doi" target="_blank">{{ article.doi }}</a></p>
-                    <p><strong>引用次数：</strong>{{ article.citationCount }}</p>
-                    <p><strong>收藏数：</strong>{{ article.favoriteCount }}</p>
-                  </div>
-                </div>
-                <div class="article-footer">
-                  <button @click="viewDetails(article.id)" class="view-button">查看详情</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <p>TA还没有收藏任何文章。</p>
+            <!-- SVG 连线 -->
+            <svg class="connection-lines" xmlns="http://www.w3.org/2000/svg" :width="canvasSize" :height="canvasSize">
+              <line
+                  v-for="(expert, index) in experts"
+                  :key="'line-' + index"
+                  :x1="centerX"
+                  :y1="centerY"
+                  :x2="centerX + Math.cos((index / experts.length) * 2 * Math.PI) * radius"
+                  :y2="centerY + Math.sin((index / experts.length) * 2 * Math.PI) * radius"
+                  stroke="#ccc"
+                  stroke-width="2"
+                  stroke-dasharray="5,5"
+              />
+            </svg>
           </div>
         </div>
         <div v-if="activeTab === 'TA的贡献'">
@@ -118,6 +88,37 @@
           </div>
           <div v-else>
             <p>TA还没有发布任何评论。</p>
+          </div>
+        </div>
+        <div v-if="activeTab === 'TA的文章'">
+          <h2>TA的文章</h2>
+          <div v-if="articles.length > 0">
+            <div v-for="(article, index) in articles" :key="index" class="article-item">
+              <div class="article-card">
+                <div class="article-header">
+                  <h3>{{ article.title }}</h3>
+                </div>
+                <div class="article-content">
+                  <div class="article-info">
+                    <p><strong>作者：</strong>{{ article.authors }}</p>
+                    <p><strong>机构：</strong>{{ article.institutions }}</p>
+                    <p><strong>发表期刊：</strong>{{ article.journal }}</p>
+                  </div>
+                  <div class="article-meta">
+                    <p><strong>发表时间：</strong>{{ article.publishTime }}</p>
+                    <p><strong>DOI：</strong><a :href="article.doi" target="_blank">{{ article.doi }}</a></p>
+                    <p><strong>引用次数：</strong>{{ article.citationCount }}</p>
+                    <p><strong>收藏数：</strong>{{ article.favoriteCount }}</p>
+                  </div>
+                </div>
+                <div class="article-footer">
+                  <button @click="viewDetails(article)" class="view-button">查看详情</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <p>TA还没有发表任何文章。</p>
           </div>
         </div>
       </div>
@@ -158,13 +159,13 @@
 
 <script>
 import router from "@/router/index.js";
-import {GetScholarData, updateUserFollow} from "@/api/user.js";
+import {GetScholarData} from "@/api/user.js";
 
 export default {
   data() {
     return {
       centerX: 300,
-      centerY: 300,
+      centerY: 275,
       radius: 200,
       canvasSize: 600,
       centerExpert: {
@@ -173,12 +174,12 @@ export default {
         avatar: "https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain",
       },
       experts: [
-        { id: 1, name: "专家 A", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 2, name: "专家 B", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 3, name: "专家 C", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 4, name: "专家 D", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 5, name: "专家 E", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 6, name: "专家 F", avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 1, name: expertsArray[0], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 2, name:  expertsArray[1], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 3, name:  expertsArray[2], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 4, name:  expertsArray[3], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 5, name:  expertsArray[4], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
+        { id: 6, name:  expertsArray[5], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
       ],
       activeTab: "TA的专家网络", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
@@ -192,31 +193,27 @@ export default {
       userInfo: {
         name: '',
         photoUrl: '',
-        orcid:'',
-        alternative_names: [],
+        description: '',
+        researchFields: [],
         registerTime: '',
         institution: '',
         status: '',
-        works_count: 0,
-        cited_by_count: 0,
+        papersCount: 0,
+        email: '',
         phoneNumber: '',
+        followingCount: 0,
+        followerCount: 0,
       },
+      favoriteArticles: [],
+      comments: [],
       articles: [],
     };
-  },
-  computed: {
-    centerX() {
-      return 300; // 中心点的 X 坐标
-    },
-    centerY() {
-      return 300; // 中心点的 Y 坐标
-    },
   },
   methods: {
     getAvatarStyle(index) {
       const angle = (index / this.experts.length) * 2 * Math.PI;
-      const x = this.centerX + Math.cos(angle) * this.radius - 30;
-      const y = this.centerY + Math.sin(angle) * this.radius - 30;
+      const x = this.centerX + Math.cos(angle) * this.radius;
+      const y = this.centerY + Math.sin(angle) * this.radius - 5;
       return {
         position: "absolute",
         top: `${y}px`,
@@ -239,12 +236,13 @@ export default {
       var promise = GetScholarData(currentUserId, targetUserId);
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-          const { userInfo, favoriteArticles, comments, articles, isFollowed } = response;
+          const { userInfo, favoriteArticles, comments, articles, isFollowed, expertsArray } = response;
           // 更新数据
           this.userInfo = userInfo;
           this.favoriteArticles = favoriteArticles;
           this.comments = comments;
           this.articles = articles;
+          this.expertsArray = experts;
         })
         .catch(error => {
           console.error('获取数据失败', error);
@@ -346,6 +344,7 @@ html, body {
   color: #555;
   font-weight: 500;
 }
+
 .profile-page {
   display: flex;
   flex-direction: column;
