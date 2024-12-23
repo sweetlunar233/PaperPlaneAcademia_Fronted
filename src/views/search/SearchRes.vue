@@ -197,6 +197,15 @@ export default {
     },
 
     getTotalPages() {
+      console.log({
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+        filter: {
+          keys: [...this.selectedKeywords],
+          years: this.selectedYears.map(year => year.getFullYear().toString()),
+          authorOrganizations: [...this.selectedAuthors]
+        }
+      })
       var response = getTotalPages({
         searchConditions: this.searchConditions,
         dateRange: this.dateRange,
@@ -253,7 +262,7 @@ export default {
           console.error("Error fetching results");
           this.showRes = [
             { 
-              Id:'11',
+              Id:'4055372',
               title: '测试标题 1', 
               isFavorite:true,
               date: '2022-01-01', 
@@ -264,7 +273,7 @@ export default {
               download:null,
             },
             { 
-              Id:'12',
+              Id:'4055373',
               title: '测试标题 2', 
               isFavorite:false, 
               date: '2022-02-01', 
@@ -306,7 +315,7 @@ export default {
     },
 
     collectPaper(paper) {
-      var response = PostStar(this.userId, paper.id, paper.isFavorite);
+      var response = PostStar(this.userId, paper.Id, paper.isFavorite);
 
       response
       .then((result) => {

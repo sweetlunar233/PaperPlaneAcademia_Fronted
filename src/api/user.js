@@ -38,11 +38,11 @@ export function UpdateAvatar(userId, avatarIndex){
 }
 
 export function getTotalPages(data) {
-    return post("/users/getpage/", data);
+    return post("/authors/getpage/", data);
 }
 
 export function fetchResults(data) {
-    return post("/users/searchscholars/", data);
+    return post("/authors/searchscholars/", data);
 }
 
 export function updateUserFollow(currentUserId, targetUserId) {
