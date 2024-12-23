@@ -68,26 +68,57 @@
         </div>
         <div v-if="activeTab === 'TA的贡献'">
           <h2 class="tab-title">TA的贡献</h2>
-          <div v-if="comments.length > 0" class="comments-list">
-            <div v-for="(comment, index) in comments" :key="index" class="comment-item">
-              <div class="comment-card">
-                <div class="comment-header">
-                  <h3>{{ comment.commenter }}</h3>
-                  <p class="paper-id">所属论文：<span>{{ comment.paperId }}</span></p>
-                  <p class="comment-time">{{ comment.time }}</p>
-                </div>
-                <div class="comment-content">
-                  <p>{{ comment.content }}</p>
-                </div>
-                <div class="comment-footer">
-                  <p><strong>点赞数：</strong>{{ comment.likeCount }}</p>
-                </div>
-              </div>
-            </div>
+          <div v-for="(contribution, index) in contributions" :key="index" class="contribution-item">
+    
+    <!-- 单个贡献项的卡片 -->
+    <el-card class="contribution-card">
+      <h2 class="sub-title">领域</h2>
+      <div class="fields">
+        <!-- 当前领域 -->
+        <div class="field current-field">
+          <span class="field-name1">{{ contribution.display_name }}</span>
+        </div>
+        <div class="field" v-if="contribution.subfield">
+          <span class="field-name2">to</span>
+        </div>
+
+        <!-- 上一个领域 -->
+        <div class="field subfield" v-if="contribution.subfield">
+          <span class="field-name2">{{ contribution.subfield.display_name }}</span>
+        </div>
+        
+        <div class="field" v-if="contribution.field">
+          <span class="field-name2">to</span>
+        </div>
+
+        <!-- 更广的领域 -->
+        <div class="field broader-field" v-if="contribution.field">
+          <span class="field-name3">{{ contribution.field.display_name }}</span>
+        </div>
+      </div>
+
+      <!-- 下方的domain和value -->
+      <div class="bottom-info">
+        <!-- Domain部分使用card包裹 -->
+        <el-card class="domain-card" style="display: inline-block; width: auto; max-width: 100%;">
+          <div class="domain">
+            <span>{{ contribution.domain }}</span>
           </div>
-          <div v-else>
-            <p>TA还没有发布任何评论。</p>
-          </div>
+        </el-card>
+
+        <!-- Value部分为环形进度条 -->
+        <div class="value">
+          <el-progress
+            :percentage="contribution.value"
+            type="circle"
+            :stroke-width="10"
+            
+          />
+        </div>
+      </div>
+    </el-card>
+    
+  </div>
         </div>
         <div v-if="activeTab === 'TA的文章'">
           <h2>TA的文章</h2>
@@ -121,30 +152,14 @@
           </div>
         </div>
       </div>
-      <div class="follow-card">
-        <div class="follow-card-content">
-          <div class="follow-item">
-            <span class="follow-label">关注人数：</span>
-            <span class="follow-number">{{ userInfo.followingCount }}</span>
-          </div>
-          <div class="follow-item">
-            <span class="follow-label">粉丝人数：</span>
-            <span class="follow-number">{{ userInfo.followerCount }}</span>
-          </div>
-        </div>
-      </div>
       <div class="user-info-card">
         <div class="user-info-card-content">
           <div class="user-info-item">
-            <span class="user-info-label">加入时间：</span>
-            <span class="user-info-value">{{ userInfo.registerTime }}</span>
+            <span class="user-info-label">机构国家：</span>
+            <span class="user-info-value">{{ userInfo.institution_country }}</span>
           </div>
           <div class="user-info-item">
-            <span class="user-info-label">账户状态：</span>
-            <span class="user-info-value">{{ userInfo.status }}</span>
-          </div>
-          <div class="user-info-item">
-            <span class="user-info-label">机构：</span>
+            <span class="user-info-label">TA的机构：</span>
             <span class="user-info-value">{{ userInfo.institution }}</span>
           </div>
         </div>
@@ -163,6 +178,34 @@ import {GetScholarData} from "@/api/user.js";
 export default {
   data() {
     return {
+      contributions:[
+        {
+        "display_name": "AI",
+        "subfield":{
+          display_name: "Software Engineering"
+        },
+        "field":{
+          display_name:"Computer Science"
+        },
+        "domain":"CS",
+        "value":"100"
+      },
+      {
+        "display_name": "AI2",
+        
+        "domain":"CcccccccccccccccccccccS2",
+        "value":"90"
+      },
+      {
+        "display_name": "AI3",
+        "subfield":{
+          display_name: "Software Engineering"
+        },
+        
+        "domain":"CS3",
+        "value":"80"
+      }
+    ],
       centerX: 300,
       centerY: 275,
       radius: 200,
@@ -198,7 +241,7 @@ export default {
             "name": "赵六"
         }
     ],
-      activeTab: "TA的专家网络", // 默认激活动态选项卡
+      activeTab: "TA的贡献", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
         'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
         'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
@@ -214,6 +257,7 @@ export default {
         alternative_names: [],
         works_count: 0,
         cited_count: 0,
+        institution_country: '',
       },
       articles: [],
     };
@@ -643,6 +687,13 @@ html, body {
   color: #333;
   margin-bottom: 20px;
 }
+.sub-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: grey;
+  margin-left:10px;
+  margin-top: 10px;
+}
 
 /* 评论列表容器样式 */
 .comments-list {
@@ -704,7 +755,94 @@ html, body {
   font-weight: bold;
 }
 
+/*贡献样式*/
+.tab-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
+.contribution-item {
+  margin-bottom: 20px;
+}
+
+.contribution-card {
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fields {
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field {
+  
+  text-align: center;
+  flex: 1;
+}
+
+.field-name1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.field-name2 {
+  font-size: 28px;
+  font-weight: bold;
+}
+.field-name3 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.arrow {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 10%;
+}
+
+.bottom-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.domain {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  font-size: 32px;
+  font-weight: bolder;
+  color: #0056b3;
+}
+.domain-card {
+  margin-top: 40px;
+  height: 30%;
+  display: inline-block; 
+  width: auto; 
+  max-width: 50%;
+  white-space: nowrap; 
+  padding: 10px; 
+
+}
+
+.value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.value-badge {
+  font-size: 20px;
+  border-radius: 50%;
+  padding: 5px 10px;
+  background-color: #1890ff;
+  color: white;
+}
 
 
 </style>

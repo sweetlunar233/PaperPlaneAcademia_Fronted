@@ -207,9 +207,9 @@ export default {
               }
             })
             .catch(error => {
-              console.error('头像更新失败:', error);
-              alert('头像更新失败，请稍后重试。');
-            });
+              console.error('头像更新失败:', error);            });
+
+        alert('头像更新失败，请稍后重试。');
 
       } else {
         alert('请选择一个头像！');
