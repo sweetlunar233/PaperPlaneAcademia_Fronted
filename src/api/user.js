@@ -45,12 +45,6 @@ export function fetchResults(data) {
     return post("/authors/searchscholars/", data);
 }
 
-export function updateUserFollow(currentUserId, targetUserId) {
-    let data = {};
-    data.currentUserId = currentUserId;
-    data.targetUserId = targetUserId;
-    return post("/user/follow/", data);
-}
 
 export function updateDescription(userId, description){
     let data = {};
@@ -58,14 +52,6 @@ export function updateDescription(userId, description){
     data.description = description;
     console.log(data);
     return post("/users/updateDescription/",data);
-}
-
-export function updateResearchFields(userId, researchFields){
-    let data = {};
-    data.userId = userId;
-    data.researchFields = researchFields;
-    console.log(data);
-    return post("/users/updateResearchFields/",data);
 }
 
 export function platformOverview(){
