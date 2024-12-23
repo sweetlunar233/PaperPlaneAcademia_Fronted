@@ -252,6 +252,7 @@ const initHome = (userId) => {
         console.log(statistic.value.journalCount);
         console.log(statistic.value.paperCount);
         console.log("1234");
+        // console.log(result)
         console.log(result.authorCount);
         console.log(result.organizationsCount);
         console.log(result.fieldsCount);
