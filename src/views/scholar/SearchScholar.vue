@@ -7,10 +7,15 @@
     -5px 5px 5px gray;">学者搜索<svg t="1732172617443" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3730" width="32" height="32"><path d="M945.08544 366.6432l-425.97376-183.1936a20.5312 20.5312 0 0 0-8.12544-1.6896c-2.7648 0-5.52448 0.5632-8.14592 1.6896L76.87168 366.6432c-8.98048 3.84512-14.92992 13.65504-14.92992 24.59136 0 10.9568 5.94944 20.74112 14.92992 24.60672L502.8352 599.04a20.29056 20.29056 0 0 0 16.27136 0l331.1872-142.43328v145.7152c-17.75104 9.40032-30.08512 29.8496-30.08512 53.62688 0 23.7824 12.33408 44.22656 30.08512 53.62688v50.83136h43.6224v-50.82112c17.76128-9.40032 30.1056-29.8496 30.1056-53.63712s-12.34432-44.2368-30.1056-53.63712V437.84704l51.16416-22.00576c8.97536-3.8656 14.9248-13.65504 14.9248-24.60672 0-10.93632-5.94944-20.74624-14.9248-24.59136z m-434.0992 269.16352a47.96928 47.96928 0 0 1-19.03104-3.95776L226.4064 517.632v157.70112c0 129.16224 193.65888 167.936 254.208 167.936h60.69248c45.35808 0 254.22848-38.77376 254.22848-167.936v-157.696l-265.55904 114.21184a47.76448 47.76448 0 0 1-18.9952 3.95776z" fill="#272636" p-id="3731"></path></svg></h3>
     <div class="basic-search" >
             
-            <el-select v-model="searchKeyword" placeholder="选择范围" style="width: 100px;">
-              <el-option label="作者名" value="name"></el-option>
-              <el-option label="机构" value="organization"></el-option>
-              <el-option label="研究领域" value="field"></el-option>
+              
+            
+            <el-select v-model="searchType" placeholder="选择范围" style="width: 100px;">
+              <el-option
+                v-for="item in searchTypes"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </el-select>
             <el-input v-model="searchKeyword" placeholder="搜索..." style="width: 800px;" />
           </div>
@@ -19,7 +24,7 @@
      <el-col :span="24">
       <el-card style="background-color: #f5f5f5;display: flex;justify-content: center ;">
         <div class="search-container">
-          <h3 style="font-size: 30px;">高级选项</h3>
+          <h3 style="font-size: 30px; display: flex;justify-content: center ;">高级选项</h3>
         <div class="advanced-search">
           <div
             class="search-row"
@@ -43,7 +48,7 @@
               placeholder="请输入作者相关内容"
               style="flex: 1;width: 390px;"
             />
-  
+            <span style="font-weight: bold; ">in</span>
             <!-- 搜索范围选择 -->
             <el-select v-if="index >= 0" v-model="condition.scope" placeholder="选择范围" style="width: 150px;">
               <el-option label="作者名" value="name"></el-option>
@@ -110,7 +115,7 @@
   
       // 移除条件
       removeCondition(index) {
-        if (this.authorConditions.length <=2) {
+        if (this.authorConditions.length <=1) {
         alert('不能删除');
         return;  // 不允许继续添加
     }
