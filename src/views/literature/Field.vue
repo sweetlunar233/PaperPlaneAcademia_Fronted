@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import { GetField } from '@/api/field';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 
@@ -151,9 +152,26 @@ export default{
     },
 
     mounted(){
-        // this.id = this.$route.query.id;
-        // this.isLoading = true;
+        this.id = this.$route.query.id;
+        this.isLoading = true;
 
+        var promise = GetField(this.id);
+        promise.then((result) => {
+            if(result.status === "error"){
+                ElMessage({
+                    message: '该领域不存在！',
+                    type: 'error',
+                    plain: true,
+                });
+            }
+            else{
+                this.field = result.field;
+                console.log(result);
+                this.isLoading = false;
+            }
+        })
+        .finally(() => {
+        })
     },
 }
 
