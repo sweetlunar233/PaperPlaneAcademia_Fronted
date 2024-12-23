@@ -10,6 +10,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 import VueCookies from 'vue-cookies'
 
+
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)

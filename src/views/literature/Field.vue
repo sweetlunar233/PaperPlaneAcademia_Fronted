@@ -33,7 +33,7 @@
                     </span>
                 </div>
                 <div class="articleDetail">
-                    <el-tabs v-model="activeTab" @tab-click="toComment">
+                    <el-tabs v-model="activeTab">
                         <el-tab-pane label="关键字" name="first">
                             <div class="tab-tip">
                                 共 {{ field.keywords.length }} 条
@@ -163,7 +163,7 @@ export default{
             try {
                 await navigator.clipboard.writeText(content);
                 ElMessage({
-                    message: '引用格式已复制到剪切板',
+                    message: '已复制到剪切板',
                     type: 'success',
                     plain: true,
                 });
@@ -190,7 +190,6 @@ export default{
             }
             else{
                 this.field = result.field;
-                console.log(result);
                 this.isLoading = false;
             }
         })
