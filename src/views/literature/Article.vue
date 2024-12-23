@@ -10,15 +10,8 @@
                 </div>
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
-                        <span>{{ author }}<sup>{{ authorToInstitution[index] }}</sup></span>
+                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.authorName }}<sup>{{ authorToInstitution[index] }}</sup></span>
                         <span v-if="index != article.author.length">&ensp;, </span>
-                    </span>
-                </div>
-                <div class="subtitle">
-                    <span v-if="article.scholarAuthor.length > 0">去作者空间：</span>
-                    <span v-for="(author,index) in article.scholarAuthor">
-                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.name }}</span>
-                        <span v-if="index != article.author.length - 1">&ensp;, </span>
                     </span>
                 </div>
                 <div class="subtitle" style="padding-right: 0%">
@@ -175,7 +168,7 @@
                 <div>
                     <div class="abstract-title">领域</div>
                     <div v-for="(field,index) in article.fields" class="field">
-                        - <span class="hyperlink-noCursor">{{ field }}</span>
+                        - <span class="hyperlink" @click="toField(field.fieldId)">{{ field.name }}</span>
                     </div>
                 </div>
                 <el-divider />
