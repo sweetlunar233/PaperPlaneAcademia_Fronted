@@ -35,7 +35,7 @@
           <button class="edit-btn" @click="editDescription">修改</button>
         </p>
         <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
-          <button class="edit-btn" @click="editResearchFields">修改</button>
+<!--         <button class="edit-btn" @click="editResearchFields">修改</button>-->
         </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
@@ -196,12 +196,12 @@ export default {
       if (this.selectedAvatar) {
         // 找到选中头像的编号
         const avatarIndex = this.availableAvatars.indexOf(this.selectedAvatar); // 编号从 1 开始
-        var promise = UpdateAvatar(this.$route.query.userId, avatarIndex)
+        var promise = UpdateAvatar(this.$cookies.get('userId'), avatarIndex)
         // 调用后端接口
         promise.then(response => {
-              if (response.data.status === 'success') {
-                this.userInfo.photoUrl = this.selectedAvatar; // 本地更新头像
-                alert('头像更新成功！');
+              if (response.status) {
+                console.log(121)
+                this.userInfo.photoUrl = avatarIndex; // 本地更新头像
               } else {
                 alert(`头像更新失败：${response.data.message}`);
               }
@@ -266,6 +266,8 @@ export default {
             this.favoriteArticles = favoriteArticles;
             this.comments = comments;
             this.articles = articles;
+            console.log(response);
+            console.log(userInfo);
           })
           .catch(error => {
             console.error('获取数据失败', error);

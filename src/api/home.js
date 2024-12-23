@@ -22,5 +22,5 @@ export function GetOrganizations(){
 
 export function GetFields(){
     let data = {};
-    return get("/papers/fileds/");
+    return get("/papers/fields/");
 }

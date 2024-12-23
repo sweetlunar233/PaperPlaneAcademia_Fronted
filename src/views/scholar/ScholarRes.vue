@@ -111,6 +111,7 @@ export default {
     },
 
     async getTotalPages() {
+      console.log({searchConditions:this.searchConditions})
       var response = getTotalPages({
         searchConditions: this.searchConditions
       });
@@ -190,9 +191,15 @@ export default {
     sortBy() {
       this.currentPage = 1;
       this.fetchResults();
+    },
+    sortDown() {
+      this.currentPage = 1;
+      this.fetchResults();
     }
   },
   mounted() {
+    this.currentPage = 1;
+    this.getTotalPages();
     this.fetchResults();
   }
 };
