@@ -3,13 +3,14 @@ import { post,get } from "./api"
 export function GetComment(articleId){
     let data = {};
     data.articleId = articleId;
-    return get("/comment/getComment/",data);
+    console.log(articleId);
+    return get("/comment/getComment/",JSON.stringify(data));
 }
 
 export function LikeComment(commentId){
     let data = {};
     data.commentId = commentId;
-    return post("/comment/like/",data);
+    return post("/comment/like/",JSON.stringify(data));
 }
 
 export function Reply(commentId,content,userId){
@@ -25,5 +26,5 @@ export function Publish(paperId,userId,content){
     data.paperId = paperId;
     data.userId = userId;
     data.content = content;
-    return post("/comment/publish/",data);
+    return post("/comment/publish/",JSON.stringify(data));
 }

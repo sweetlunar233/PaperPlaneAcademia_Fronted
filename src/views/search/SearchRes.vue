@@ -28,6 +28,9 @@
           </el-checkbox-group>
         </div>
       </div>
+      <div style="position: fixed; bottom: 20px; left: 35px;">
+        <button class="apply-filter-button" >应用筛选条件</button>
+      </div>
     </el-affix>
 
     <div class="results-section">
@@ -138,11 +141,11 @@ export default {
   },
   computed: {
     searchConditions() {
-      const conditions = this.$route.query.searchConditions;
+      const conditions = JSON.parse(decodeURIComponent(this.$route.query.searchConditions))
       return Array.isArray(conditions) ? conditions : [conditions].filter(Boolean);
     },
     dateRange() {
-      const range = this.$route.query.dateRange;
+      const range = JSON.parse(decodeURIComponent(this.$route.query.dateRange))
       return Array.isArray(range) ? range : [range].filter(Boolean);
     }
   },
@@ -160,6 +163,10 @@ export default {
     },
 
     fetchFilters() {
+      console.log({
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+      })
       var response = fetchFilters({
         searchConditions: this.searchConditions,
         dateRange: this.dateRange,
@@ -182,9 +189,9 @@ export default {
         searchConditions: this.searchConditions,
         dateRange: this.dateRange,
         filter: {
-          keys: this.selectedKeywords,
-          years: this.selectedYears.map(year => year.toString()),
-          authorOrganizations: this.selectedAuthors
+          keys: [...this.selectedKeywords],
+          years: this.selectedYears.map(year => year.getFullYear().toString()),
+          authorOrganizations: [...this.selectedAuthors]
         }
       });
 
@@ -195,12 +202,24 @@ export default {
           console.error("Error getting total pages");
           this.totalPages = 999;
         }else{
-          this.totalPages = data;
+          this.totalPages = data[0].page;
         }
       })
     },
 
     fetchResults() {
+      console.log({
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+        filter: {
+          keys: [...this.selectedKeywords],
+          years: this.selectedYears.map(year => year.getFullYear().toString()),
+          authorOrganizations: [...this.selectedAuthors]
+        },
+        sort: this.sortBy * this.sortDown,
+        page: this.currentPage,
+        userId: this.userId
+      })
       this.loading = true;
       var response = fetchResults({
         searchConditions: this.searchConditions,
@@ -210,7 +229,7 @@ export default {
           years: this.selectedYears.map(year => year.toString()),
           authorOrganizations: this.selectedAuthors
         },
-        sort: this.sortByz * this.sortDown,
+        sort: this.sortBy * this.sortDown,
         page: this.currentPage,
         userId: this.userId
       });
@@ -333,6 +352,15 @@ export default {
         this.currentPage = 1;
         this.fetchResults();
       }
+    },
+    router: {
+      handler() {
+        this.currentPage = 1;
+        this.fetchFilters(); // 加载筛选条件
+        this.getTotalPages(); // 加载总页数
+        this.fetchResults(); // 初始加载结果
+      },
+      deep: true
     }
   },
 
@@ -567,5 +595,19 @@ export default {
 .filter-selections{
   padding-left:10px;
   margin-right: 20px;
+}
+.apply-filter-button{
+  width:210px;
+  height:50px;
+  font-size:18px;
+  color:var(--theme-color);
+  background-color:var(--back-color);
+  border: 2px solid var(--button-color);
+  border-radius: 5px;
+}
+.apply-filter-button:hover {
+  background-color: var(--gray-color);
+  border-color: var(--theme-color);
+  cursor: pointer;
 }
 </style>

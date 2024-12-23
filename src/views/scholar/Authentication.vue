@@ -75,7 +75,7 @@
                   <div class="scholar-other-info">
                     <span class="scholar-authorOrganization"><i>{{ scholar.authorOrganization }}</i></span>
                   </div>
-                  <div class="scholar-other-info"><span>收录有 </span><span v-for="(paper,index) in scholar.papers" :key="index">{{paper}}</span><span>等{{scholar.papers.length}}篇论文</span></div>
+                  <div class="scholar-other-info"><span>收录有 </span><span v-for="(paper,index) in scholar.papers" :key="index">{{paper}} </span><span> 等{{scholar.papers.length}}篇论文</span></div>
               </div>
             </div>
           </el-form-item>
@@ -181,7 +181,7 @@ import { Authenticate,fetchScholars } from '@/api/claim';
 export default {
   data() {
     return {
-      step: 2,
+      step: 1,
       steps: ["个人信息", "门户认领", "等待审核"],
       formData: {
           name: '',
@@ -190,19 +190,13 @@ export default {
           email: '',
           //workPlace: '',
           field: '',
-<<<<<<< HEAD
-          selectedScholarId: null,
+          selectedScholarId: '-1',
           //newPapers: [],
           userId: this.$cookies.get('userId')
-=======
-          claimedPapers: [],
-          newPapers: [],
-          userId: this.$cookies.get('userId'),
->>>>>>> 8fb1346a75c5e2ae09e9d405f68b7c44ac628154
       },
       
       scholarsList: [
-          { Id:"001", name: "作者1", authorOrganization: "buaa", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
+          { Id:"42873", name: "作者1", authorOrganization: "buaa", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
           { Id:"002", name: "作者2", authorOrganization: "北京航空航天大学", papers: ["作者1的第一篇论文", "作者1的第二篇论文"] },
       ],
       
@@ -245,7 +239,7 @@ export default {
     nextStep() {
       if(this.step==1){
         this.$refs.form.validate((valid) => {
-        console.log(this.formData)
+        
         if (valid) {
           this.fetchScholarsByName();
           this.step++;
@@ -268,8 +262,9 @@ export default {
       }
     },
     submitForm() {
+      console.log(this.formData)
       var response = Authenticate(this.formData);
-
+      
       response
       .then(data => {
         console.log("Authenticate", data);
@@ -294,23 +289,7 @@ export default {
       }
       console.log("搜索认证门户", authorNames);
       if (authorNames.length > 0) {
-<<<<<<< HEAD
         var response = fetchScholars(authorNames);
-=======
-        const requestBody = {
-            "names": authorNames
-        };
-
-        this.$axios.post('/papers/searchbyname', requestBody).then(response => {
-            this.papersList = response.data;
-        }).catch(error => {
-            console.error("获取论文数据失败", error);
-        });
-      } else {
-          console.log('没有可搜索的作者名');
-      }
-    },
->>>>>>> 8fb1346a75c5e2ae09e9d405f68b7c44ac628154
 
         response
         .then((data) => {
@@ -396,7 +375,7 @@ export default {
     // },
     selectScholar(scholar) {
       if(this.formData.selectedScholarId == scholar.Id){
-        this.formData.selectedScholarId = null;
+        this.formData.selectedScholarId = '-1';
       }else{
         this.formData.selectedScholarId = scholar.Id;
       }
@@ -423,7 +402,6 @@ export default {
   },
 
   created() {
-    this.fetchScholarsByName();
   },
 };
 

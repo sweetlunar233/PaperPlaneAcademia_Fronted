@@ -12,6 +12,10 @@
             <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="var(--theme-color)"><SortUp /></el-icon>
           </p>
         </div>
+
+        <!-- <div >
+          <button style="width:90%;height:50px;font-size:18px;color:var(--theme-color);background-color:var(--back-color);border: 2px solid var(--button-color);border-radius: 5px;">应用筛选条件</button>
+        </div> -->
   
         <div class="results-list">
 <!--             
@@ -83,14 +87,13 @@ export default {
       sortBy: 1,
       sortDown: 1,
       
-      searchConditions: {},
       userId: this.$cookies.get('userId'),
       router:useRouter(),
     };
   },
   computed: {
     searchConditions() {
-      const conditions = this.$route.query.searchConditions;
+      const conditions = JSON.parse(decodeURIComponent(this.$route.query.conditions));
       return Array.isArray(conditions) ? conditions : [conditions].filter(Boolean);
     },
   },
@@ -114,22 +117,28 @@ export default {
 
       response
       .then(data => {
-        console.log("response", data);
+        console.log("getTotalPages", data);
         if(data.status == "error"){
           console.error("Error getting total pages");
           this.totalPages = 999;
         }else{
-          this.totalPages = data;
+          this.totalPages = data[0].page;
         }
       })
     },
 
     async fetchResults() {
       this.loading = true;
+      console.log({
+        searchConditions: this.searchConditions,
+        sort: this.sortBy * this.sortDown,
+        page: this.currentPage,
+        userId: this.userId
+      })
 
       var response = fetchResults({
         searchConditions: this.searchConditions,
-        sort: this.sortByz * this.sortDown,
+        sort: this.sortBy * this.sortDown,
         page: this.currentPage,
         userId: this.userId
       });

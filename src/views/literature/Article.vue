@@ -450,7 +450,10 @@ export default{
         },
 
         toField(id){
-            
+            // 获取目标 URL
+            const targetUrl = this.router.resolve({ path: '/field', query:{id:id} }).href;
+            // 使用 window.open 打开新窗口
+            window.open(targetUrl, '_blank');
         },
 
         toGateway(id){
@@ -550,6 +553,7 @@ export default{
             }
         })
         .finally(() => {
+            console.log(this.article)
         })
 
         promise = GetStar(this.userId,this.id);
