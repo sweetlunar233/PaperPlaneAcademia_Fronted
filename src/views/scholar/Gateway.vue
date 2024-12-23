@@ -3,16 +3,16 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="this.availableAvatars[userInfo.photoUrl] || 'https://picx.zhimg.com/v2-c9e8de65838441813b8631a8495c7622_xll.jpg?source=32738c0c&needBackground=1'" alt="用户头像" />
+        <img :src="getRandomAvatar()" alt="用户头像" />
       </div>
       <div class="user-info">
-        <h1 class="username">{{ userInfo.name }}</h1>
-          <p><strong>OrcId：</strong>{{ userInfo.orcid }}
+        <h1 class="username">{{ userInfo?.name }}</h1>
+          <p><strong>OrcId：</strong>{{ userInfo?.orcid }}
           </p>
-          <p><strong>可能出现的其他名称：</strong>{{ userInfo.alternative_names[0] }}
+          <p><strong>可能出现的其他名称：</strong>{{ userInfo?.alternative_names[0] }}
           </p>
-        <p><strong>学术作品数量：</strong>{{ userInfo.works_count }}</p>
-        <p><strong>被引用次数：</strong>{{ userInfo.cited_count }}</p>
+        <p><strong>学术作品数量：</strong>{{ userInfo?.works_count }}</p>
+        <p><strong>被引用次数：</strong>{{ userInfo?.cited_count }}</p>
       </div>
     </div>
 
@@ -41,12 +41,13 @@
             <!-- 外围专家头像 -->
             <div>
               <div
-                  v-for="(expert, index) in experts"
-                  :key="'expert-' + index"
-                  class="expert-avatar"
-                  :style="getAvatarStyle(index)"
+                v-for="(expert, index) in experts"
+                :key="'expert-' + index"
+                class="expert-avatar"
+                :style="getAvatarStyle(index)"
+                @click="goToScholar(expert.id)"
               >
-                <img :src=getRandomAvatar() :alt="expert.name" />
+                <img :src="getRandomAvatar()" :alt="expert.name" />
                 <p class="expert-name">{{ expert.name }}</p>
               </div>
             </div>
@@ -121,31 +122,11 @@
           </div>
         </div>
       </div>
-      <div class="follow-card">
-        <div class="follow-card-content">
-          <div class="follow-item">
-            <span class="follow-label">关注人数：</span>
-            <span class="follow-number">{{ userInfo.followingCount }}</span>
-          </div>
-          <div class="follow-item">
-            <span class="follow-label">粉丝人数：</span>
-            <span class="follow-number">{{ userInfo.followerCount }}</span>
-          </div>
-        </div>
-      </div>
       <div class="user-info-card">
         <div class="user-info-card-content">
           <div class="user-info-item">
-            <span class="user-info-label">加入时间：</span>
-            <span class="user-info-value">{{ userInfo.registerTime }}</span>
-          </div>
-          <div class="user-info-item">
-            <span class="user-info-label">账户状态：</span>
-            <span class="user-info-value">{{ userInfo.status }}</span>
-          </div>
-          <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value">{{ userInfo.institution }}</span>
+            <span class="user-info-value">{{ userInfo?.institution }}</span>
           </div>
         </div>
       </div>
@@ -174,27 +155,27 @@ export default {
       },
       experts: [
         {
-            "id": 1,
+            "id": "13",
             "name": "熊大"
         },
         {
-            "id": 2,
+            "id": "14",
             "name": "熊二"
         },
         {
-            "id": 3,
+            "id": "15",
             "name": "张三"
         },
         {
-            "id": 4,
+            "id": "16",
             "name": "李四"
         },
         {
-            "id": 5,
+            "id": "17",
             "name": "王五"
         },
         {
-            "id": 6,
+            "id": "1",
             "name": "赵六"
         }
     ],
@@ -208,10 +189,10 @@ export default {
         'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
       ],
       userInfo: {
-        name: '',
-        institution: '',
-        orcid: '',
-        alternative_names: [],
+        name: 'a',
+        institution: 'a',
+        orcid: '1',
+        alternative_names: ['a'],
         works_count: 0,
         cited_count: 0,
       },
@@ -219,6 +200,13 @@ export default {
     };
   },
   methods: {
+    goToScholar(expertId) {
+      // 使用 Vue Router 跳转到学者详情页
+      this.$router.push({ path: '/gateway', query: { userId: expertId } });
+
+      // 或者如果是通过原生方式跳转
+      // window.location.href = `/scholar/${expertId}`;
+    },
     getRandomAvatar() {
     const randomIndex = Math.floor(Math.random() * this.availableAvatars.length);
     return this.availableAvatars[randomIndex];
@@ -248,10 +236,12 @@ export default {
       const targetUserId = this.$route.query.userId;
       var promise = GetScholarData(currentUserId, targetUserId);
       promise.then(response => {
-          // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
+          // 假设返回的数据结构包含 userInfo, articles
           const { userInfo, articles, experts } = response;
           // 更新数据
           this.userInfo = userInfo;
+          this.centerExpert.name = userInfo.name;
+          this.centerExpert.id = userInfo.orcid;
           this.articles = articles;
           this.experts = experts;
         })
