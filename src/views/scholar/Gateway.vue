@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="userInfo.photoUrl || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" alt="用户头像" />
+        <img :src="this.availableAvatars[userInfo.photoUrl] || 'https://img.ixintu.com/download/jpg/20200910/f9256155491e54bf5e99bf29eece0156_512_512.jpg!ys'" alt="用户头像" />
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo.name }}</h1>
@@ -169,6 +169,14 @@ export default {
     return {
       activeTab: "TA的文章", // 默认激活动态选项卡
       isFollowed: null,
+      availableAvatars: [ // 可供选择的头像
+        'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
+        'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
+        'https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
+        'https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
+        'https://th.bing.com/th/id/R.7376aae88d772c821c6925b91e2ca1aa?rik=8n%2bJq8ypQTiJHA&pid=ImgRaw&r=0',
+        'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
+      ],
       userInfo: {
         name: '',
         photoUrl: '',

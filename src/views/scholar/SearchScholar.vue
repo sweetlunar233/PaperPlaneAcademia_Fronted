@@ -76,7 +76,10 @@
     methods: {
       // 添加新条件
       addCondition(index) {
-
+        if (this.authorConditions.length >= 6) {
+        alert('已达到最大条件数量（6条）');
+        return;  // 不允许继续添加
+    }
         this.authorConditions.splice(index + 1, 0, { value: "" });
       },
   
