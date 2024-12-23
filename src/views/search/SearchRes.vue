@@ -1,6 +1,7 @@
 <template>
   <div class="search-container">
     <el-affix class="search-filters">
+      <div>
       <div class="block">
         <div class="filter-title">关键词</div>
         <div class="filter-selections">
@@ -27,7 +28,7 @@
             <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
           </el-checkbox-group>
         </div>
-      </div>
+      </div></div>
       <div style="position: fixed; bottom: 20px; left: 55px;">
         <button class="apply-filter-button" @click="apply()">应用筛选条件</button>
       </div>
@@ -50,9 +51,9 @@
 
       <div class="results-list">
         
-        <div v-if="!loading && results.length === 0" class="no-results">
+        <!-- <div v-if="!loading && showRes.length === 0" class="no-results">
           未找到相关论文，以下是测试信息。
-        </div>
+        </div> -->
 
         <div 
           v-for="(paper, index) in showRes" 
@@ -76,7 +77,7 @@
             </div>
           </div>
           <div class="paper-authors">
-            <span v-for="(author, idx) in paper.authors" :key="idx" class="author" @mouseover="hover = true" @mouseleave="hover = false">
+            <span v-for="(author, idx) in paper.authors" :key="idx" class="author" @mouseover="hover = true" @mouseleave="hover = false" @click.stop="viewScholar(author)">
               <a>{{ author.userName }}</a>
             </span>
           </div>
@@ -223,7 +224,7 @@ export default {
           console.error("Error getting total pages");
           this.totalPages = 999;
         }else{
-          this.totalPages = data[0].page;
+          this.totalPages = data.page;
         }
       })
     },
@@ -268,7 +269,7 @@ export default {
               date: '2022-01-01', 
               journal: '期刊名1', 
               citations: 34, 
-              authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学' }, { userName: '作者 2', authorOrganization: '北京航空航天大学' }], 
+              authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学',authorId:"https://openalex.org/A5062756377" }, { userName: '作者 2', authorOrganization: '北京航空航天大学',authorId:"42874" }], 
               keywords: ['人工智能', '深度学习'] ,
               download:null,
             },
@@ -310,6 +311,15 @@ export default {
         path: '/article',
         query: {
           paperId: paper.Id
+        }
+      });
+    },
+
+    viewScholar(user) {
+      this.router.push({
+        path: '/gateway',
+        query: {
+          userId: user.authorId
         }
       });
     },
@@ -404,7 +414,9 @@ export default {
   --text-color: #282829;
   --light-text-color: #4f4454;
 }
-
+.app{
+  background-color: #ffffffaa;
+}
 .search-container {
   display: flex;
   margin: 20px;
@@ -415,7 +427,6 @@ export default {
   width: 300px;
   border-right: 2px solid var(--gray-color);
   position: sticky;
-  height: 86vh;
   word-wrap:break-word;  
   word-break:break-all;  
   overflow-x: hidden;
@@ -608,6 +619,7 @@ export default {
   color: var(--back-color);
 }
 .filter-selections{
+  
   padding-left:10px;
   margin-right: 20px;
 }
