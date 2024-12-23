@@ -76,8 +76,9 @@ export default {
       this.loggedIn = false;
       this.username = "";
       this.OnlineUser = 0;
-      $cookies.remove('userId');
-      $cookies.remove('username');
+      
+      this.$cookies.remove('userId');
+      this.$cookies.remove('username');
       alert("已注销！");
       this.$router.push("/home");
     },
@@ -119,14 +120,17 @@ export default {
     checkLoginStatus() {
       this.username = this.$cookies.get("username");
       this.OnlineUser = this.$cookies.get("userId");
-      this.loggedIn = true;
-      if(this.username == undefined){
+      
+      if (this.username && this.OnlineUser) {
+        this.loggedIn = true;
+      } else {
         this.loggedIn = false;
       }
       console.log(this.OnlineUser)
     }
+
   },
-  mounted() {
+  created() {
     this.checkLoginStatus(); // 组件加载时检查登录状态
   },
 };
