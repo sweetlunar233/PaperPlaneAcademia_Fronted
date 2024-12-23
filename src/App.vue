@@ -20,6 +20,7 @@
           <el-input
             v-model="searchQuery"
             placeholder="请输入搜索内容"
+            @keydown.enter="onSearch" 
             clearable
           >
             <template #append>
