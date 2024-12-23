@@ -9,8 +9,8 @@ export function Login(username,password){
 export function GetScholarData(currentUserId,targetUserId){
     let data = {};
     data.currentUserId = currentUserId;
-    data.userId = targetUserId;
-    return post("/users/scholarData/",data);
+    data.authorId = targetUserId;
+    return post("/authors/scholarData/",data);
 }
 export function GetMyUserData(userId){
     let data = {};
