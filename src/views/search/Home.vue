@@ -7,6 +7,8 @@ const router = useRouter();
 
 import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../../api/home.js'
 
+const isLoading = ref(false);
+
 const topOrRec = ref("hot-gate-articles");
 const top_articles = ref([
   {
@@ -103,10 +105,12 @@ const recommended_articles = ref([
 
 const organizations = ref([
   {
-    organizationName: "ABC"
+    organizationName: "ABC",
+    works_number: 66,
   },
   {
-    organizationName: "ABC"
+    organizationName: "ABC",
+    works_number: 66,
   }
 ])
 
@@ -115,11 +119,13 @@ const fields = ref([
     fieldName: "ABC",
     topArticleName: "Article1",
     topArticleId: "1",
+    works_number: 66,
   },
   {
     fieldName: "ABC",
     topArticleName: "Article2",
     topArticleId: "1",
+    works_number: 66,
   }
 ])
 
@@ -219,7 +225,7 @@ const gotoError = (userId) => {
 const initHome = (userId) => {
     top_articles.value = [];
     recommended_articles.value = [];
-    // organizations.value = [];
+    organizations.value = [];
     // fields.value = [];
 
     statistic.value = { // 重置 statistic
@@ -229,6 +235,8 @@ const initHome = (userId) => {
       journalCount: 0,
       paperCount: 0
     }; 
+
+    isLoading.value = true;
     
     var promise = GetTopArticles();
     promise.then((result)=>{
@@ -286,6 +294,8 @@ const initHome = (userId) => {
         });
     });
 
+    isLoading.value = false;
+
     // 调用 startCounting
     //startCounting();
 }
@@ -305,7 +315,8 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="home">
+<div class="home" style="background-color:#EBEEF5" v-loading="isLoading"
+    element-loading-background="rgba(244, 246, 247,0.8)">
     <!-- <div class="background">
         <img src="../../assets/images/home/bg.jpg" alt="" class="background-img">
     </div> -->
@@ -478,6 +489,10 @@ onMounted(() => {
                                     </div>
                                 </div>
 
+                                <div class="citation-count">
+                                    <span>成果数： {{ organization.works_number }}</span>
+                                </div>
+
                                 <el-divider v-if="index < organizations.length - 1"></el-divider>
                             </div>
                         </div>
@@ -495,6 +510,10 @@ onMounted(() => {
                                       <span>TOP引用量文章：</span>
                                       <span class="author-name" @click="gotoPaper(field.topArticleId)"><u>{{ field.topArticleName }}</u></span>
                                     </div>
+                                </div>
+
+                                <div class="citation-count">
+                                    <span>成果数： {{ field.works_number }}</span>
                                 </div>
 
                                 <el-divider v-if="index < fields.length - 1"></el-divider>
