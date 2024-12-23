@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="this.availableAvatars[userInfo.photoUrl]" @click="showAvatarDialog = true" class="profile-photo-img"  />
+        <img :src="this.availableAvatars[userInfo.photoUrl] || 'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain'" @click="showAvatarDialog = true" class="profile-photo-img"  />
       </div>
       <el-dialog
           title="选择头像"
@@ -196,10 +196,11 @@ export default {
       if (this.selectedAvatar) {
         // 找到选中头像的编号
         const avatarIndex = this.availableAvatars.indexOf(this.selectedAvatar); // 编号从 1 开始
-        var promise = UpdateAvatar(this.$route.query.userId, avatarIndex)
+        var promise = UpdateAvatar(this.$cookies.get('userId'), avatarIndex)
         // 调用后端接口
         promise.then(response => {
-              if (response.data.status === 'success') {
+              if (response.status) {
+                console.log(121)
                 this.userInfo.photoUrl = this.selectedAvatar; // 本地更新头像
                 alert('头像更新成功！');
               } else {
@@ -266,6 +267,8 @@ export default {
             this.favoriteArticles = favoriteArticles;
             this.comments = comments;
             this.articles = articles;
+            console.log(response);
+            console.log(userInfo);
           })
           .catch(error => {
             console.error('获取数据失败', error);
