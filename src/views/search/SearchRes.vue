@@ -163,6 +163,10 @@ export default {
     },
 
     fetchFilters() {
+      console.log({
+        searchConditions: this.searchConditions,
+        dateRange: this.dateRange,
+      })
       var response = fetchFilters({
         searchConditions: this.searchConditions,
         dateRange: this.dateRange,

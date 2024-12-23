@@ -55,7 +55,11 @@ export default {
               this.$cookies.set("userId", result.UserId);
               this.$cookies.set("username", result.username);
               this.$cookies.set("avatar",result.avatarId);
-              this.$router.push("/home"); // 登录成功跳转到主页面
+              if(this.loginForm.username === "root"){
+                this.$router.push("/Admin");// 管理员上号
+              }else{
+                this.$router.push("/home"); // 登录成功跳转到主页面
+              }
             }
             else{
               alert(result.message);

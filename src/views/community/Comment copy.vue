@@ -200,7 +200,7 @@ export default {
     this.username = this.$cookies.get("username");
     this.avatar = this.$cookies.get("avatar");
     this.paperId = this.$route.query.paperId;
-
+    
     var promise = GetComment(this.paperId);
     promise.then((result) =>{
       if(result.comments){
