@@ -8,10 +8,6 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      redirect: '/home'  // 将根路径 (/) 重定向到 Home 页面
-    },
-    {
       path: '/comment',
       name: 'comment',
       component: () => import('../views/community/Comment copy.vue')
@@ -20,11 +16,6 @@ const router = createRouter({
       path:'/article',
       name:'article',
       component: () => import('../views/literature/Article.vue')
-    },
-    {
-      path:'/field',
-      name:'field',
-      component: () => import('../views/literature/Field.vue')
     },
     {
       path:'/authentication',
