@@ -9,11 +9,10 @@
         <h1 class="username">{{ userInfo.name }}</h1>
           <p><strong>OrcId：</strong>{{ userInfo.orcid }}
           </p>
-          <p><strong>可能出现的其他名称：</strong>{{ userInfo.alternative_names }}
+          <p><strong>可能出现的其他名称：</strong>{{ userInfo.alternative_names[0] }}
           </p>
         <p><strong>学术作品数量：</strong>{{ userInfo.works_count }}</p>
-        <p><strong>被引用次数：</strong>{{ userInfo.email }}</p>
-        <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
+        <p><strong>被引用次数：</strong>{{ userInfo.cited_count }}</p>
       </div>
     </div>
 
@@ -47,7 +46,7 @@
                   class="expert-avatar"
                   :style="getAvatarStyle(index)"
               >
-                <img :src="expert.avatar" :alt="expert.name" />
+                <img :src=getRandomAvatar() :alt="expert.name" />
                 <p class="expert-name">{{ expert.name }}</p>
               </div>
             </div>
@@ -171,16 +170,22 @@ export default {
       centerExpert: {
         id: 0,
         name: "专家中心",
-        avatar: "https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain",
+        avatar: 'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
       },
       experts: [
-        { id: 1, name: expertsArray[0], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 2, name:  expertsArray[1], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 3, name:  expertsArray[2], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 4, name:  expertsArray[3], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 5, name:  expertsArray[4], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-        { id: 6, name:  expertsArray[5], avatar: "https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain" },
-      ],
+        {
+            "id": 1,
+            "name": "李四"
+        },
+        {
+            "id": 2,
+            "name": "王五"
+        },
+        {
+            "id": 3,
+            "name": "赵六"
+        }
+    ],
       activeTab: "TA的专家网络", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
         'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
@@ -192,24 +197,20 @@ export default {
       ],
       userInfo: {
         name: '',
-        photoUrl: '',
-        description: '',
-        researchFields: [],
-        registerTime: '',
         institution: '',
-        status: '',
-        papersCount: 0,
-        email: '',
-        phoneNumber: '',
-        followingCount: 0,
-        followerCount: 0,
+        orcid: '',
+        alternative_names: [],
+        works_count: 0,
+        cited_count: 0,
       },
-      favoriteArticles: [],
-      comments: [],
       articles: [],
     };
   },
   methods: {
+    getRandomAvatar() {
+    const randomIndex = Math.floor(Math.random() * this.availableAvatars.length);
+    return this.availableAvatars[randomIndex];
+  },
     getAvatarStyle(index) {
       const angle = (index / this.experts.length) * 2 * Math.PI;
       const x = this.centerX + Math.cos(angle) * this.radius;
@@ -236,13 +237,11 @@ export default {
       var promise = GetScholarData(currentUserId, targetUserId);
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
-          const { userInfo, favoriteArticles, comments, articles, isFollowed, expertsArray } = response;
+          const { userInfo, articles, experts } = response;
           // 更新数据
           this.userInfo = userInfo;
-          this.favoriteArticles = favoriteArticles;
-          this.comments = comments;
           this.articles = articles;
-          this.expertsArray = experts;
+          this.experts = experts;
         })
         .catch(error => {
           console.error('获取数据失败', error);
