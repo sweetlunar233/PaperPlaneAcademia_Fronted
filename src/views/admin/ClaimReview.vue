@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2>审核认领</h2>
-    <el-table :data="pagedClaims" border style="width: 100%">
-      <el-table-column prop="username" label="用户名" min-width="120"></el-table-column>
+    <el-table :data="pagedClaims" stripe style="width: 100%">
+      <el-table-column prop="name" label="用户名" min-width="120"></el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="200"></el-table-column>
-      <el-table-column prop="organization" label="所在机构" min-width="200"></el-table-column>
+      <el-table-column prop="insititution" label="所在机构" min-width="200"></el-table-column>
       <el-table-column prop="content" label="认领内容" min-width="300"></el-table-column>
       <el-table-column label="操作" align="center" min-width="150">
         <template #default="{ row }">
@@ -36,6 +36,7 @@
 <script>
 import { getClaims } from "@/api/claim";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -47,6 +48,7 @@ export default {
       rejectDialogVisible: false,
       rejectReason: "",
       selectedClaimId: null, // 当前选择的申请ID
+      router:useRouter(),
     };
   },
   computed: {
@@ -110,6 +112,17 @@ export default {
   },
   created() {
     this.fetchClaims();
+  },
+  mounted(){
+    var isAdmin = this.$cookies.get("username") === 'admin';
+    if(!isAdmin){
+      this.router.push({path:'/login'});
+      ElMessage({
+        message: '请登陆管理员账号！',
+        type: 'error',
+        plain: true,
+      });
+    }
   },
 };
 </script>

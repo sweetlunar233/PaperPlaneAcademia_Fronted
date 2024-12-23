@@ -28,7 +28,7 @@
         <el-card style="background-color: #f5f5f5;display: flex;justify-content: center ;">
           <div class="search-container">
           <!-- 高级搜索 -->
-    <h3 style="font-size: 30px;">高级选项</h3>
+    <h3 style="font-size: 30px;display: flex;justify-content: center ;">高级选项</h3>
     <div class="advanced-search">
       <div class="search-row" v-for="(field, index) in advancedFields" :key="index" style="display: flex; align-items: center; gap: 10px;">
         <!-- 逻辑下拉框 -->
@@ -134,6 +134,9 @@
             value: this.searchKeyword,  // 将 searchKeyword 作为 value
             scope: this.searchType // 将 searchType 作为 scope
           });
+        }else{
+          this.$message.warning("请填写所有搜索内容");
+          return;
         }
         const formatDate = (date) => {
     if (!date) return null;

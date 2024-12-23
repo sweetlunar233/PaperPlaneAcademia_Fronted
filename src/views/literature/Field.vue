@@ -34,7 +34,7 @@
                 </div>
                 <div class="articleDetail">
                     <el-tabs v-model="activeTab" @tab-click="toComment">
-                        <el-tab-pane label="关键字" name="second">
+                        <el-tab-pane label="关键字" name="first">
                             <div class="tab-tip">
                                 共 {{ field.keywords.length }} 条
                             </div>
@@ -50,7 +50,7 @@
                                 </el-row>
                             </el-scrollbar>
                         </el-tab-pane>
-                        <el-tab-pane label="同级领域" name="third">
+                        <el-tab-pane label="同级领域" name="second">
                             <div class="tab-tip">
                                 共 {{ field.siblings.length }} 条
                             </div>
@@ -61,6 +61,26 @@
                                 <el-row v-for="(ref,index) in field.siblings" class="reference-block" @click="toField(ref.id)">
                                     <el-col :span="22">
                                         - <span class="hyperlink">{{ ref.display_name }}</span>
+                                    </el-col>
+                                </el-row>
+                            </el-scrollbar>
+                        </el-tab-pane>
+                        <el-tab-pane label="相关文章" name="third">
+                            <div v-if="field.article">
+                                <div class="tab-tip">
+                                共 {{ field.article.length }} 条
+                                </div>
+                                <div class="tab-tip" v-if="field.article.length==0">
+                                    暂无相关文章.
+                                </div>
+                            </div>
+                            <div class="tab-tip" v-else>
+                                暂无相关文章.
+                            </div>
+                            <el-scrollbar height="350px">
+                                <el-row v-if="field.article" v-for="(ref,index) in field.article" class="reference-block" @click="toField(ref.id)">
+                                    <el-col :span="22">
+                                        - <span class="hyperlink">{{ ref.title }}</span>
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
@@ -116,17 +136,23 @@ export default{
             },
             isLoading:false,
             isFold:false,
-            activeTab:"second",
+            activeTab:"first",
             router:useRouter(),
         }
     },
     methods: {
 
         toField(id){
-            // 获取目标 URL
-            const targetUrl = this.router.resolve({ path: '/field', query: { id: id } }).href;
-            // 使用 window.open 打开新窗口
-            window.open(targetUrl, '_blank');
+            if(id != -1){
+                // 获取目标 URL
+                const targetUrl = this.router.resolve({ path: '/field', query: { id: id } }).href;
+                // 使用 window.open 打开新窗口
+                window.open(targetUrl, '_blank');
+            }
+            else{
+                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                window.open(id, '_blank');
+            }
         },
 
         changeFoldState(){
@@ -159,11 +185,8 @@ export default{
         var promise = GetField(this.id);
         promise.then((result) => {
             if(result.status === "error"){
-                ElMessage({
-                    message: '该领域不存在！',
-                    type: 'error',
-                    plain: true,
-                });
+                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                window.open(this.id, '_blank');
             }
             else{
                 this.field = result.field;
