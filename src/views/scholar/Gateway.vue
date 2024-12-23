@@ -152,30 +152,14 @@
           </div>
         </div>
       </div>
-      <div class="follow-card">
-        <div class="follow-card-content">
-          <div class="follow-item">
-            <span class="follow-label">关注人数：</span>
-            <span class="follow-number">{{ userInfo.followingCount }}</span>
-          </div>
-          <div class="follow-item">
-            <span class="follow-label">粉丝人数：</span>
-            <span class="follow-number">{{ userInfo.followerCount }}</span>
-          </div>
-        </div>
-      </div>
       <div class="user-info-card">
         <div class="user-info-card-content">
           <div class="user-info-item">
-            <span class="user-info-label">加入时间：</span>
-            <span class="user-info-value">{{ userInfo.registerTime }}</span>
+            <span class="user-info-label">机构国家：</span>
+            <span class="user-info-value">{{ userInfo.institution_country }}</span>
           </div>
           <div class="user-info-item">
-            <span class="user-info-label">账户状态：</span>
-            <span class="user-info-value">{{ userInfo.status }}</span>
-          </div>
-          <div class="user-info-item">
-            <span class="user-info-label">机构：</span>
+            <span class="user-info-label">TA的机构：</span>
             <span class="user-info-value">{{ userInfo.institution }}</span>
           </div>
         </div>
@@ -273,6 +257,7 @@ export default {
         alternative_names: [],
         works_count: 0,
         cited_count: 0,
+        institution_country: '',
       },
       articles: [],
     };
