@@ -60,7 +60,7 @@
                             <el-scrollbar height="350px">
                                 <el-row v-for="(ref,index) in field.siblings" class="reference-block" @click="toField(ref.id)">
                                     <el-col :span="22">
-                                        - <span class="hyperlink">{{ ref.name }}</span>
+                                        - <span class="hyperlink">{{ ref.display_name }}</span>
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
@@ -104,11 +104,11 @@ export default{
                 siblings:[
                     {
                         id:0,
-                        name:"Advances in Metabolomics Research",
+                        display_name:"Advances in Metabolomics Research",
                     },
                     {
                         id:1,
-                        name:"Analysis of Gene Interaction Networks",
+                        display_name:"Analysis of Gene Interaction Networks",
                     }
                 ],
             
