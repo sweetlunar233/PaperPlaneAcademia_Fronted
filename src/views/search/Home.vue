@@ -158,8 +158,8 @@ const gotoPaper = (paperId) => {
     query: {
         paperId: paperId
     }
-  });
-}
+    });
+  }
 
 const gotoScholar = (userId) => {
     router.push({
