@@ -420,7 +420,7 @@ onMounted(() => {
                         <div class="articles-body">
                             <br>
                             <div v-for="(article, index) in top_articles" v-bind:key="index">
-                                <div class="card">
+                                <div>
                                   <div style="text-align: left">
                                       <div style="margin-bottom: 10px">
                                           <span class="title" @click="gotoPaper(article.paperId)">{{ truncate(article.paperTitle) }}</span>
@@ -453,7 +453,7 @@ onMounted(() => {
                         <div class="articles-body">
                             <br>
                             <div v-for="(article, index) in recommended_articles" v-bind:key="index">
-                                <div class="card">
+                                <div>
                                   <div style="text-align: left">
                                       <div style="margin-bottom: 10px">
                                           <span class="title" @click="gotoPaper(article.paperId)">{{ truncate(article.paperTitle) }}</span>
