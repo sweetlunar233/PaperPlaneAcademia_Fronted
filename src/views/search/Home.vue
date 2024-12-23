@@ -155,21 +155,23 @@ const FormatString = (value) => {
 }
 
 const gotoPaper = (paperId) => {
-    router.push({
-    path: '/article',
-    query: {
-        paperId: paperId
+    if(paperId !== ""){
+        router.push({
+          path: '/article',
+          query: {
+              paperId: paperId
+          }
+        });
     }
-    });
-  }
+}
 
 const gotoScholar = (userId) => {
     router.push({
-    path: '/gateway',
-    query: {
-        userId: userId
-    }
-  });
+      path: '/gateway',
+      query: {
+          userId: userId
+      }
+    });
 }
 
 const gotoError = (userId) => {
@@ -228,6 +230,7 @@ const initHome = (userId) => {
     promise.then((result)=>{
         for(const element of result.articles) {
           top_articles.value.push(element);
+          console.log(element.paperId);
         }
     });
 
@@ -272,14 +275,12 @@ const initHome = (userId) => {
             organizations.value.push(element);
         });
     });
-
     var promise = GetFields();
     promise.then((result)=>{
         result.fields.forEach(element => {
             fields.value.push(element);
         });
     });
-
     isLoading.value = false;
 }
 
