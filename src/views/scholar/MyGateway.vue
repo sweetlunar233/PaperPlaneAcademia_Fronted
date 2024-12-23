@@ -140,7 +140,7 @@
 <script>
 import axios from 'axios';
 import router from "@/router/index.js";
-import {GetMyUserData, UpdateAvatar, updateDescription, updateResearchFields} from "@/api/user.js";
+import {GetMyUserData, UpdateAvatar, updateDescription} from "@/api/user.js";
 
 export default {
   data() {
@@ -161,7 +161,7 @@ export default {
         name: '',
         photoUrl: 3,
         description: '该用户很神秘',
-        researchFields: ["该用户很神秘"],
+        researchFields: "该用户很神秘",
         registerTime: '',
         institution: '',
         status: '',
@@ -207,10 +207,8 @@ export default {
               }
             })
             .catch(error => {
-              console.error('头像更新失败:', error);            });
-
-        alert('头像更新失败，请稍后重试。');
-
+              console.error('头像更新失败:', error);
+            });
       } else {
         alert('请选择一个头像！');
       }
@@ -232,22 +230,6 @@ export default {
             })
             .catch(error => {
               console.error('简介更新失败', error);
-            });
-      }
-    },
-
-    // 修改研究领域
-    editResearchFields() {
-      const newResearchFields = prompt('请输入新的研究领域，以逗号分隔', this.userInfo.researchFields);
-      if (newResearchFields !== null) {
-        const updatedFields = newResearchFields.split(',').map(field => field.trim());
-        var promise = updateResearchFields(this.$cookies.get('userId'), updatedFields);
-        promise.then(response => {
-              this.userInfo.researchFields = updatedFields;
-              console.log('研究领域更新成功', response.data);
-            })
-            .catch(error => {
-              console.error('研究领域更新失败', error);
             });
       }
     },
