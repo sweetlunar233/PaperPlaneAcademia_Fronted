@@ -176,32 +176,7 @@ export default {
   data() {
     return {
       contributions:[
-        {
-        "display_name": "AI",
-        "subfield":{
-          display_name: "Software Engineering"
-        },
-        "field":{
-          display_name:"Computer Science"
-        },
-        "domain":"CS",
-        "value":"100"
-      },
-      {
-        "display_name": "AI2",
-        
-        "domain":"CcccccccccccccccccccccS2",
-        "value":"90"
-      },
-      {
-        "display_name": "AI3",
-        "subfield":{
-          display_name: "Software Engineering"
-        },
-        
-        "domain":"CS3",
-        "value":"80"
-      }
+      
     ],
       centerX: 300,
       centerY: 275,
@@ -296,18 +271,21 @@ export default {
       const targetUserId = this.$route.query.userId;
       var promise = GetScholarData(currentUserId, targetUserId);
       promise.then(response => {
-          // 假设返回的数据结构包含 userInfo, articles
-          const { userInfo, articles, experts } = response;
+          // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
+          const { userInfo, articles, experts, contributions} = response;
           // 更新数据
           this.userInfo = userInfo;
           this.centerExpert.name = userInfo.name;
           this.centerExpert.id = userInfo.orcid;
           this.articles = articles;
           this.experts = experts;
+          this.contributions=contributions;
+          console.log("data:",contributions);
         })
         .catch(error => {
           console.error('获取数据失败', error);
         });
+
     },
     viewDetails(id){
       router.push({
