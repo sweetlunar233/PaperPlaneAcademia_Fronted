@@ -78,7 +78,7 @@
   </template>
   
 <script>
-import {  getTotalPages, fetchResults } from '@/api/user';
+import { fetchResults } from '@/api/user';
 import { useRouter } from 'vue-router';
 
 export default {
@@ -123,25 +123,6 @@ export default {
       }
     },
 
-    async getTotalPages() {
-      console.log({searchConditions:this.searchConditions})
-      var response = getTotalPages({
-        searchConditions: this.searchConditions
-      });
-      console.log("1111");
-      response
-      .then(data => {
-        console.log("2222");
-        console.log("getTotalPages", data);
-        if(data.status == "error"){
-          console.error("Error getting total pages");
-          this.totalPages = 999;
-        }else{
-          this.totalPages = data[0].page;
-        }
-      })
-    },
-
     async fetchResults() {
       this.loading = true;
       console.log({
@@ -177,7 +158,8 @@ export default {
           ];
         } else {
           // 数据正常返回时，映射数据结构
-          this.results = data.map(scholar => ({
+          this.totalPages = data.totalPages;
+          this.results = data.result.map(scholar => ({
             Id: scholar.Id,
             name: scholar.name,
             organization: scholar.organization,
@@ -191,9 +173,10 @@ export default {
               fieldId: field.fieldId
             }))
           }));
-
+          console.log(this.results);
           // 分页处理
-          this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
+          this.showRes = this.results;
+          console.log(this.showRes);
         }
       } catch (error) {
         console.error("Error occurred while fetching results", error);
@@ -205,10 +188,8 @@ export default {
     },
 
     goToPage(page) {
-      if (page >= 1 && page <= this.totalPages) {
-        this.currentPage = page;
-        this.fetchResults();
-      }
+      this.currentPage = page;
+      this.fetchResults();
     },
     viewScholar(scholar) {
       console.log('go to scholar:', scholar);
@@ -232,7 +213,6 @@ export default {
   },
   mounted() {
     this.currentPage = 1;
-    this.getTotalPages();
     this.fetchResults();
   }
 };
