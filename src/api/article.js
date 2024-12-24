@@ -21,10 +21,9 @@ export function PostStar(id,paperId,isStar){
     return post("/paper/postStar/",data);
 }
 
-export function GetStarCnt(paperId,userId){
+export function GetStarCnt(paperId){
     let data = {};
     data.paperId = paperId;
-    data.userId = userId;
     return get("/papers/starCnt/",data);
 }
 
