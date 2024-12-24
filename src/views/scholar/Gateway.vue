@@ -273,7 +273,7 @@ export default {
     // 集中处理所有数据获取请求
     fetchScholarData() {
       const currentUserId = this.$cookies.get('userId');
-      const targetUserId = this.$route.query.id;
+      const targetUserId = this.$route.query.userId;
       // const targetUserId = "https://openalex.org/A5029688225";
       console.log("searching0");
       var promise = GetScholarData(currentUserId, targetUserId);

@@ -236,6 +236,7 @@ export default {
       const userId = this.$cookies.get('userId');
       var promise = GetMyUserData(userId);
       promise.then(response => {
+            console.log(response)
             // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
             const { userInfo, isAuthenticated, favoriteArticles, comments, articles } = response;
             console.log(1);

@@ -455,7 +455,7 @@ export default{
 
         toGateway(id){
             // 获取目标 URL
-            const targetUrl = this.router.resolve({ path: '/gateway', query:{id:id} }).href;
+            const targetUrl = this.router.resolve({ path: '/gateway', query:{userId:id} }).href;
             // 使用 window.open 打开新窗口
             window.open(targetUrl, '_blank');
         },
