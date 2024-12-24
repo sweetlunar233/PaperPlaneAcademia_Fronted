@@ -523,6 +523,7 @@ export default{
         this.id = this.$route.query.paperId;
         this.isLoading = true;
         this.userId = this.$cookies.get('userId');
+        var isStar = false,isArticle = false;
 
         var promise = GetArticle(this.id);
         promise
@@ -536,9 +537,14 @@ export default{
             }
             else{
                 this.article = result.article;
-                this.isLoading = false;
                 this.quotation = this.formatGB7714();
                 this.institutionNoRepeat = [...new Set(this.article.institution)];
+                isArticle = true;
+
+                if(isArticle && isStar){
+                    this.isLoading = false;
+                }
+
                 if(this.institutionNoRepeat.length > 0){
                     var i = 0;
                     for(;i < this.article.author.length;i++){
@@ -566,6 +572,11 @@ export default{
         promise
         .then((result) => {
             this.isStar = result.isStar;
+
+            isStar = true;
+            if(isArticle && isStar){
+                this.isLoading = false;
+            }
         })
 
     },
