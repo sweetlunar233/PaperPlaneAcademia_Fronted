@@ -422,35 +422,7 @@ html, body {
 .right{
   width: 20%;
 }
-.button-container {
-  display: flex;
-  margin-top: 20px; /* 使按钮与其它信息之间有间距 */
-  align-self: flex-end; /* 将按钮放到右侧 */
-  margin-left: 45%;
-  gap: 30px;
-}
 
-.follow-button {
-  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
-  color: #ffffff;
-  font-size: 18px; /* 增加字体大小 */
-  font-weight: bold;
-  padding: 15px 30px; /* 增大按钮的内边距 */
-  border: none;
-  border-radius: 30px; /* 增加圆角 */
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.follow-button:hover {
-  background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
-
-.follow-button:active {
-  transform: scale(0.98);
-}
 
 .username {
   font-size: 24px;
@@ -636,38 +608,6 @@ html, body {
   font-weight: bold;
 }
 
-.follow-card {
-  position: fixed;
-  top: 350px; /* 定位在页面上方 */
-  right: 30px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 200px; /* 固定卡片宽度 */
-}
-
-.follow-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.follow-item {
-  display: flex;
-  justify-content: space-between;
-}
-
-.follow-label {
-  font-size: 18px;
-  color: #555;
-}
-
-.follow-number {
-  font-size: 20px;
-  color: #0066cc;
-  font-weight: bold;
-}
 
 .tab-title {
   font-size: 24px;
@@ -683,31 +623,6 @@ html, body {
   margin-top: 10px;
 }
 
-/* 评论列表容器样式 */
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* 每个评论的卡片样式 */
-.comment-item {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  padding: 20px;
-  transition: transform 0.3s;
-}
-
-.comment-item:hover {
-  transform: translateY(-5px); /* 鼠标悬停时的浮动效果 */
-}
-
-/* 评论卡片的头部样式 */
-.comment-header {
-  margin-bottom: 15px;
-}
 
 .comment-header h3 {
   font-size: 18px;
@@ -725,18 +640,6 @@ html, body {
   color: #999;
 }
 
-/* 评论内容样式 */
-.comment-content {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-/* 评论底部的点赞数 */
-.comment-footer {
-  font-size: 14px;
-  color: #888;
-}
 
 /* 如果没有评论，显示的文字 */
 .comment-footer p {

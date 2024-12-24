@@ -75,7 +75,7 @@ export default {
         this.$router.push("/admin");
       }
       else{
-        this.$router.push("/MyGateway"); // 跳转到个人主页
+        this.$router.push("/myGateway"); // 跳转到个人主页
       }
     },
     async logout() {

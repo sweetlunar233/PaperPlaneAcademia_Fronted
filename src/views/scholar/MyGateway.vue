@@ -35,17 +35,14 @@
           <button class="edit-btn" @click="editDescription">修改</button>
         </p>
         <p><strong>研究领域：</strong>{{ userInfo.researchFields }}
-<!--         <button class="edit-btn" @click="editResearchFields">修改</button>-->
         </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
         <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
       </div>
-      <div class="button-container">
         <button @click="toggleAuthenticate" class="button">
           {{ isAuthenticated ? '✔ 已认证' : '去认证' }}
         </button>
-      </div>
     </div>
 
     <!-- 主体内容 -->
@@ -262,7 +259,7 @@ export default {
           paperId: id
         }
       })
-    }
+    },
   },
 
   mounted() {
@@ -671,15 +668,12 @@ html, body {
   background-color: #555;
 }
 
-.button-container {
+
+.button {
   display: flex;
   margin-top: 20px; /* 使按钮与其它信息之间有间距 */
   align-self: flex-end; /* 将按钮放到右侧 */
   margin-left: 45%;
-  gap: 30px;
-}
-
-.button {
   background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
   color: #ffffff;
   font-size: 18px; /* 增加字体大小 */
