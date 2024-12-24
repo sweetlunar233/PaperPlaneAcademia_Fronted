@@ -417,6 +417,7 @@ export default {
 .app{
   background-color: #ffffffaa;
 }
+
 .search-container {
   display: flex;
   margin: 20px;
