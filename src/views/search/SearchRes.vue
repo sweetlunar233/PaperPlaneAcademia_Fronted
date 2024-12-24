@@ -516,7 +516,7 @@ export default {
 }
 
 .author {
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .author a {
