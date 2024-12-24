@@ -123,25 +123,23 @@
       },
   
       // 提交搜索
-      submitSearch() {
-        // 验证条件
-        if (!this.authorConditions.every((cond) => cond.value.trim())) {
-          this.$message.warning("请填写所有搜索条件");
-          return;
-        }
-        
+      submitSearch() {        
         // 生成搜索参数
         const searchParams = this.authorConditions.map((cond) => ({
           operator: cond.operator||null,
           value: cond.value||null,
           scope: cond.scope||null,
         }));
-        if (this.searchKeyword) {
+        if (this.searchKeyword && this.searchType) {
           searchParams.push({
             logic: null,         // 没有逻辑
             value: this.searchKeyword,  // 将 searchKeyword 作为 value
             scope: this.searchType // 将 searchType 作为 scope
           });
+        }
+        else{
+          this.$message.warning("请填写所有搜索条件");
+          return;
         }
         // 跳转到 ScholarRes.vue 页面并传递参数
         this.$router.push({ name: "scholarRes", query: { conditions: JSON.stringify(searchParams) } });

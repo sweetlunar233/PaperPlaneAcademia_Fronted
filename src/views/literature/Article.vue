@@ -1,7 +1,9 @@
 <!-- 文章详情页面 -->
 <template >
     <div style="background-color:#EBEEF5" v-loading="isLoading"
-    element-loading-background="rgb(244, 246, 247)">
+    element-loading-background="rgb(244, 246, 247)"
+    element-loading-text="正在为您全力加载中..."
+    >
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -213,7 +215,7 @@
 
 <script>
 import { GetArticle, GetStar, GetStarCnt, PostStar } from '@/api/article';
-import { ElMessage } from 'element-plus';
+import { ElMessageBox, ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 export default{
@@ -530,10 +532,27 @@ export default{
         promise
         .then((result) => {
             if(result.status === "error"){
-                ElMessage({
-                    message: '该论文不存在',
-                    type: 'error',
-                    plain: true,
+                // ElMessage({
+                //     message: '该论文不存在',
+                //     type: 'error',
+                //     plain: true,
+                // });
+                ElMessageBox.confirm(
+                    "该论文不存在。",
+                    "提示",
+                    {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                    }
+                )
+                .then(() => {
+                    // 点击确定，跳转到指定链接
+                    window.history.back();
+                })
+                .catch(() => {
+                    // 点击取消，返回上一页
+                    window.history.back();
                 });
             }
             else{

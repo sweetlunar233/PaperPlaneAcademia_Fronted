@@ -1,6 +1,6 @@
 <template>
-  <div style="background-color: #EBEEF5;height: 1000px;">
-    <el-row>
+  <div style="background-color: #EBEEF5;min-height: 1000px;">
+    <el-row >
 
       <!-- 发表评论 -->
 
@@ -8,7 +8,7 @@
         <div class="title" >
           发表评论
         </div>
-        <el-avatar :size="100" :src="availableAvatars[avatar]" @click="gotoUser" class="avatar"></el-avatar>
+        <el-avatar :size="100" :src="availableAvatars[avatar]" @click="gotoUser"></el-avatar>
         <el-form style="padding-top: 3%;">
           <el-form-item>
             <el-input
@@ -30,56 +30,25 @@
         </h2>
         <div style="height: 1px; background-color: #dcdfe6; margin-bottom: 16px;"></div>
         <div v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
-          <el-row gutter="20" type="flex" align="top">
-            <el-col :span="1">
-              <el-avatar size="50" :src="availableAvatars[comment.avator]"></el-avatar>
-            </el-col>
-            <el-col :span="21">
-              <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}{{ comment.avator }}</p>
-              <p style="color: #606266; margin-top: 8px; margin-left: 5px;">{{ comment.content }}</p>
-              <el-row type="flex" align="middle" style="margin-top: 8px;">
-                <!-- <el-button
-                  type="text"
-                  size="small"
-                  @click="startReply(comment.id)"
-                >
-                  回复
-                </el-button> -->
+          <el-card  type="flex" align="top">
+            <div>
+              <el-avatar size="200" :src="availableAvatars[comment.avator]"></el-avatar>
+              <span style="font-weight: bold; margin: 0;margin-left: 15px;color:rgb(51.2, 126.4, 204);font-size: 20px;">{{ comment.username }}</span>
+            </div>
+            <el-divider/>
+            <div>
+              <p style="color: #606266; margin-top: 1px; margin-left: 5px;">{{ comment.content }}</p>
+              <el-row type="flex" justify="end" style="padding-top: 1%;">
                 <el-button
                   type="text"
                   size="small"
                   @click="likeComment(comment.id)"
-                  style="margin-left: 5px;"
                 >
                 <svg t="1734869597630" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1484" width="28" height="28"><path d="M64 928h192V453.1H64V928z m891.1-461.4c-5.5-8.4-14.9-13.5-24.9-13.5H625.5V181.8c0-47.3-38.4-85.8-85.6-85.8h-55.8c-47.2 0-85.6 38.5-85.6 85.8v161.7c0 0.7 0 1.4 0.1 2.1 0 0.4 1.9 40.2-26.3 70.5-12.9 13.9-30.4 23.9-52.3 30v482h442.9c11.9 0 22.8-7.1 27.4-18.1l167.3-415c3.9-9.4 3-20-2.5-28.4z" fill="#47444F" p-id="1485"></path></svg><div class="likeNum">{{ comment.likes }}</div>
                 </el-button>
               </el-row>
-
-              <!-- 回复输入框 -->
-              <!-- <div v-if="replyingTo === comment.id" style="margin-top: 8px;">
-                <el-input
-                  type="textarea"
-                  rows="2"
-                  v-model="replyText[comment.id]"
-                  placeholder="输入回复内容"
-                  style="margin-bottom: 8px;"
-                ></el-input>
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="submitReply(comment.id)"
-                >
-                  发表回复
-                </el-button>
-              </div> -->
-
-              <!-- 展示回复 -->
-              <!-- <div v-for="(reply, replyIndex) in comment.replies" :key="replyIndex" style="margin-left: 20px; margin-top: 12px;">
-                <p style="font-size: 14px; font-weight: bold; margin: 0;">{{ reply.username }}</p>
-                <p style="color: #606266; font-size: 12px; margin-top: 4px;">{{ reply.content }}</p>
-              </div> -->
-            </el-col>
-          </el-row>
+            </div>
+          </el-card>
         </div>
       </el-col>
 
@@ -160,28 +129,6 @@ export default {
       console.log(`跳转到文章页面，文章 ID: ${articleId}`);
       this.$router.push('/article/${articleId}');
     },
-    // startReply(commentId) {
-    //   this.replyingTo = commentId; // 设置当前正在回复的评论ID
-    //   if (!this.replyText[commentId]) {
-    //     this.replyText[commentId] = ""; // 初始化输入框内容
-    //   }
-    // },
-    // submitReply(commentId) {
-    //   const replyContent = this.replyText[commentId]?.trim();
-    //   if (replyContent) {
-    //     const comment = this.comments.find((c) => c.id === commentId);
-    //     if (comment) {
-    //       comment.replies.push({
-    //         username: "当前用户", // 替换为实际用户名
-    //         content: replyContent,
-    //       });
-    //       this.replyText[commentId] = ""; // 清空输入框
-    //       this.replyingTo = null; // 重置回复状态
-    //     }
-    //   } else {
-    //     this.$message.warning("回复内容不能为空！");
-    //   }
-    // },
   },
   mounted(){
     this.userId = this.$cookies.get("userId");
@@ -194,7 +141,6 @@ export default {
     promise.then((result) =>{
       console.log("response",result);
       if(result.comments === null){
-
         ElMessage({
             message: '获取评论失败',
             type: 'error',
@@ -202,9 +148,8 @@ export default {
         });
       }
       else{
-        //console.log("data1:",result.data.comments);
+        console.log(result);
         this.comments = result.comments;
-        console.log("data2:",this.comments);
       }
     })
     .finally(() =>{
@@ -248,16 +193,7 @@ export default {
 
   font-weight: bold; /* 设置为加粗 */
 }
-.avatar {
-  transition: transform 0.3s ease;  /* 设置过渡效果，使变大动作平滑 */
-}
 
-.avatar:hover {
-  transform: scale(1.1);  /* 鼠标悬停时，放大1.1倍 */
-}
-.avatar:active {
-  transform: scale(0.95);  /* 点击时头像略微缩小 */
-}
 .button {
   transition: transform 0.2s ease;  /* 设置过渡效果，使变大动作平滑 */
 }
