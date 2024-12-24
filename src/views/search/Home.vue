@@ -116,11 +116,11 @@ const fields = ref([
 ])
 
 const statistic = ref({
-  authorCount: 20502,
-  organizationsCount: 16479,
-  fieldsCount: 31486,
+  authorCount: 15997012,
+  paperCount: 7364887,
   journalCount: 29063,
-  paperCount: 26039
+  organizationsCount: 49100,
+  fieldsCount: 379754,
 })
 
 const internalInstance = getCurrentInstance();
@@ -166,6 +166,7 @@ const gotoPaper = (paperId) => {
 }
 
 const gotoScholar = (userId) => {
+  console.log(userId);
     router.push({
       path: '/gateway',
       query: {
@@ -198,11 +199,45 @@ const increment = Math.ceil(1234); // 每次增加的数字，调整增量大小
 const startCounting = () => {
   const intervals = targetNumbers.map((target, index) => {
     return setInterval(() => {
-        if (numbers.value[index] < target) {
-            numbers.value[index] += increment;
-        } else {
-            numbers.value[index] = target;
-            clearInterval(intervals[index]); // 达到目标时停止
+        if(index == 0){
+          if (numbers.value[index] < target) {
+              numbers.value[index] += increment * 564;
+          } else {
+              numbers.value[index] = target;
+              clearInterval(intervals[index]); // 达到目标时停止
+          }
+        }
+        else if(index == 1){
+          if (numbers.value[index] < target) {
+              numbers.value[index] += increment * 299;
+          } else {
+              numbers.value[index] = target;
+              clearInterval(intervals[index]); // 达到目标时停止
+          }
+        }
+        else if(index == 2){
+          if (numbers.value[index] < target) {
+              numbers.value[index] += increment;
+          } else {
+              numbers.value[index] = target;
+              clearInterval(intervals[index]); // 达到目标时停止
+          }
+        }
+        else if(index == 3){
+          if (numbers.value[index] < target) {
+              numbers.value[index] += increment * 2;
+          } else {
+              numbers.value[index] = target;
+              clearInterval(intervals[index]); // 达到目标时停止
+          }
+        }
+        else if(index == 4){
+          if (numbers.value[index] < target) {
+              numbers.value[index] += increment * 15;
+          } else {
+              numbers.value[index] = target;
+              clearInterval(intervals[index]); // 达到目标时停止
+          }
         }
     }, intervalTime);
   });
@@ -298,7 +333,7 @@ function truncate(title) {
   // 遍历每个单词，逐个添加，直到字符数超过限制
   for (let word of words) {
     // 当前字符数加上这个单词的长度（如果有空格，需要加1）
-    if (charCount + word.length + (truncated ? 1 : 0) <= 90) {
+    if (charCount + word.length + (truncated ? 1 : 0) <= 85) {
       // 如果字符数不超过限制，则添加该单词
       truncated += (truncated ? ' ' : '') + word
       charCount += word.length + (truncated ? 1 : 0) // 更新字符数
