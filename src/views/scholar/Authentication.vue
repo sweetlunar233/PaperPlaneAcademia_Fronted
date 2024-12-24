@@ -241,6 +241,7 @@ export default {
       //   fileList: null,
       // },
       // editIdx: -1,
+      isLoading:true,
     };
   },
   methods: {
@@ -297,16 +298,16 @@ export default {
         authorNames = authorNames.concat(namesArray);
       }
       console.log("搜索认证门户", {
-          organization:this.formData.organization,
-          authorNames:authorNames
-        });
-        var response = fetchScholars({
-          organization:this.formData.organization,
-          authorNames:authorNames
-        });
+        organization:this.formData.organization,
+        authorNames:authorNames
+      });
+      var response = fetchScholars({
+        organization:this.formData.organization,
+        authorNames:authorNames
+      });
 
-        response
-        .then((data) => {
+      response
+      .then((data) => {
         console.log("fetchScholars res", data);
         if(data.status == "error"){
           console.error("Error fetchScholars");
@@ -315,7 +316,7 @@ export default {
           console.log(this.scholarsList)
         }
         this.isLoading=false;
-        });
+      });
     },
 
     // handleRemove(file, fileList) {

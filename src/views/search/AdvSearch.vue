@@ -121,42 +121,43 @@
       
       submitSearch() {
         // 构造 searchData 格式的数据
-         // 构造 searchData 格式的数据
-    const searchData = this.advancedFields.map(field => {
+        // 构造 searchData 格式的数据
+        const searchData = this.advancedFields.map(field => {
         // 检查每个条件的逻辑（logic）是否为空
-        if (!field.logic) {
-            this.$message.warning("请为所有条件选择逻辑！");
+          if (!field.logic) {
+            // this.$message.warning("请为所有条件选择逻辑！");
             return null;  // 如果没有选择逻辑，则返回 null，跳过此条数据
-        }
+          }
 
-        return {
-            logic: field.logic || null, // 保留原来的逻辑
-            value: field.value || null,  // 保留原来的值
-            scope: field.scope || null   // 保留原来的范围
-        };
-    }).filter(item => item !== null);  // 过滤掉没有逻辑的条件
-    if (searchData.length === 0) {
-        return;  // 直接返回，阻止继续执行后面的代码
-    }
+          return {
+              logic: field.logic || null, // 保留原来的逻辑
+              value: field.value || null,  // 保留原来的值
+              scope: field.scope || null   // 保留原来的范围
+          };
+        }).filter(item => item !== null);  // 过滤掉没有逻辑的条件
+
+        // if (searchData.length === 0) {
+        //     return;  // 直接返回，阻止继续执行后面的代码
+        // }
 
         // 将 searchType 和 searchKeyword 作为额外的条件添加到 searchData 中
         if (this.searchKeyword && this.searchType) {
-  searchData.unshift({  // 使用 unshift() 将其放在数组的第一位
-    logic: null,         // 没有逻辑
-    value: this.searchKeyword,  // 将 searchKeyword 作为 value
-    scope: this.searchType // 将 searchType 作为 scope
-  });
-} else {
-  this.$message.warning("请填写搜索条件");
-  return;
-}
+          searchData.unshift({  // 使用 unshift() 将其放在数组的第一位
+            logic: null,         // 没有逻辑
+            value: this.searchKeyword,  // 将 searchKeyword 作为 value
+            scope: this.searchType // 将 searchType 作为 scope
+          });
+        } else {
+          this.$message.warning("请填写搜索条件");
+          return;
+        }
         const formatDate = (date) => {
-    if (!date) return null;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0]; // 只保留 'yyyy-mm-dd' 部分
-  };
+          if (!date) return null;
+          const d = new Date(date);
+          return d.toISOString().split('T')[0]; // 只保留 'yyyy-mm-dd' 部分
+        };
 
-  const formattedDateRange = this.dateRange ? this.dateRange.map(date => formatDate(date)) : [];
+        const formattedDateRange = this.dateRange ? this.dateRange.map(date => formatDate(date)) : [];
         // 创建 payload，包含搜索条件和日期范围
         const payload = {
           searchConditions: searchData,
@@ -173,14 +174,14 @@
             dateRange: JSON.stringify(payload.dateRange)
           }
         });
-    },
+      },
       onReset() {
-      // 重置所有搜索条件
-      this.searchType = null; // 清空搜索类型
-      this.searchKeyword = ""; // 清空关键词
-      this.advancedFields = [{ value: "" }]; // 重置高级搜索字段为一个空的输入框
-      this.dateRange = [null, null]; // 清空日期范围
-      console.log("所有条件已重置");
+        // 重置所有搜索条件
+        this.searchType = null; // 清空搜索类型
+        this.searchKeyword = ""; // 清空关键词
+        this.advancedFields = [{ value: "" }]; // 重置高级搜索字段为一个空的输入框
+        this.dateRange = [null, null]; // 清空日期范围
+        console.log("所有条件已重置");
     },
     },
   };

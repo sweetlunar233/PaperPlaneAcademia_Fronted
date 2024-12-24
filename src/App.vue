@@ -85,7 +85,10 @@ export default {
       
       this.$cookies.remove('userId');
       this.$cookies.remove('username');
-      alert("已注销！");
+      ElMessage({
+        message: "已注销！",
+        type: 'success',
+      });
       this.$router.push("/home");
     },
     async onSearch() {
@@ -111,7 +114,10 @@ export default {
 
       } catch (error) {
         console.error("搜索请求失败：", error);
-        alert("搜索失败，请稍后再试！");
+        ElMessage({
+          message:"搜索失败，请稍后再试！",
+          type: 'error',
+        });
       }
     },
 
