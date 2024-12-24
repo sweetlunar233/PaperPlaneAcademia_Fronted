@@ -34,7 +34,7 @@
           >
 
             <!-- 运算符选择 -->
-            <el-select v-if="index >= 0" v-model="condition.operator" placeholder="逻辑运算" style="width: 80px;">
+            <el-select v-if="index >= 0" v-model="condition.operator" placeholder="逻辑运算" style="width: 100px;">
               <el-option label="AND" value="AND"></el-option>
               <el-option label="OR" value="OR"></el-option>
               <el-option label="NOT" value="NOT"></el-option>
