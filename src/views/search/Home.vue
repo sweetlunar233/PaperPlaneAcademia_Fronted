@@ -789,6 +789,7 @@ onMounted(() => {
     font-size: 15px;
     line-height: 22px;
     color: #262625;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .citation-count {
