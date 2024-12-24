@@ -383,13 +383,11 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            this.article.starCnt++;
         },
 
         undoStar(){
             this.isStar = false;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            this.article.starCnt--;
         },
 
         async share(){
