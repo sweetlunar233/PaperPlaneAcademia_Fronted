@@ -96,7 +96,7 @@
                     </el-col>
                     <el-divider direction="vertical" style="height: 60px;"/>
                     <el-col :span="11">
-                        <el-statistic title="被引量" :value="field.citedCound" value-style="color:#E6A23C;"/>
+                        <el-statistic title="被引量" :value="field.citedCount" value-style="color:#E6A23C;"/>
                     </el-col>
                 </el-row>
             </el-col>
@@ -188,6 +188,7 @@ export default{
 
         var promise = GetField(this.id);
         promise.then((result) => {
+            console.log(result)
             if(result.status === "error"){
                 // ElMessage({
                 //     message: '该领域在本网站无信息，已为您跳转到该领域的官方网站.',
