@@ -1,5 +1,8 @@
 <template>
-  <div class="profile-page">
+  <div class="profile-page"  v-loading="isLoading"
+  element-loading-background="rgb(244, 246, 247)"
+  element-loading-text="正在为您全力加载中..."
+  >
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
@@ -138,6 +141,7 @@
 import axios from 'axios';
 import router from "@/router/index.js";
 import {GetMyUserData, UpdateAvatar, updateDescription} from "@/api/user.js";
+import { ElMessage } from 'element-plus';  // 对于 Element Plus
 
 export default {
   data() {
@@ -171,6 +175,7 @@ export default {
       favoriteArticles: [],
       comments: [],
       articles: [],
+      isLoading:false,
     };
   },
   methods: {
@@ -199,15 +204,24 @@ export default {
               if (response.status) {
                 console.log(121)
                 this.userInfo.photoUrl = avatarIndex; // 本地更新头像
+                this.$cookies.set("avatar",avatarIndex);
               } else {
-                alert(`头像更新失败：${response.data.message}`);
+                ElMessage({
+                    message: `头像更新失败：${response.data.message}`,
+                    type: 'error',
+                    plain: true,
+                });
               }
             })
             .catch(error => {
               console.error('头像更新失败:', error);
             });
       } else {
-        alert('请选择一个头像！');
+        ElMessage({
+            message: `请选择一个头像！`,
+            type: 'warning',
+            plain: true,
+        });
       }
 
       this.showAvatarDialog = false; // 关闭对话框
@@ -233,6 +247,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchUserData() {
+      this.isLoading = true;
       const userId = this.$cookies.get('userId');
       var promise = GetMyUserData(userId);
       promise.then(response => {
@@ -246,6 +261,7 @@ export default {
             this.favoriteArticles = favoriteArticles;
             this.comments = comments;
             this.articles = articles;
+            this.isLoading = false;
             console.log(response);
             console.log(userInfo);
           })

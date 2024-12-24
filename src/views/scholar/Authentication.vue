@@ -1,6 +1,6 @@
 <template>
   <div>
-  <h1 style="color:var(--text-color);font-size:24px;padding-left:12vw;padding-top:2vh">学者身份认证</h1>
+  <h1 style="color:#251c57;font-size:24px;padding-left:12vw;padding-top:2vh">学者身份认证</h1>
     <div class="authentication">
       <el-row class="info-div" style="padding: 30px 0px 30px 0px;">
 
@@ -16,7 +16,7 @@
               <el-icon class="icon" v-if="index===1" :size="index === step - 1 ? 30 : 25"><Document /></el-icon>
               <el-icon class="icon" v-if="index===2" :size="index === step - 1 ? 30 : 25"><CircleCheck /></el-icon>
               <span class="step-title" :style="{ fontSize: index === step - 1 ? '20px' : '16px' }">{{ stepTitle }}</span>
-              <el-icon v-if="index < steps.length - 1" style="margin-left: 15vh;color:var(--gray-color) !important">
+              <el-icon v-if="index < steps.length - 1" style="margin-left: 15vh;color:#c7cfdb !important">
                   <ArrowRightBold />
                 </el-icon>
             </div>
@@ -51,14 +51,14 @@
           </el-form-item> -->
         </el-form>
   
-        <el-form :model="formData" ref="form" v-if="step === 2" style="position: absolute; width: 100%; margin: 100px 15% 100px 10%;">
+        <el-form :model="formData" ref="form" v-if="step === 2" style="position: absolute; width: 100%; margin: 100px 15% 100px 10%;" v-loading="isLoading">
           <div class="label">门户认领</div>
           <div class="dsc" v-if="scholarsList.length>0">
               已根据您的姓名搜索到了系统中如下
               <span class="scholar-count"><i>{{ scholarsList.length }}</i></span>
               个匹配的门户信息, 点击选择
           </div>
-          <div v-if="scholarsList.length==0" style="width: 100%;margin-top:50px">
+          <div v-if="scholarsList.length==0&&isLoading==false" style="width: 100%;margin-top:50px">
             <el-result
               icon="error"
               title="没有查找到与您的信息匹配的认证门户!"
@@ -91,7 +91,7 @@
             系统中没有录入我的作品？<span @click="edit(null)" class="manual-upload">手动上传</span>
           </div>
           <div class="papers" v-if="formData.newPapers.length > 0" >
-            <p style="margin-bottom:-5px; padding-left:20px; color:var(--text-color);">已手动上传的作品：</p>
+            <p style="margin-bottom:-5px; padding-left:20px; color:#251c57;">已手动上传的作品：</p>
             <ul style="max-height: 14vh; overflow-y: auto; width:25vw">
               <div class="paper" v-for="(paper, index) in formData.newPapers" :key="index">
                 <div class="paper-title-container" >
@@ -199,6 +199,7 @@ export default {
           //field: '',
           selectedScholarId: '-1',
           //newPapers: [],
+          isLoading:true,
           userId: this.$cookies.get('userId')
       },
       
@@ -285,6 +286,7 @@ export default {
     },
 
     fetchScholarsByName() {
+      this.isLoading=true;
       const { name, otherName } = this.formData;
       let authorNames = [];
       if (name && name.trim()) {
@@ -312,6 +314,7 @@ export default {
           this.scholarsList = data.matched_scholars;
           console.log(this.scholarsList)
         }
+        this.isLoading=false;
         });
     },
 
@@ -417,22 +420,8 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 
-:root {
-  --theme-color: #385b9d;
-  --mid-color:#5f96c7;
-  --light-color: #e5f1fe;
-  --button-color:#a6c0ed;
-  --back-color: #fefaff;
-  --shadow-color:rgba(85, 68, 183, 0.185);
-  --deep-shadow:rgba(85, 65, 156, 0.311);
-  --gray-color:#c7cfdb;
-  --dark-color: #8694a8;
-  --secondary-color: #6095df;
-  --text-color: #251c57;
-  --light-text-color: #4f4454;
-}
 .app{
   background-color: #ffffffaa;
 }
@@ -452,16 +441,16 @@ export default {
 }
 
 .step-item {
-  color: var(--dark-color);
+  color: #8694a8;
 }
 
 .step-item.active {
-  color: var(--theme-color);
+  color: #385b9d;
   font-weight: bold;
 }
 
 .step-item.completed {
-  color: var(--mid-color);
+  color: #5f96c7;
 }
 
 .icon {
@@ -483,8 +472,8 @@ export default {
   display: flex;
   justify-content: center;
   margin: 20px 0 0 0;
-  box-shadow: 0 4px 20px var(--shadow-color);
-  border: 1px solid var(--gray-color);
+  box-shadow: 0 4px 20px rgba(85, 68, 183, 0.185);
+  border: 1px solid #c7cfdb;
   border-radius: 10px;
   width: 80%;
   min-height: 75vh;
@@ -532,13 +521,13 @@ export default {
   display: flex;
   font-size: 18px;
   font-weight: bold ;
-  color: var(--text-color);
+  color: #251c57;
   margin-left: 10px;
 }
 
 .claimed-scholars-container {
   display: flex;
-  border: 1px solid var(--gray-color);
+  border: 1px solid #c7cfdb;
   width: 95%;
   max-height: 27vh;
   overflow-y: auto;
@@ -549,17 +538,17 @@ export default {
   align-items: center;
   width: 100%;
   padding: 10px 0;
-  border-bottom: 1px solid var(--gray-color);
+  border-bottom: 1px solid #c7cfdb;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .scholar-item:hover {
-  background-color: var(--light-color);
+  background-color: #e5f1fe;
 }
 
 .selected {
-  background-color: var(--light-color);
+  background-color: #e5f1fe;
 }
 
 .scholar-checkbox {
@@ -572,7 +561,7 @@ export default {
 }
 
 .selected-icon {
-  color: var(--theme-color);
+  color: #385b9d;
 }
 
 .scholar-info {
@@ -586,7 +575,7 @@ export default {
 .scholar-title {
   font-size: 16px !important;
   font-weight: bold;
-  color: var(--text-color);
+  color: #251c57;
   white-space: normal !important;
   word-break: break-all;
   word-wrap: break-word;
@@ -596,7 +585,7 @@ export default {
 
 .scholar-other-info{
   font-size: 14px;
-  color: var(--light-text-color);
+  color: #4f4454;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -605,12 +594,12 @@ export default {
 }
 
 .scholar-item:hover .scholar-name {
-  color: var(--theme-color);
+  color: #385b9d;
 }
 
 .dsc {
   font-size: 14px;
-  color: var(--light-text-color);
+  color: #4f4454;
   display: flex;
   align-items: center;
   margin-left: 20px;
@@ -620,20 +609,20 @@ export default {
 .scholar-count {
   font-size: 20px;
   font-weight: bold;
-  color: var(--secondary-color);
+  color: #6095df;
   margin: 0 10px;
 }
 
 .manual-upload-link {
   font-size: 16px;
-  color: var(--text-color);
+  color: #251c57;
   cursor: pointer;
   margin-top: 10px;
   margin-left: 20px;
 }
 
 .manual-upload {
-  color: var(--secondary-color);
+  color: #6095df;
 }
 
 .popup-buttons {
@@ -645,7 +634,7 @@ export default {
 .scholar-name-container {
   display: flex;
   align-items: center;
-  border: 1px solid var(--gray-color) ;
+  border: 1px solid #c7cfdb ;
   border-radius: 8px;
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
@@ -669,7 +658,7 @@ export default {
 
 .scholar-name {
   font-size: 14px;
-  color: var(--text-color);
+  color: #251c57;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -682,21 +671,21 @@ export default {
 }
 
 .el-button--primary {
-  background-color: var(--button-color);
-  border-color: var(--gray-color);
-  color: var(--text-color);
+  background-color: #a6c0ed;
+  border-color: #c7cfdb;
+  color: #251c57;
 }
 
 .el-button--primary:hover {
-  background-color: var(--dark-color);
-  border-color: var(--gray-color);
-  color: var(--text-color);
+  background-color: #8694a8;
+  border-color: #c7cfdb;
+  color: #251c57;
 }
 
 .el-button--primary:focus,
 .el-button--primary:active {
-  background-color: var(--button-color);
-  border-color: var(--gray-color);
-  color: var(--text-color);
+  background-color: #a6c0ed;
+  border-color: #c7cfdb;
+  color: #251c57;
 }
 </style>

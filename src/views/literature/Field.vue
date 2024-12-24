@@ -1,5 +1,5 @@
 <template >
-    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgb(244, 246, 247)">
+    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgb(244, 246, 247)" element-loading-text="正在为您全力加载中...">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -108,8 +108,8 @@
 
 <script>
 import { GetField } from '@/api/field';
-import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 export default{
     
@@ -189,12 +189,34 @@ export default{
         var promise = GetField(this.id);
         promise.then((result) => {
             if(result.status === "error"){
-                ElMessage({
-                    message: '该领域在本网站无信息，已为您跳转到该领域的官方网站.',
-                    type: 'error',
-                    plain: true,
+                // ElMessage({
+                //     message: '该领域在本网站无信息，已为您跳转到该领域的官方网站.',
+                //     type: 'error',
+                //     plain: true,
+                // });
+                // window.open(this.id, '_blank');
+                ElMessageBox.confirm(
+                    "该领域在本网站无信息，是否为您跳转到该领域的官方网站？",
+                    "提示",
+                    {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                    }
+                )
+                .then(() => {
+                    // 点击确定，跳转到指定链接
+                    window.history.back();
+                    window.open(this.id, '_blank');
+                })
+                .catch(() => {
+                    if (window.opener) {
+                        window.close();  // 关闭当前标签页
+                    } else {
+                        // 如果有 window.opener，则说明是子页面，返回上一页
+                        window.history.back();  // 返回上一页
+                    }
                 });
-                window.open(this.id, '_blank');
             }
             else{
                 this.field = result.field;
@@ -208,7 +230,7 @@ export default{
 
 </script>
 
-<style  scoped>
+<style scoped>
 
 .article .title-block {
     width: 60%;

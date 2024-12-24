@@ -36,7 +36,7 @@
             <el-button @click="goToRegister">注册</el-button>
           </template>
           <template v-else>
-            <span style="font-family: 'Microsoft YaHei', sans-serif;padding-top: 2%;text-decoration: underline;" @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
+            <span style="font-family: 'Microsoft YaHei', sans-serif;text-decoration: underline;margin-right: 10px;font-size: 18px;" @click="goToMyGateway">欢迎, {{ $cookies.get('username') }}</span>
             <el-button @click="logout">注销</el-button>
           </template>
         </div>
@@ -223,6 +223,8 @@ html {
 }
 
 .TieZhu-button{
+  font-size: 18px;
+  font-weight: bold;
   color: rgb(216, 210, 210);
   font-family: 'Microsoft YaHei', sans-serif;
 }

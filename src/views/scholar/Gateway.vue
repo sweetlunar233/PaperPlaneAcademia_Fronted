@@ -1,5 +1,8 @@
 <template>
-  <div class="profile-page">
+  <div class="profile-page"  v-loading="isLoading"
+  element-loading-background="rgb(244, 246, 247)"
+  element-loading-text="正在为您全力加载中..."
+  >
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
@@ -158,7 +161,12 @@
         <div class="user-info-card-content">
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-if="userInfo.institution[0].length < 10">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-else>
+              <el-tooltip :content="userInfo.institution[0]" placement="top">
+                {{ userInfo?.institution[0].substring(0,7) }}...
+              </el-tooltip>
+            </span>
           </div>
           <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
@@ -176,6 +184,7 @@
 <script>
 import router from "@/router/index.js";
 import {GetScholarData} from "@/api/user.js";
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 export default {
   data() {
@@ -237,6 +246,7 @@ export default {
         institution_country: "CN",
       },
       articles: [],
+      isLoading:false,
     };
   },
   methods: {
@@ -272,6 +282,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchScholarData() {
+      this.isLoading = true;
       const currentUserId = this.$cookies.get('userId');
       const targetUserId = this.$route.query.userId;
       // const targetUserId = "https://openalex.org/A5029688225";
@@ -294,14 +305,41 @@ export default {
           this.experts = experts;
           this.contributions=contributions;
           console.log("data:",contributions);
+          this.isLoading = false;
         })
         .catch(error => {
-          alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
-          window.open(targetUserId, '_blank');
-          console.log("TIEZHU")
-          console.log(targetUserId)
+          // ElMessage.warning("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+          // window.open(targetUserId, '_blank');
+          // console.error('获取数据失败', error);
+          ElMessageBox.confirm(
+            "该学者在本网站无信息，是否为您跳转到该学者的官方网站？",
+            "提示",
+            {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            }
+          )
+          .then(() => {
+            // 点击确定，跳转到指定链接
+            // 打开新标签页
+            window.history.back();
+            window.open(targetUserId, '_blank');
+
+            
+            
+          })
+          .catch(() => {
+            if (window.opener) {
+              window.close();  // 关闭当前标签页
+            } else {
+              // 如果有 window.opener，则说明是子页面，返回上一页
+              window.history.back();  // 返回上一页
+            }
+          });
+
           console.error('获取数据失败', error);
-        });
+        })
 
     },
     viewDetails(id){
