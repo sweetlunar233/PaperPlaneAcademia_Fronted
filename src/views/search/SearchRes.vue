@@ -439,6 +439,7 @@ export default {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+  height:86vh;
 }
 
 .results-section h1 {
@@ -454,6 +455,7 @@ export default {
 }
 
 .results-list {
+  width:77vw;
   overflow-y: auto;
   padding-top: 20px;
   padding-left: 10px;
