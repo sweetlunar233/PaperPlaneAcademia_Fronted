@@ -145,15 +145,24 @@ export default {
             var promise = Register(this.registerForm.username, this.registerForm.password, this.registerForm.email, this.registerForm.organization, this.registerForm.userType, this.registerForm.avatar);
             promise.then((result) => {
               if (result && result.status === "success") {
-                alert("注册成功！将为您跳转到登录界面");
+                ElMessage({
+                  message: "注册成功！将为您跳转到登录界面",
+                  type: 'success',
+                });
                 this.$router.push("/login");
               } else {
-                alert(result);
+                ElMessage({
+                  message: result,
+                  type: 'error',
+                });
               }
             });
           } catch (error) {
             console.error("注册失败:", error);
-            alert("注册失败，请检查网络连接或稍后重试。");
+            ElMessage({
+              message: "注册失败，请检查网络连接或稍后重试。",
+              type: 'error',
+            });
           }
         } else {
           console.log("error submit!!");
