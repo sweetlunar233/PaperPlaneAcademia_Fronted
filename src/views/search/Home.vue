@@ -176,9 +176,9 @@ const gotoScholar = (userId) => {
 }
 
 const gotoError = (userId) => {
-    router.push({
-    path: '/error',
-  });
+  //   router.push({
+  //   path: '/error',
+  // });
 }
 
 
@@ -809,61 +809,3 @@ onMounted(() => {
     font-size: 14px;
 }
 </style>
-
-
-<!-- <template>
-  <div class="neon-rotating-text">Neon Rotating Effect</div>
-</template>
-
-<script setup>
-</script>
-
-<style scoped>
-.neon-rotating-text {
-  font-size: 48px;
-  font-weight: bold;
-  text-align: center;
-  color: #fff; /* 初始字体颜色 */
-  animation: neon 1.5s ease-in-out infinite alternate, rotateShadow 3s linear infinite;
-  text-shadow: 
-    0 0 5px rgba(255, 0, 255, 0.8), 
-    0 0 10px rgba(255, 0, 255, 0.8),
-    0 0 15px rgba(255, 0, 255, 0.8),
-    0 0 20px rgba(255, 0, 255, 0.8),
-    0 0 30px rgba(255, 0, 255, 0.8),
-    0 0 40px rgba(255, 0, 255, 0.8),
-    0 0 50px rgba(255, 0, 255, 0.8);
-}
-
-/* 霓虹灯效果的动画 */
-@keyframes neon {
-  0% {
-    text-shadow: 0 0 5px rgba(255, 0, 255, 0.8), 0 0 10px rgba(255, 0, 255, 0.8);
-    color: #f0f;
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(255, 0, 255, 1), 0 0 30px rgba(255, 0, 255, 1);
-    color: #ff0;
-  }
-  100% {
-    text-shadow: 0 0 5px rgba(255, 0, 255, 0.8), 0 0 10px rgba(255, 0, 255, 0.8);
-    color: #f0f;
-  }
-}
-
-/* 文字旋转和阴影效果的动画 */
-@keyframes rotateShadow {
-  0% {
-    transform: rotate(0deg);
-    text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.3);
-  }
-  50% {
-    transform: rotate(180deg);
-    text-shadow: 8px 8px 10px rgba(0, 0, 0, 0.4);
-  }
-  100% {
-    transform: rotate(360deg);
-    text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.3);
-  }
-}
-</style> -->
