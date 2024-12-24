@@ -37,10 +37,6 @@ export function UpdateAvatar(userId, avatarIndex){
     return post("/users/updateAvatar/",data);
 }
 
-export function getTotalPages(data) {
-    return post("/authors/getpage/", data);
-}
-
 export function fetchResults(data) {
     return post("/authors/searchscholars/", data);
 }

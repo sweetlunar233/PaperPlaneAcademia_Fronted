@@ -1,5 +1,8 @@
 <template>
-  <div class="profile-page">
+  <div class="profile-page"  v-loading="isLoading"
+  element-loading-background="rgb(244, 246, 247)"
+  element-loading-text="正在为您全力加载中..."
+  >
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
@@ -238,6 +241,7 @@ export default {
         institution_country: "CN",
       },
       articles: [],
+      isLoading:false,
     };
   },
   methods: {
@@ -273,6 +277,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchScholarData() {
+      this.isLoading = true;
       const currentUserId = this.$cookies.get('userId');
       const targetUserId = this.$route.query.userId;
       // const targetUserId = "https://openalex.org/A5029688225";
@@ -295,6 +300,7 @@ export default {
           this.experts = experts;
           this.contributions=contributions;
           console.log("data:",contributions);
+          this.isLoading = false;
         })
         .catch(error => {
           // ElMessage.warning("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
@@ -328,7 +334,7 @@ export default {
           });
 
           console.error('获取数据失败', error);
-        });
+        })
 
     },
     viewDetails(id){

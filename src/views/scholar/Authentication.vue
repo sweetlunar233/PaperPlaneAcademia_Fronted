@@ -51,14 +51,14 @@
           </el-form-item> -->
         </el-form>
   
-        <el-form :model="formData" ref="form" v-if="step === 2" style="position: absolute; width: 100%; margin: 100px 15% 100px 10%;">
+        <el-form :model="formData" ref="form" v-if="step === 2" style="position: absolute; width: 100%; margin: 100px 15% 100px 10%;" v-loading="isLoading">
           <div class="label">门户认领</div>
           <div class="dsc" v-if="scholarsList.length>0">
               已根据您的姓名搜索到了系统中如下
               <span class="scholar-count"><i>{{ scholarsList.length }}</i></span>
               个匹配的门户信息, 点击选择
           </div>
-          <div v-if="scholarsList.length==0" style="width: 100%;margin-top:50px">
+          <div v-if="scholarsList.length==0&&isLoading==false" style="width: 100%;margin-top:50px">
             <el-result
               icon="error"
               title="没有查找到与您的信息匹配的认证门户!"
@@ -199,6 +199,7 @@ export default {
           //field: '',
           selectedScholarId: '-1',
           //newPapers: [],
+          isLoading:true,
           userId: this.$cookies.get('userId')
       },
       
@@ -285,6 +286,7 @@ export default {
     },
 
     fetchScholarsByName() {
+      this.isLoading=true;
       const { name, otherName } = this.formData;
       let authorNames = [];
       if (name && name.trim()) {
@@ -312,6 +314,7 @@ export default {
           this.scholarsList = data.matched_scholars;
           console.log(this.scholarsList)
         }
+        this.isLoading=false;
         });
     },
 

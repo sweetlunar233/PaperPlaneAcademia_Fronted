@@ -120,7 +120,7 @@
       },
       
       submitSearch() {
-            // 构造 searchData 格式的数据
+        // 构造 searchData 格式的数据
         const searchData = this.advancedFields.map(field => ({
           logic: field.logic||null, // 保留原来的逻辑
           value: field.value||null,  // 保留原来的值
@@ -128,14 +128,14 @@
         }));
 
         // 将 searchType 和 searchKeyword 作为额外的条件添加到 searchData 中
-        if (this.searchKeyword) {
+        if (this.searchKeyword && this.searchType) {
           searchData.push({
             logic: null,         // 没有逻辑
             value: this.searchKeyword,  // 将 searchKeyword 作为 value
             scope: this.searchType // 将 searchType 作为 scope
           });
         }else{
-          this.$message.warning("请填写所有搜索内容");
+          this.$message.warning("请填写搜索条件");
           return;
         }
         const formatDate = (date) => {
