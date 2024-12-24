@@ -7,7 +7,7 @@ const router = useRouter();
 
 
 
-import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../api/home.js'
+import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../../api/home.js'
 
 const isLoading = ref(false);
 
@@ -92,10 +92,12 @@ const recommended_articles = ref([
 const organizations = ref([
   {
     organizationName: "ABC",
+    homepage: "http...",
     works_number: 66,
   },
   {
     organizationName: "ABC",
+    homepage: "http...",
     works_number: 66,
   }
 ])
@@ -187,6 +189,11 @@ const gotoField = (fieldId) => {
     });
 }
 
+const gotoOrganization = (homepage) => {
+  window.open(homepage, '_blank');
+}
+
+
 const gotoError = (userId) => {
   //   router.push({
   //   path: '/error',
@@ -277,7 +284,6 @@ const initHome = (userId) => {
     promise.then((result)=>{
         for(const element of result.articles) {
           top_articles.value.push(element);
-          console.log(element.paperId);
         }
     });
 
@@ -287,38 +293,11 @@ const initHome = (userId) => {
         recommended_articles.value.push(element);
       }
     });
-    // console.log("1234");
-    // var promise = GetStatistics();
-    // promise.then((result)=>{
-    //     console.log(statistic.value.authorCount);
-    //     console.log(statistic.value.organizationsCount);
-    //     console.log(statistic.value.fieldsCount);
-    //     console.log(statistic.value.journalCount);
-    //     console.log(statistic.value.paperCount);
-    //     console.log("1234");
-    //     console.log(result.authorCount);
-    //     console.log(result.organizationsCount);
-    //     console.log(result.fieldsCount);
-    //     console.log(result.journalCount);
-    //     console.log(result.paperCount);
-    //     statistic.value = {
-    //       authorCount: result.authorCount,
-    //       organizationsCount: result.organizationsCount,
-    //       fieldsCount: result.fieldsCount,
-    //       journalCount: result.journalCount,
-    //       paperCount: result.paperCount
-    //     }
-    //     console.log("1234");
-    //     console.log(statistic.value.authorCount);
-    //     console.log(statistic.value.organizationsCount);
-    //     console.log(statistic.value.fieldsCount);
-    //     console.log(statistic.value.journalCount);
-    //     console.log(statistic.value.paperCount);
-    // });
 
     var promise = GetOrganizations();
     promise.then((result)=>{
         result.organizations.forEach(element => {
+            console.log(element.homepage)
             organizations.value.push(element);
         });
     });
@@ -387,9 +366,7 @@ onMounted(() => {
                 <span>PaperPlane&nbsp;Academia</span>
               </div>
               <div class="loader" @click="gotoError"></div>
-              <div class="input-box">
-                  <!-- <p @click="updateQuote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ randomQuote }}</p> -->
-              </div>
+              
           </div>
 
           <div class="logos">
@@ -543,6 +520,13 @@ onMounted(() => {
                                       </div>
                                   </div>
 
+                                  <div style="text-align: left; margin-top: 5px;">
+                                      <div>
+                                          <span class="abstract">主页链接： </span>
+                                          <span class="author-name" @click="gotoOrganization(organization.homepage)"><u>{{ organization.homepage }}</u></span>
+                                      </div>
+                                  </div>
+
                                   <div class="citation-count" style="text-align: left; margin-bottom: 5px;">
                                       <span>成果数： {{ organization.works_number }}</span>
                                   </div>
@@ -564,8 +548,8 @@ onMounted(() => {
                                       <div>
                                           <span class="title" @click="gotoField(field.fieldId)">{{ field.fieldName }}</span>
                                       </div>
-                                      <div style="margin-top: 10px;">
-                                        <span>TOP引用量文章：</span>
+                                      <div v-if="field.topArticleName !== ''" style="margin-top: 10px;">
+                                        <span class="abstract">TOP引用量文章：</span>
                                         <span class="author-name" @click="gotoPaper(field.topArticleId)"><u>{{ field.topArticleName }}</u></span>
                                       </div>
                                   </div>
