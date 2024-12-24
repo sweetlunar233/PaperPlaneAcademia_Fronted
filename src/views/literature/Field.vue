@@ -1,5 +1,5 @@
 <template >
-    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgba(244, 246, 247,0.8)">
+    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgb(244, 246, 247)">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -150,7 +150,11 @@ export default{
                 window.open(targetUrl, '_blank');
             }
             else{
-                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.");
+                ElMessage({
+                    message: '该领域在本网站无信息，已为您跳转到该领域的官方网站.',
+                    type: 'error',
+                    plain: true,
+                });
                 window.open(id, '_blank');
             }
         },
@@ -185,7 +189,11 @@ export default{
         var promise = GetField(this.id);
         promise.then((result) => {
             if(result.status === "error"){
-                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                ElMessage({
+                    message: '该领域在本网站无信息，已为您跳转到该领域的官方网站.',
+                    type: 'error',
+                    plain: true,
+                });
                 window.open(this.id, '_blank');
             }
             else{

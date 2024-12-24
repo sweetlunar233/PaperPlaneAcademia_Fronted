@@ -1,7 +1,7 @@
 <!-- 文章详情页面 -->
 <template >
     <div style="background-color:#EBEEF5" v-loading="isLoading"
-    element-loading-background="rgba(244, 246, 247,0.8)">
+    element-loading-background="rgb(244, 246, 247)">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -11,7 +11,7 @@
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
                         <span class="hyperlink" @click="toGateway(author.id)">{{ author.authorName }}</span><sup>{{ authorToInstitution[index] }}</sup>
-                        <span v-if="index != article.author.length">&ensp;, </span>
+                        <span v-if="index != article.author.length - 1">&ensp;, </span>
                     </span>
                 </div>
                 <div class="subtitle" style="padding-right: 0%">
@@ -383,13 +383,13 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            this.article.starCnt++;
+            this.starCnt++;
         },
 
         undoStar(){
             this.isStar = false;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            this.article.starCnt--;
+            this.starCnt--;
         },
 
         async share(){
@@ -455,7 +455,7 @@ export default{
 
         toGateway(id){
             // 获取目标 URL
-            const targetUrl = this.router.resolve({ path: '/gateway', query:{id:id} }).href;
+            const targetUrl = this.router.resolve({ path: '/gateway', query:{userId:id} }).href;
             // 使用 window.open 打开新窗口
             window.open(targetUrl, '_blank');
         },
@@ -580,7 +580,7 @@ export default{
             }
         })
 
-        var promise3 = GetStarCnt(this.id,this.userId);
+        var promise3 = GetStarCnt(this.id);
         promise3
         .then((result) => {
             this.starCnt = result.count;

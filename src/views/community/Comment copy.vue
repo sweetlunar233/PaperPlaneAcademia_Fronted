@@ -32,10 +32,10 @@
         <div v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
           <el-row gutter="20" type="flex" align="top">
             <el-col :span="1">
-              <el-avatar size="50" :src="availableAvatars[comment.avatar]"></el-avatar>
+              <el-avatar size="50" :src="availableAvatars[comment.avator]"></el-avatar>
             </el-col>
             <el-col :span="21">
-              <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}</p>
+              <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}{{ comment.avator }}</p>
               <p style="color: #606266; margin-top: 8px; margin-left: 5px;">{{ comment.content }}</p>
               <el-row type="flex" align="middle" style="margin-top: 8px;">
                 <!-- <el-button
@@ -96,35 +96,22 @@ export default {
     return {
       commentText: "", // 该用户的评论
       comments: [
-        {
-          id: 1,
-          username: "用户1",
-          content: "这是评论内容。",
-          likes: 10,
-          avatar:0,
-        },
-        {
-          id: 2,
-          username: "用户2",
-          content: "这是另一条评论。",
-          likes: 5,
-          avatar:2,
-        },
+        
         
       ],
       // replyText: {}, // 用于存储每条评论的回复输入框内容
       // replyingTo: null, // 当前正在回复的评论ID
       availableAvatars: [ // 可供选择的头像
-        'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
-        'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
-        'https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
-        'https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
-        'https://th.bing.com/th/id/R.7376aae88d772c821c6925b91e2ca1aa?rik=8n%2bJq8ypQTiJHA&pid=ImgRaw&r=0',
-        'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
+        "src/assets/images/avatar/1.jpg",
+        "src/assets/images/avatar/2.jpg",
+        "src/assets/images/avatar/3.jpg",
+        "src/assets/images/avatar/4.jpg",
+        "src/assets/images/avatar/5.jpg",
+        "src/assets/images/avatar/6.jpg",
       ],
       userId:0,
       username:"",
-      avatar:0,
+      avatar:1,
       paperId:0,
       isLoading:false,
     };
@@ -144,9 +131,10 @@ export default {
             username:this.username,
             content:this.commentText,
             likes:0,
-            avatar:this.avatar,
+            avatar:this.avator,
           }
           this.comments.push(tmp);
+          window.location.reload();
         })
         .finally(() => {
           this.isLoading = false;
@@ -200,10 +188,13 @@ export default {
     this.username = this.$cookies.get("username");
     this.avatar = this.$cookies.get("avatar");
     this.paperId = this.$route.query.paperId;
-    
-    var promise = GetComment(this.paperId);
+    console.log("currentUserInfo",this.username,this.avatar);
+    const articleId=this.$route.query.paperId;
+    var promise = GetComment(articleId);
     promise.then((result) =>{
+      console.log("response",result);
       if(result.comments === null){
+
         ElMessage({
             message: '获取评论失败',
             type: 'error',
@@ -211,7 +202,9 @@ export default {
         });
       }
       else{
+        //console.log("data1:",result.data.comments);
         this.comments = result.comments;
+        console.log("data2:",this.comments);
       }
     })
     .finally(() =>{
