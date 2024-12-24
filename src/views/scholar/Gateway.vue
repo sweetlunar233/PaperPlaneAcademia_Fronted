@@ -161,7 +161,12 @@
         <div class="user-info-card-content">
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-if="userInfo.institution[0].length < 10">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-else>
+              <el-tooltip :content="userInfo.institution[0]" placement="top">
+                {{ userInfo?.institution[0].substring(0,7) }}...
+              </el-tooltip>
+            </span>
           </div>
           <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
