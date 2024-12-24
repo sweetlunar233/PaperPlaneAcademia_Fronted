@@ -7,7 +7,7 @@ const router = useRouter();
 
 
 
-import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../../api/home.js'
+import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../api/home.js'
 
 const isLoading = ref(false);
 

@@ -52,12 +52,12 @@
             </div>
 
 
-            <div class="scholar-collaborators">
+            <!-- <div class="scholar-collaborators">
               <span style="padding-right:10px;color:#393942">相关学者：</span>
               <span v-for="(collaborator, idx) in scholar.collaborators" :key="idx" class="collaborator" @mouseover="hover = true" @mouseleave="hover = false">
                 <a @click.stop="viewScholar(collaborator)">{{ collaborator.name }}</a>
               </span>
-            </div>
+            </div> -->
   
             <!-- <div class="action-buttons">
               <button @click="sendMessage(scholar)" class="action-btn">
