@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PlatformOverview from "@/views/admin/PlatformOverview.vue";
-import ClaimReview from "@/views/admin/ClaimReview.vue";
 import PlatformScholars from "@/views/admin/PlatformScholars.vue";
 import ReviewResearcher from "@/views/admin/ReviewResearcher.vue";
 
@@ -10,7 +9,7 @@ const router = createRouter({
     {
       path: '/comment',
       name: 'comment',
-      component: () => import('../views/community/Comment copy.vue')
+      component: () => import('../views/community/Comment.vue')
     },
     {
       path:'/article',
@@ -64,7 +63,6 @@ const router = createRouter({
       redirect: '/admin/overview', // 确保默认重定向到 overview
       children: [
         { path: "overview", name: "overview", component: PlatformOverview },
-        { path: "review", name: "review", component: ClaimReview },
         { path: "scholars", name: "scholars", component: PlatformScholars },
         { path: "reviewResearcher", name: "reviewResearcher", component: ReviewResearcher },
         {
