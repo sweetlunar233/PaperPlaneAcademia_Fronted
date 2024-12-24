@@ -173,9 +173,10 @@
                 <el-divider />
                 <div>
                     <div class="abstract-title">领域</div>
-                    <div v-for="(field,index) in article.fields" class="field">
+                    <div v-if="article.fields.length > 1" v-for="(field,index) in article.fields" class="field">
                         - <span class="hyperlink" @click="toField(field.id)">{{ field.name }}</span>
                     </div>
+                    <div v-else class="field tab-tip">暂无领域信息.</div>
                 </div>
                 <el-divider />
                 <div>
