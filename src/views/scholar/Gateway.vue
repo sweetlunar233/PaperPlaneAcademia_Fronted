@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="getRandomAvatar()" alt="用户头像" />
+        <img :src=centerExpert.avatar alt="用户头像" />
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo?.name }}</h1>
@@ -101,18 +101,19 @@
       <!-- 下方的domain和value -->
       <div class="bottom-info">
         <!-- Domain部分使用card包裹 -->
-        <el-card class="domain-card" style="display: inline-block; width: auto; max-width: 100%;">
-          <div class="domain">
-            <span>{{ contribution.domain }}</span>
-          </div>
-        </el-card>
+        <el-card class="domain-card" style="display: inline-block; width: 300px; max-width: 45%;">
+  <div class="domain" style="white-space: normal; word-wrap: break-word;">
+    <span>{{ contribution.domain }}</span>
+  </div>
+</el-card>
 
         <!-- Value部分为环形进度条 -->
-        <div class="value">
+        <div class="value" style="width: 300px; height: 300px;">
           <el-progress
-            :percentage="contribution.value"
+            :percentage="(contribution.value / 0.00001) * 100"
             type="circle"
-            :stroke-width="10"
+            :stroke-width="20"
+            :size="900" 
             
           />
         </div>
@@ -157,11 +158,11 @@
         <div class="user-info-card-content">
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value">{{ userInfo?.institution }}</span>
+            <span class="user-info-value">{{ userInfo?.institution[0] }}</span>
           </div>
           <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
-            <span class="user-info-value">{{ userInfo?.institution_country }}</span>
+            <span class="user-info-value">{{ userInfo?.institution_country[0] }}</span>
           </div>
         </div>
       </div>
@@ -228,12 +229,12 @@ export default {
       ],
       userInfo: {
         name: 'a',
-        institution: 'a',
+        institution: ["buaa"],
         orcid: '1',
         alternative_names: ['a'],
         works_count: 0,
         cited_count: 0,
-        institution_country: 'CN',
+        institution_country: "CN",
       },
       articles: [],
     };
@@ -273,15 +274,18 @@ export default {
     fetchScholarData() {
       const currentUserId = this.$cookies.get('userId');
       const targetUserId = this.$route.query.userId;
+      // const targetUserId = "https://openalex.org/A5029688225";
       console.log("searching0");
       var promise = GetScholarData(currentUserId, targetUserId);
-      console.log("searching1");
+
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, articles, experts, contributions
           const { userInfo, articles, experts, contributions} = response;
+
           // 更新数据
-          console.log(response)
+
           this.userInfo = userInfo;
+
           this.centerExpert.name = userInfo.name;
           
           this.centerExpert.id = userInfo.orcid;
@@ -291,6 +295,8 @@ export default {
           console.log("data:",contributions);
         })
         .catch(error => {
+          alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                window.open(id, '_blank');
           console.error('获取数据失败', error);
         });
 
@@ -313,7 +319,7 @@ export default {
 
 
 
-<style>
+<style scoped>
 /* 页面整体样式 */
 html, body {
   height: 100%;
@@ -622,6 +628,7 @@ html, body {
 
 .user-info-label {
   font-weight: 500;
+  width: 90px;
   color: #555;
 }
 

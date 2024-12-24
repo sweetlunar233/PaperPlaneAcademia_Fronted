@@ -271,7 +271,7 @@ export default {
 
 
 
-<style>
+<style scoped>
 /* 页面整体样式 */
 html, body {
   height: 100%;
