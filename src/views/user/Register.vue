@@ -142,7 +142,7 @@ export default {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           try {
-            var promise = Register(this.registerForm.username, this.registerForm.password, this.registerForm.email, this.registerForm.organization, this.registerForm.userType, this.registerForm.avatar);
+            var promise = Register(this.registerForm.username, this.registerForm.password, this.registerForm.email, this.registerForm.organization, this.registerForm.avatar);
             promise.then((result) => {
               if (result && result.status === "success") {
                 ElMessage({
