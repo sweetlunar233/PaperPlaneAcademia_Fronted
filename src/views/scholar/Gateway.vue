@@ -275,7 +275,7 @@ export default {
       const targetUserId = this.$route.query.userId;
       var promise = GetScholarData(currentUserId, targetUserId);
       promise.then(response => {
-          // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
+          // 假设返回的数据结构包含 userInfo, articles, experts, contributions
           const { userInfo, articles, experts, contributions} = response;
           // 更新数据
           console.log(response)
