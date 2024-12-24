@@ -5,8 +5,8 @@
       <div class="block">
         <div class="filter-title">关键词</div>
         <div class="filter-selections">
-        <el-checkbox-group v-model="selectedKeywords" fill="var(--button-color)" size="small">
-          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="var(--button-color)"></el-checkbox>
+        <el-checkbox-group v-model="selectedKeywords" fill="#a6c0ed" size="small">
+          <el-checkbox v-for="(keyword, idx) in allKeywords" :key="idx" :label="keyword" :value="keyword" fill="#a6c0ed"></el-checkbox>
         </el-checkbox-group></div>
       </div>
 
@@ -24,7 +24,7 @@
       <div class="block">
         <div class="filter-title">作者单位</div>
         <div class="filter-selections">
-          <el-checkbox-group v-model="selectedAuthors" fill="var(--button-color)" size="small">
+          <el-checkbox-group v-model="selectedAuthors" fill="#a6c0ed" size="small">
             <el-checkbox v-for="(authorOrganization, idx) in allAuthorOrganizations" :key="idx" :label="authorOrganization" :value=authorOrganization></el-checkbox>
           </el-checkbox-group>
         </div>
@@ -35,17 +35,17 @@
     </el-affix>
 
     <div class="results-section">
-      <h1 style="color:var(--text-color);">检索结果</h1>
+      <h1 style="color:#282829;">检索结果</h1>
 
       <div class="sort-controls">
-        <el-radio-group v-model="sortBy" fill="var(--button-color)">
+        <el-radio-group v-model="sortBy" fill="#a6c0ed">
           <el-radio-button :value=1 >按相关度排序</el-radio-button>
           <el-radio-button :value=3 >按时间排序</el-radio-button>
           <el-radio-button :value=2 >按被引次数排序</el-radio-button>
         </el-radio-group>
-        <p style="width:25px;height:25px;border: 1px solid var(--gray-color);border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
-          <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="var(--theme-color)"><SortDown /></el-icon>
-          <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="var(--theme-color)"><SortUp /></el-icon>
+        <p style="width:25px;height:25px;border: 1px solid #c7d0db;border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
+          <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="#385b9d"><SortDown /></el-icon>
+          <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="#385b9d"><SortUp /></el-icon>
         </p>
       </div>
 
@@ -61,7 +61,7 @@
           class="result-item"
           @click="viewPaper(paper)"
         >
-          <h2 class="paper-title" style="color:var(--text-color)">{{ paper.title }}</h2>
+          <h2 class="paper-title" style="color:#282829">{{ paper.title }}</h2>
           <div class="paper-meta">
             <div class="paper-date-journal">
               <span class="paper-date"><i>{{ paper.date }}</i></span>
@@ -395,22 +395,7 @@ export default {
 };
 </script>
 
-<style>
-:root {
-  --theme-color: #385b9d;
-  --mid-color:#5f96c7;
-  --light-color: #e5edfe;
-  --button-color:#a6c0ed;
-  --back-color: #fafcff;
-  --shadow-color:rgba(68, 95, 183, 0.185);
-  --deep-shadow:rgba(65, 73, 156, 0.311);
-  --gray-color:#c7d0db;
-  --dark-color: #868ea8;
-  --secondary-color: #ecf4ff;
-  --second-text:#000000aa;
-  --text-color: #282829;
-  --light-text-color: #4f4454;
-}
+<style scoped>
 .app{
   background-color: #ffffffaa;
 }
@@ -423,7 +408,7 @@ export default {
 
 .search-filters {
   width: 300px;
-  border-right: 2px solid var(--gray-color);
+  border-right: 2px solid #c7d0db;
   position: sticky;
   word-wrap:break-word;  
   word-break:break-all;  
@@ -448,7 +433,7 @@ export default {
 .loading, .no-results {
   text-align: center;
   font-size: 18px;
-  color: var(--gray-color);
+  color: #c7d0db;
 }
 
 .results-list {
@@ -460,14 +445,14 @@ export default {
 
 .result-item {
   padding: 15px;
-  border: 1px solid var(--light-color);
+  border: 1px solid #e5edfe;
   margin-bottom: 15px;
   border-radius: 5px;
-  background-color: var(--back-color);
+  background-color: #fafcff;
   width: 96.5%;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 5px var(--shadow-color);
+  box-shadow: 0 2px 5px rgba(68, 95, 183, 0.185);
   transform-origin: 30% 50%;
 }
 
@@ -480,7 +465,7 @@ export default {
   font-size: 20px;
   margin: 5px 0 10px 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--gray-color);
+  border-bottom: 1px solid #c7d0db;
 }
 
 .paper-meta {
@@ -493,13 +478,13 @@ export default {
   font-size: 15px;
   display: flex;
   align-items: center;
-  color: var(--mid-color);
+  color: #5f96c7;
   margin-left:10px;
 }
 
 .separator {
   margin: 0 10px;
-  color: var(--dark-color);
+  color: #868ea8;
 }
 
 .paper-citations {
@@ -517,12 +502,12 @@ export default {
 }
 
 .author a {
-  color: var(--light-text-color);
+  color: #4f4454;
   text-decoration: none;
 }
 
 .author a:hover {
-  color: var(--second-text);
+  color: #000000aa;
   text-decoration: underline;
 }
 
@@ -536,7 +521,7 @@ export default {
   align-items: center;
   width: 100%;  
   gap: 10px;
-  border-bottom: 1px solid var(--gray-color);
+  border-bottom: 1px solid #c7d0db;
 }
 
 .action-buttons {
@@ -548,9 +533,9 @@ export default {
 .action-btn {
   padding: 5px 10px;
   margin-inline: 5px;
-  color: var(--theme-color);
-  border: 1px solid var(--theme-color);
-  background-color: var(--back-color);
+  color: #385b9d;
+  border: 1px solid #385b9d;
+  background-color: #fafcff;
   border-radius: 20px;
   width: 40px;
   height: 40px;
@@ -561,40 +546,40 @@ export default {
 }
 
 .action-btn:hover {
-  background-color: var(--light-color);
+  background-color: #e5edfe;
 }
 
 .keyword {
   display: inline-block;
   margin: 5px;
   padding: 5px 10px;
-  border: 1px solid var(--gray-color);
+  border: 1px solid #c7d0db;
   border-radius: 15px;
-  background-color: var(--secondary-color);
+  background-color: #ecf4ff;
   font-size: 14px;
-  color: var(--second-text);
+  color: #000000aa;
 }
 
 .keyword-icon {
   margin-right: 5px;
-  color:var(--theme-color);
+  color:#385b9d;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  color:var(--text-color)
+  color:#282829
 }
 
 .pagination button {
   padding: 5px 10px;
   margin: 0 5px;
   cursor: pointer;
-  border: 1px solid var(--gray-color);
-  background-color: var(--back-color);
+  border: 1px solid #c7d0db;
+  background-color: #fafcff;
   border-radius: 5px;
-  color:var(--text-color)
+  color:#282829
 }
 
 .pagination button:disabled {
@@ -611,12 +596,12 @@ export default {
 }
 
 .filter-title{
-  background-color: var(--button-color);
+  background-color: #a6c0ed;
   padding:10px 10px 10px 10px;
   margin-bottom: 10px;
   margin-right: 15px;
   border-radius: 5px;
-  color: var(--back-color);
+  color: #fafcff;
 }
 .filter-selections{
   
@@ -627,14 +612,14 @@ export default {
   width:210px;
   height:50px;
   font-size:18px;
-  color:var(--theme-color);
-  background-color:var(--back-color);
-  border: 2px solid var(--button-color);
+  color:#385b9d;
+  background-color:#fafcff;
+  border: 2px solid #a6c0ed;
   border-radius: 5px;
 }
 .apply-filter-button:hover {
-  background-color: var(--gray-color);
-  border-color: var(--theme-color);
+  background-color: #c7d0db;
+  border-color: #385b9d;
   cursor: pointer;
 }
 </style>
