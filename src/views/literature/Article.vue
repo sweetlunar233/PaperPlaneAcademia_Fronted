@@ -2,11 +2,8 @@
 <template >
     <div style="background-color:#EBEEF5" v-loading="isLoading"
     element-loading-background="rgba(244, 246, 247,0.8)">
-    <div style="padding-bottom: 12%;">
-        
-    </div>
     <div class="article">
-        <el-row class="title-block" >
+        <el-row class="title-block">
             <el-col :span="12">
                 <div class="title">
                     {{ article.title }}
@@ -51,10 +48,6 @@
                     </el-tooltip>
                 </div>
             </el-col>
-            <el-divider direction="vertical" style="height: 320px;"/>
-            <span class="color">
-                支持我们
-            </span>
         </el-row>
         <el-row>
             <el-col :span="16">
@@ -606,14 +599,11 @@ export default{
 <style  scoped>
 
 .article .title-block {
-    width: 85%;
-    padding-left: 2%;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    margin-left: 11.5%;
+    width: 60%;
+    padding-top: 9%;
+    padding-left: 20px;
+    margin-left: 12%;
     margin-right: 20%;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .04);
 }
 
 .article .title {
@@ -742,6 +732,4 @@ export default{
 .article .field:hover {
     background: #f4f9ff;
 }
-
-
 </style>
