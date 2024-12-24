@@ -40,8 +40,8 @@
       <div class="sort-controls">
         <el-radio-group v-model="sortBy" fill="var(--button-color)">
           <el-radio-button :value=1 >按相关度排序</el-radio-button>
-          <el-radio-button :value=2 >按时间排序</el-radio-button>
-          <el-radio-button :value=3 >按被引次数排序</el-radio-button>
+          <el-radio-button :value=3 >按时间排序</el-radio-button>
+          <el-radio-button :value=2 >按被引次数排序</el-radio-button>
         </el-radio-group>
         <p style="width:25px;height:25px;border: 1px solid var(--gray-color);border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
           <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="var(--theme-color)"><SortDown /></el-icon>
@@ -286,11 +286,8 @@ export default {
             },
           ];
         }else{
-          this.results = data.map(paper => ({
-            ...paper,
-            authors: paper.authors.map(author => ({ display_name: author.display_name, authorOrganization: author.authorOrganization }))
-          }));
-          this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
+          
+          this.showRes = data.articles;
         }
       })
       .finally(() => {
