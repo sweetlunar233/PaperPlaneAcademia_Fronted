@@ -47,14 +47,13 @@ export default {
     var promise = platformOverview();
     promise.then((result)=>{
       console.log(result);
-      if (result.status === 'success' && result.data) {
+      if (result.status === 'success') {
         this.statistics[0].value = result.data.totalUsers || 0;
         // this.statistics[1].value = result.data.totalPapers || 0;
         // this.statistics[2].value = result.data.totalAuthors || 0;
         this.statistics[3].value = result.data.totalScholars || 0;
       }
       this.isLoading = false;
-      console.log(this.statistics)
     })
     .finally(() => {
     })

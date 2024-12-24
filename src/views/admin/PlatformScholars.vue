@@ -11,8 +11,8 @@
       stripe
       v-if="scholars.length > 0"
     >
-      <el-table-column label="用户名" prop="username" width="150" />
-      <el-table-column label="邮箱" prop="email" width="200" />
+      <el-table-column label="用户名" prop="username" width="250" />
+      <el-table-column label="邮箱" prop="email" width="500" />
       <el-table-column label="所在机构" prop="organization" width="200" />
       <el-table-column label="入驻时间" prop="joinedAt" width="200" />
       <el-table-column label="发表文献数量" prop="publications" width="180" />
