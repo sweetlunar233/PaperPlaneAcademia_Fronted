@@ -286,11 +286,8 @@ export default {
             },
           ];
         }else{
-          this.results = data.map(paper => ({
-            ...paper,
-            authors: paper.authors.map(author => ({ display_name: author.display_name, authorOrganization: author.authorOrganization }))
-          }));
-          this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
+          
+          this.showRes = data.articles;
         }
       })
       .finally(() => {
