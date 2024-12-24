@@ -138,6 +138,7 @@
 import axios from 'axios';
 import router from "@/router/index.js";
 import {GetMyUserData, UpdateAvatar, updateDescription} from "@/api/user.js";
+import { ElMessage } from 'element-plus';  // 对于 Element Plus
 
 export default {
   data() {
@@ -200,22 +201,30 @@ export default {
                 console.log(121)
                 this.userInfo.photoUrl = avatarIndex; // 本地更新头像
               } else {
+<<<<<<< HEAD
+                ElMessage.error(`头像更新失败：${response.data.message}`);
+=======
                 ElMessage({
                     message: `头像更新失败：${response.data.message}`,
                     type: 'error',
                     plain: true,
                 });
+>>>>>>> 3e7365d6a13172798386dac45b0e5a816767025f
               }
             })
             .catch(error => {
               console.error('头像更新失败:', error);
             });
       } else {
+<<<<<<< HEAD
+        ElMessage.warning('请选择一个头像！');
+=======
         ElMessage({
             message: `请选择一个头像！`,
             type: 'warning',
             plain: true,
         });
+>>>>>>> 3e7365d6a13172798386dac45b0e5a816767025f
       }
 
       this.showAvatarDialog = false; // 关闭对话框
