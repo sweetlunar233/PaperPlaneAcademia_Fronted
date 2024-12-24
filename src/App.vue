@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <!-- 导航栏 -->
     <el-container class="navbar">
       <el-header>
@@ -103,7 +103,7 @@ export default {
             searchConditions: JSON.stringify([{
               "logic": null, 
               "value": this.searchQuery, 
-              "scope": null
+              "scope": "title",
             }])
           }
         });

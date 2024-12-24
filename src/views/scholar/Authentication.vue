@@ -433,7 +433,9 @@ export default {
   --text-color: #251c57;
   --light-text-color: #4f4454;
 }
-
+.app{
+  background-color: #ffffffaa;
+}
 .steps-header {
   width: 90vh;
   display: flex;
