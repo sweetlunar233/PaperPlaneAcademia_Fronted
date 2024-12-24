@@ -1,20 +1,20 @@
 <template>
     <div class="search-container">
-        <h1 style="color:var(--text-color);">学者搜索结果</h1>
+        <h1 style="color:#393942;">学者搜索结果</h1>
   
         <div class="sort-controls">
-          <el-radio-group v-model="sortBy" fill="var(--button-color)">
+          <el-radio-group v-model="sortBy" fill="#b5d1f0">
             <el-radio-button :value="1">按相关度排序</el-radio-button>
             <el-radio-button :value="2">按收录论文数排序</el-radio-button>
           </el-radio-group>
-          <p style="width:25px;height:25px;border: 1px solid var(--gray-color);border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
-            <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="var(--theme-color)"><SortDown /></el-icon>
-            <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="var(--theme-color)"><SortUp /></el-icon>
+          <p style="width:25px;height:25px;border: 1px solid #c7d6db;border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
+            <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="#385b9d"><SortDown /></el-icon>
+            <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="#385b9d"><SortUp /></el-icon>
           </p>
         </div>
 
         <!-- <div >
-          <button style="width:90%;height:50px;font-size:18px;color:var(--theme-color);background-color:var(--back-color);border: 2px solid var(--button-color);border-radius: 5px;">应用筛选条件</button>
+          <button style="width:90%;height:50px;font-size:18px;color:#385b9d;background-color:#fafbff;border: 2px solid #b5d1f0;border-radius: 5px;">应用筛选条件</button>
         </div> -->
   
         <div class="results-list">
@@ -29,7 +29,7 @@
             class="result-item"
             @click="viewScholar(scholar)"
           >
-            <h2 class="scholar-name" style="color:var(--text-color)">{{ scholar.name }}</h2>
+            <h2 class="scholar-name" style="color:#393942">{{ scholar.name }}</h2>
             
             <div class="scholar-meta">
               <div class="scholar-organization">
@@ -53,7 +53,7 @@
 
 
             <div class="scholar-collaborators">
-              <span style="padding-right:10px;color:var(--text-color)">相关学者：</span>
+              <span style="padding-right:10px;color:#393942">相关学者：</span>
               <span v-for="(collaborator, idx) in scholar.collaborators" :key="idx" class="collaborator" @mouseover="hover = true" @mouseleave="hover = false">
                 <a @click.stop="viewScholar(collaborator)">{{ collaborator.name }}</a>
               </span>
@@ -250,7 +250,7 @@ export default {
   .no-results {
     text-align: center;
     font-size: 18px;
-    color: var(--gray-color);
+    color: #c7d6db;
   }
   
   .results-list {
@@ -261,26 +261,26 @@ export default {
   
   .result-item {
     padding: 15px;
-    border: 1px solid var(--light-color);
+    border: 1px solid #e5f1fe;
     margin-bottom: 15px;
     border-radius: 5px;
-    background-color: var(--back-color);
+    background-color: #fafbff;
     width: 96%;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 5px var(--shadow-color);
+    box-shadow: 0 2px 5px rgba(85, 68, 183, 0.185);
     transform-origin: 30% 50%;
   }
   
   .result-item:hover {
     transform: scale(1.015, 1.05);
-    box-shadow: 0 2px 10px var(--deep-shadow);
+    box-shadow: 0 2px 10px rgba(85, 65, 156, 0.311);
   }
   
   .scholar-name {
     font-size: 22px;
     margin: 0 0 10px;
-    border-bottom: 1px solid var(--gray-color);
+    border-bottom: 1px solid #c7d6db;
   }
   
   .scholar-meta {
@@ -310,12 +310,12 @@ export default {
   }
 
   .collaborator a {
-    color: var(--light-text-color);
+    color: #4f4454;
     text-decoration: none;
   }
   
   .collaborator a:hover {
-    color: var(--mid-color);
+    color: #5f96c7;
     text-decoration: underline;
   }
   
@@ -323,16 +323,16 @@ export default {
     display: inline-block;
     margin: 5px;
     padding: 5px 10px;
-    border: 1px solid var(--gray-color);
+    border: 1px solid #c7d6db;
     border-radius: 15px;
-    background-color: var(--secondary-color);
+    background-color: #ecfbff;
     font-size: 14px;
-    color: var(--second-text);
+    color: #09255e;
   }
   
   .field-icon {
     margin-right: 5px;
-    color: var(--theme-color);
+    color: #385b9d;
   }
   
   .sort-controls {
@@ -341,7 +341,7 @@ export default {
     align-items: center;
     width: 100%;
     gap: 10px;
-    border-bottom: 1px solid var(--gray-color);
+    border-bottom: 1px solid #c7d6db;
   }
   
   .action-buttons {
@@ -352,9 +352,9 @@ export default {
   .action-btn {
     padding: 5px 10px;
     margin-inline: 5px;
-    color: var(--theme-color);
-    border: 1px solid var(--theme-color);
-    background-color: var(--back-color);
+    color: #385b9d;
+    border: 1px solid #385b9d;
+    background-color: #fafbff;
     border-radius: 20px;
     width: 40px;
     height: 40px;
@@ -365,24 +365,24 @@ export default {
   }
   
   .action-btn:hover {
-    background-color: var(--light-color);
+    background-color: #e5f1fe;
   }
   
   .pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    color: var(--text-color);
+    color: #393942;
   }
   
   .pagination button {
     padding: 5px 10px;
     margin: 0 5px;
     cursor: pointer;
-    border: 1px solid var(--gray-color);
-    background-color: var(--back-color);
+    border: 1px solid #c7d6db;
+    background-color: #fafbff;
     border-radius: 5px;
-    color: var(--text-color);
+    color: #393942;
   }
   
   .pagination button:disabled {
