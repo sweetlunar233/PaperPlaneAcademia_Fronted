@@ -72,8 +72,8 @@
           placeholder="到"
         />
       </div>
-      <el-button type="primary" @click="submitSearch" style="background-color: #333; color: white; border-radius: 5px; border: 1px solid #555; padding: 8px 20px;">确定</el-button>
-      <el-button type="warning" @click="onReset" style="margin-left: 10px;">重置</el-button>
+      <el-button type="primary" @click="submitSearch" style="background-color: #333; color: white; border-radius: 5px; border: 1px solid #555; padding: 8px 20px;margin-top:3%;">确定</el-button>
+      <el-button type="warning" @click="onReset" style="margin-left: 10px;margin-top: 3%;">重置</el-button>
     </div>
           
           
