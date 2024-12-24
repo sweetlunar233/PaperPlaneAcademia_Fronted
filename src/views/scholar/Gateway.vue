@@ -158,6 +158,8 @@
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
             <span class="user-info-value">{{ userInfo?.institution }}</span>
+          </div>
+          <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
             <span class="user-info-value">{{ userInfo?.institution_country }}</span>
           </div>
@@ -405,11 +407,29 @@ html, body {
   border-bottom: 1px solid #b3cde0; /* 灰色边框 */
 }
 
+.profile-photo {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden; /* 确保超出部分被隐藏 */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-photo:hover {
+  transform: scale(1.05); /* 放大效果 */
+}
+
 .profile-photo img {
   width: 160px;
   height: 160px;
   border-radius: 50%;
   margin-right: 20px;
+}
+
+.profile-photo:hover .profile-photo-img {
+  opacity: 0.8; /* 悬停时图片透明度变化 */
 }
 
 .user-info {
@@ -489,7 +509,7 @@ html, body {
   overflow-y: auto;
   background-color: #fff; /* 白色背景 */
   border-left: 1px solid #ddd;
-  height: 480px; /* 占满父容器的高度 */
+  height: 600px; /* 占满父容器的高度 */
   min-height: 0; /* 防止内容溢出 */
 }
 

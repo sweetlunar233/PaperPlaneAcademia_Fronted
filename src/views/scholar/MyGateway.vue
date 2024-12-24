@@ -147,12 +147,12 @@ export default {
       selectedAvatar: null, // 当前选择的头像
       isAuthenticated: false,
       availableAvatars: [ // 可供选择的头像
-        'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
-        'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
-        'https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
-        'https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
-        'https://th.bing.com/th/id/R.7376aae88d772c821c6925b91e2ca1aa?rik=8n%2bJq8ypQTiJHA&pid=ImgRaw&r=0',
-        'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
+        "src/assets/images/avatar/1.jpg",
+        "src/assets/images/avatar/2.jpg",
+        "src/assets/images/avatar/3.jpg",
+        "src/assets/images/avatar/4.jpg",
+        "src/assets/images/avatar/5.jpg",
+        "src/assets/images/avatar/6.jpg",
       ],
       userInfo: {
         name: '',
@@ -422,7 +422,7 @@ html, body {
   overflow-y: auto;
   background-color: #fff; /* 白色背景 */
   border-left: 1px solid #ddd;
-  height: 475px; /* 占满父容器的高度 */
+  height: 600px; /* 占满父容器的高度 */
   min-height: 0; /* 防止内容溢出 */
 }
 
