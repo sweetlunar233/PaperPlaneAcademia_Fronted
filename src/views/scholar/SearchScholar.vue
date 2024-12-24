@@ -149,9 +149,9 @@
       onReset() {
         this.authorConditions = [
           {
-            operator: "AND",
+            operator: "",
             value: "",
-            scope: "name",
+            scope: "",
           },
         ];
       },
