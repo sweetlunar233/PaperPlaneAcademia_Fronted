@@ -457,7 +457,7 @@ onMounted(() => {
                     <div class="articles">
                         <div class="articles-body">
                             <br>
-                            <div v-for="(article, index) in top_articles" v-bind:key="index">
+                            <div v-for="(article, index) in recommended_articles" v-bind:key="index">
                                 <div>
                                   <div style="text-align: left">
                                       <div style="margin-bottom: 10px">
@@ -490,7 +490,7 @@ onMounted(() => {
                   <div class="articles">
                         <div class="articles-body">
                             <br>
-                            <div v-for="(article, index) in recommended_articles" v-bind:key="index">
+                            <div v-for="(article, index) in top_articles" v-bind:key="index">
                                 <div>
                                   <div style="text-align: left">
                                       <div style="margin-bottom: 10px">
