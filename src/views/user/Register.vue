@@ -203,10 +203,18 @@ export default {
   height: 60px;
   margin: 10px;
   cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.avatar-option:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .avatar-option.selected {
-  border: 2px solid #409eff;
+  border-color: #007bff; /* 蓝色边框颜色 */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* 蓝色阴影效果 */
 }
 
 </style>

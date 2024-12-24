@@ -24,7 +24,9 @@ export function Register(username,password,email,organization, avatar){
     data.password = password;
     data.email = email;
     data.organization = organization;
+    if(!avatar) avatar = 0;
     data.avatar = avatar;
+    console.log(data);
     return post("/users/register/",data);
 }
 
