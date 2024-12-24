@@ -12,7 +12,7 @@
         <div class="advanced-search">
           <el-button class="TieZhu-button" style="color:rgb(216, 210, 210);" link @click="goToAdvSearch">高级搜索</el-button>
           <!-- 新增学者搜索按钮 -->
-          <el-button class="TieZhu-button" style="color:rgb(216, 210, 210);" link @click="goToSearchScholar">学者搜索</el-button>
+          <el-button class="TieZhu-button" style="color:rgb(216, 210, 210); padding-left: 30%;" link @click="goToSearchScholar">学者搜索</el-button>
         </div>
 
         <!-- 中间搜索框 -->
@@ -224,7 +224,6 @@ html {
 
 .TieZhu-button{
   font-size: 18px;
-  font-weight: bold;
   color: rgb(216, 210, 210);
   font-family: 'Microsoft YaHei', sans-serif;
 }
@@ -232,5 +231,6 @@ html {
 .TieZhu-button :hover{
   color: white;
   cursor: pointer;
+  transform: scale(1.015, 1.02);
 }
 </style>
