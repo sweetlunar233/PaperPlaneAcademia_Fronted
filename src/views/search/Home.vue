@@ -527,7 +527,7 @@ onMounted(() => {
                                 <div>
                                   <div style="text-align: left; margin-top: 5px;">
                                       <div>
-                                          <span class="title">{{ organization.organizationName }}</span>
+                                          <span class="title" style="cursor: text;">{{ organization.organizationName }}</span>
                                       </div>
                                   </div>
 
