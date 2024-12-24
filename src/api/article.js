@@ -21,6 +21,12 @@ export function PostStar(id,paperId,isStar){
     return post("/paper/postStar/",data);
 }
 
+export function GetStarCnt(paperId){
+    let data = {};
+    data.paperId = paperId;
+    return get("/papers/starCnt/",data);
+}
+
 export function fetchFilters(data){
     return post("/papers/filterdata/",data);
 }

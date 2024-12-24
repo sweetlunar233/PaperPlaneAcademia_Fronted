@@ -78,7 +78,7 @@
           </div>
           <div class="paper-authors">
             <span v-for="(author, idx) in paper.authors" :key="idx" class="author" @mouseover="hover = true" @mouseleave="hover = false" @click.stop="viewScholar(author)">
-              <a>{{ author.userName }}</a>
+              <a>{{ author.display_name }}</a>
             </span>
           </div>
           <div class="paper-keywords">
@@ -269,7 +269,7 @@ export default {
               date: '2022-01-01', 
               journal: '期刊名1', 
               citations: 34, 
-              authors: [{ userName: '作者 1', authorOrganization: '北京航空航天大学',authorId:"https://openalex.org/A5062756377" }, { userName: '作者 2', authorOrganization: '北京航空航天大学',authorId:"42874" }], 
+              authors: [{ display_name: '作者 1', authorOrganization: '北京航空航天大学',authorId:"https://openalex.org/A5062756377" }, { display_name: '作者 2', authorOrganization: '北京航空航天大学',authorId:"42874" }], 
               keywords: ['人工智能', '深度学习'] ,
               download:null,
             },
@@ -280,7 +280,7 @@ export default {
               date: '2022-02-01', 
               journal: '期刊名2', 
               citations: 78, 
-              authors: [{ userName: '作者 2', authorOrganization: '清华大学' }, { userName: '作者 3', authorOrganization: '清华大学' }], 
+              authors: [{ display_name: '作者 2', authorOrganization: '清华大学' }, { display_name: '作者 3', authorOrganization: '清华大学' }], 
               keywords: ['自然语言处理', '机器学习'],
               download:null,
             },
@@ -288,7 +288,7 @@ export default {
         }else{
           this.results = data.map(paper => ({
             ...paper,
-            authors: paper.authors.map(author => ({ userName: author.userName, authorOrganization: author.authorOrganization }))
+            authors: paper.authors.map(author => ({ display_name: author.display_name, authorOrganization: author.authorOrganization }))
           }));
           this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
         }
@@ -516,7 +516,7 @@ export default {
 }
 
 .author {
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .author a {

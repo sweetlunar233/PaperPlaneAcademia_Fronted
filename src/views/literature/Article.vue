@@ -161,7 +161,7 @@
                         <el-statistic title="被引量" :value="article.citedCnt" value-style="color:#67C23A"/>
                     </el-col>
                     <el-col :span="8">
-                        <el-statistic title="收藏数" :value="article.starCnt" value-style="color:#E6A23C;"/>
+                        <el-statistic title="收藏数" :value="starCnt" value-style="color:#E6A23C;"/>
                     </el-col>
                     <el-col :span="8">
                         <el-statistic title="评论数" :value="article.cmtCnt" value-style="color:#F56C6C;"/>
@@ -212,7 +212,7 @@
 </template>
 
 <script>
-import { GetArticle, GetStar, PostStar } from '@/api/article';
+import { GetArticle, GetStar, GetStarCnt, PostStar } from '@/api/article';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 
@@ -353,6 +353,7 @@ export default{
                 ],
                 download:"https://www.baidu.com/",
             },
+            starCnt:0,
             quotation:"",// 论文的引用
             isFold:true,
             activeTab:"first",
@@ -382,13 +383,11 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            this.article.starCnt++;
         },
 
         undoStar(){
             this.isStar = false;
             var promise = PostStar(this.userId,this.id,this.isStar);
-            this.article.starCnt--;
         },
 
         async share(){
@@ -523,7 +522,7 @@ export default{
         this.id = this.$route.query.paperId;
         this.isLoading = true;
         this.userId = this.$cookies.get('userId');
-        var isStar = false,isArticle = false;
+        var isStar = false,isArticle = false,isCnt = false;
 
         var promise = GetArticle(this.id);
         promise
@@ -541,7 +540,7 @@ export default{
                 this.institutionNoRepeat = [...new Set(this.article.institution)];
                 isArticle = true;
 
-                if(isArticle && isStar){
+                if(isArticle && isStar && isCnt){
                     this.isLoading = false;
                 }
 
@@ -568,13 +567,24 @@ export default{
             console.log(this.article)
         })
 
-        promise = GetStar(this.userId,this.id);
-        promise
+        var promise2 = GetStar(this.userId,this.id);
+        promise2
         .then((result) => {
             this.isStar = result.isStar;
 
             isStar = true;
-            if(isArticle && isStar){
+            if(isArticle && isStar && isCnt){
+                this.isLoading = false;
+            }
+        })
+
+        var promise3 = GetStarCnt(this.id);
+        promise3
+        .then((result) => {
+            this.starCnt = result.count;
+
+            isCnt = true;
+            if(isArticle && isStar && isCnt){
                 this.isLoading = false;
             }
         })
