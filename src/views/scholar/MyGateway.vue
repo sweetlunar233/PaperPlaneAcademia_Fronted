@@ -455,8 +455,12 @@ html, body {
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 卡片阴影 */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-width: 600px;
+  max-width: 700px;
   margin: 10px auto;
+
+  padding-left: 60px;
+  padding-right: 40px;
+  padding-bottom: 30px;
 }
 
 .article-card:hover {
