@@ -32,10 +32,10 @@
         <div v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
           <el-row gutter="20" type="flex" align="top">
             <el-col :span="1">
-              <el-avatar size="50" :src="availableAvatars[comment.avatar]"></el-avatar>
+              <el-avatar size="50" :src="availableAvatars[comment.avator]"></el-avatar>
             </el-col>
             <el-col :span="21">
-              <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}{{ comment.avatar }}</p>
+              <p style="font-weight: bold; margin: 0;margin-left: 5px;">{{ comment.username }}{{ comment.avator }}</p>
               <p style="color: #606266; margin-top: 8px; margin-left: 5px;">{{ comment.content }}</p>
               <el-row type="flex" align="middle" style="margin-top: 8px;">
                 <!-- <el-button
@@ -131,7 +131,7 @@ export default {
             username:this.username,
             content:this.commentText,
             likes:0,
-            avatar:this.avatar,
+            avatar:this.avator,
           }
           this.comments.push(tmp);
           window.location.reload();
