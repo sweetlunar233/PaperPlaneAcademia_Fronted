@@ -3,7 +3,7 @@
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
-        <img :src="getRandomAvatar()" alt="用户头像" />
+        <img :src=centerExpert.avatar alt="用户头像" />
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo?.name }}</h1>
@@ -158,11 +158,11 @@
         <div class="user-info-card-content">
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value">{{ userInfo?.institution }}</span>
+            <span class="user-info-value">{{ userInfo?.institution[0] }}</span>
           </div>
           <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
-            <span class="user-info-value">{{ userInfo?.institution_country }}</span>
+            <span class="user-info-value">{{ userInfo?.institution_country[0] }}</span>
           </div>
         </div>
       </div>
@@ -229,12 +229,12 @@ export default {
       ],
       userInfo: {
         name: 'a',
-        institution: 'a',
+        institution: ["buaa"],
         orcid: '1',
         alternative_names: ['a'],
         works_count: 0,
         cited_count: 0,
-        institution_country: 'CN',
+        institution_country: "CN",
       },
       articles: [],
     };
@@ -273,15 +273,13 @@ export default {
     // 集中处理所有数据获取请求
     fetchScholarData() {
       const currentUserId = this.$cookies.get('userId');
-      // const targetUserId = this.$route.query.userId;
-      const targetUserId = "https://openalex.org/A5029688225";
-
-
+      const targetUserId = this.$route.query.userId;
+      // const targetUserId = "https://openalex.org/A5029688225";
+      console.log("searching0");
       var promise = GetScholarData(currentUserId, targetUserId);
 
       promise.then(response => {
-
-          // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
+          // 假设返回的数据结构包含 userInfo, articles, experts, contributions
           const { userInfo, articles, experts, contributions} = response;
 
           // 更新数据
@@ -630,6 +628,7 @@ html, body {
 
 .user-info-label {
   font-weight: 500;
+  width: 90px;
   color: #555;
 }
 
