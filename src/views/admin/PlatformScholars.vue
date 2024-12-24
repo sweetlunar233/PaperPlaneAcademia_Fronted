@@ -13,9 +13,9 @@
     >
       <el-table-column label="用户名" prop="username" width="150" />
       <el-table-column label="邮箱" prop="email" width="200" />
-      <el-table-column label="所在机构" prop="institution" width="200" />
-      <el-table-column label="入驻时间" prop="joinDate" width="200" />
-      <el-table-column label="发表文献数量" prop="papersCount" width="180" />
+      <el-table-column label="所在机构" prop="organization" width="200" />
+      <el-table-column label="入驻时间" prop="joinedAt" width="200" />
+      <el-table-column label="发表文献数量" prop="publications" width="180" />
     </el-table>
 
     <!-- 没有学者时显示信息 -->
@@ -60,12 +60,19 @@ export default {
       var promise = fatchScholars_api(); // 获取所有学者数据
       promise
         .then((response) => {
-          this.scholars = response.data.data; // 更新学者数据
-          this.totalScholars = response.data.totalCount; // 更新学者总数
+          console.log(response)
+          if(response.status === "success"){
+            this.scholars = response.data.scholars; // 更新学者数据
+            this.totalScholars = response.data.total; // 更新学者总数
+          }
+          else{
+            ElMessage({
+              message: '获取信息失败，请稍后重试！',
+              type: 'error',
+              plain: true,
+            });
+          }
         })
-        .catch((error) => {
-          console.error("获取入驻学者数据失败:", error);
-        });
     },
 
     // 处理页码改变时重新加载数据
