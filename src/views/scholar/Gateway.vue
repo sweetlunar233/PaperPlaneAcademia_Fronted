@@ -1,5 +1,6 @@
 <template>
-  <div class="profile-page">
+  <div class="profile-page"  v-loading="isLoading"
+  element-loading-background="rgb(244, 246, 247)">
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
@@ -176,6 +177,7 @@
 <script>
 import router from "@/router/index.js";
 import {GetScholarData} from "@/api/user.js";
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 export default {
   data() {
@@ -237,6 +239,7 @@ export default {
         institution_country: "CN",
       },
       articles: [],
+      isLoading:false,
     };
   },
   methods: {
@@ -272,6 +275,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchScholarData() {
+      this.isLoading = true;
       const currentUserId = this.$cookies.get('userId');
       const targetUserId = this.$route.query.userId;
       // const targetUserId = "https://openalex.org/A5029688225";
@@ -294,14 +298,33 @@ export default {
           this.experts = experts;
           this.contributions=contributions;
           console.log("data:",contributions);
+          this.isLoading = false;
         })
         .catch(error => {
-          alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
-          window.open(targetUserId, '_blank');
-          console.log("TIEZHU")
-          console.log(targetUserId)
+          // ElMessage.warning("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+          // window.open(targetUserId, '_blank');
+          // console.error('获取数据失败', error);
+          ElMessageBox.confirm(
+            "该领域在本网站无信息，已为您跳转到该领域的官方网站。",
+            "提示",
+            {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            }
+          )
+          .then(() => {
+            // 点击确定，跳转到指定链接
+            window.history.back();
+            window.open(targetUserId, '_blank');
+          })
+          .catch(() => {
+            // 点击取消，返回上一页
+            window.history.back();
+          });
+
           console.error('获取数据失败', error);
-        });
+        })
 
     },
     viewDetails(id){
