@@ -1,7 +1,7 @@
 <!-- 文章详情页面 -->
 <template >
     <div style="background-color:#EBEEF5" v-loading="isLoading"
-    element-loading-background="rgba(244, 246, 247,0.8)">
+    element-loading-background="rgb(244, 246, 247)">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
