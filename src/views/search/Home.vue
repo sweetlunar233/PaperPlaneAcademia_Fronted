@@ -284,7 +284,6 @@ const initHome = (userId) => {
     promise.then((result)=>{
         for(const element of result.articles) {
           top_articles.value.push(element);
-          console.log(element.paperId);
         }
     });
 
@@ -294,38 +293,11 @@ const initHome = (userId) => {
         recommended_articles.value.push(element);
       }
     });
-    // console.log("1234");
-    // var promise = GetStatistics();
-    // promise.then((result)=>{
-    //     console.log(statistic.value.authorCount);
-    //     console.log(statistic.value.organizationsCount);
-    //     console.log(statistic.value.fieldsCount);
-    //     console.log(statistic.value.journalCount);
-    //     console.log(statistic.value.paperCount);
-    //     console.log("1234");
-    //     console.log(result.authorCount);
-    //     console.log(result.organizationsCount);
-    //     console.log(result.fieldsCount);
-    //     console.log(result.journalCount);
-    //     console.log(result.paperCount);
-    //     statistic.value = {
-    //       authorCount: result.authorCount,
-    //       organizationsCount: result.organizationsCount,
-    //       fieldsCount: result.fieldsCount,
-    //       journalCount: result.journalCount,
-    //       paperCount: result.paperCount
-    //     }
-    //     console.log("1234");
-    //     console.log(statistic.value.authorCount);
-    //     console.log(statistic.value.organizationsCount);
-    //     console.log(statistic.value.fieldsCount);
-    //     console.log(statistic.value.journalCount);
-    //     console.log(statistic.value.paperCount);
-    // });
 
     var promise = GetOrganizations();
     promise.then((result)=>{
         result.organizations.forEach(element => {
+            console.log(element['homepage'])
             organizations.value.push(element);
         });
     });
