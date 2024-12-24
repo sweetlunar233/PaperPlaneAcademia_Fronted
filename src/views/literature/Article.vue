@@ -11,7 +11,7 @@
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
                         <span class="hyperlink" @click="toGateway(author.id)">{{ author.authorName }}</span><sup>{{ authorToInstitution[index] }}</sup>
-                        <span v-if="index != article.author.length">&ensp;, </span>
+                        <span v-if="index != article.author.length - 1">&ensp;, </span>
                     </span>
                 </div>
                 <div class="subtitle" style="padding-right: 0%">
@@ -383,11 +383,13 @@ export default{
         star(){
             this.isStar = true;
             var promise = PostStar(this.userId,this.id,this.isStar);
+            this.starCnt++;
         },
 
         undoStar(){
             this.isStar = false;
             var promise = PostStar(this.userId,this.id,this.isStar);
+            this.starCnt--;
         },
 
         async share(){
