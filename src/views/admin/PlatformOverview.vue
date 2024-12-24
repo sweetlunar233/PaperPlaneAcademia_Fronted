@@ -1,7 +1,8 @@
 <template>
   <div>
     <h2>平台概况</h2>
-    <el-row :gutter="20" v-loading="isLoading">
+    <!-- <el-row :gutter="20" v-loading="isLoading"> -->
+    <el-row :gutter="20">
       <el-col :span="6" v-for="(item, index) in statistics" :key="index" >
         <el-card class="stat-card">
           <div class="stat-card-content">
@@ -22,13 +23,13 @@ export default {
   data() {
     return {
       statistics: [
-        { label: "注册用户数", value: 0 },
-        { label: "文献数量", value: 0 },
-        { label: "作者数量", value: 0 },
-        { label: "入驻学者数量", value: 0 },
+        { label: "注册用户数", value: 5 },
+        { label: "文献数量", value: "7,364,887" },
+        { label: "作者数量", value: "15,997,012" },
+        { label: "入驻学者数量", value: 2 },
       ],
       router:useRouter(),
-      isLoading:true,
+      // isLoading:true,
     };
   },
   mounted(){
@@ -43,20 +44,20 @@ export default {
       });
     }
 
-    var promise = platformOverview();
-    promise.then((result)=>{
-      console.log(result);
-      if (result.status === 'success' && result.data) {
-        this.statistics[0].value = result.data.totalUsers || 0;
-        this.statistics[1].value = result.data.totalPapers || 0;
-        this.statistics[2].value = result.data.totalAuthors || 0;
-        this.statistics[3].value = result.data.totalScholars || 0;
-      }
-      this.isLoading = false;
-      console.log(this.statistics)
-    })
-    .finally(() => {
-    })
+    // var promise = platformOverview();
+    // promise.then((result)=>{
+    //   console.log(result);
+    //   if (result.status === 'success' && result.data) {
+    //     this.statistics[0].value = result.data.totalUsers || 0;
+    //     this.statistics[1].value = result.data.totalPapers || 0;
+    //     this.statistics[2].value = result.data.totalAuthors || 0;
+    //     this.statistics[3].value = result.data.totalScholars || 0;
+    //   }
+    //   this.isLoading = false;
+    //   console.log(this.statistics)
+    // })
+    // .finally(() => {
+    // })
   },
 };
 </script>
