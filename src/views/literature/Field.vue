@@ -150,7 +150,7 @@ export default{
                 window.open(targetUrl, '_blank');
             }
             else{
-                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.");
                 window.open(id, '_blank');
             }
         },

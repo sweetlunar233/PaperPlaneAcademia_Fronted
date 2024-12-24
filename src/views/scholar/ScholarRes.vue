@@ -41,10 +41,16 @@
             </div>
   
             <div class="scholar-fields" style="margin-top:-5px">
-              <span v-for="(field, idx) in scholar.fields" :key="idx" class="research-field">
-                <i class="field-icon">#</i> {{ field }}
+              <span
+                v-for="(field, idx) in scholar.fields"
+                :key="idx"
+                class="research-field"
+                @click.stop="goToFieldPage(field)"
+              >
+                <i class="field-icon"></i> {{ field.fieldname }}
               </span>
             </div>
+
 
             <div class="scholar-collaborators">
               <span style="padding-right:10px;color:var(--text-color)">相关学者：</span>
@@ -98,6 +104,13 @@ export default {
     },
   },
   methods: {
+    goToFieldPage(field) {
+      this.$router.push({
+        path: '/field',
+        query: { id: field.fieldId }
+      });
+    },
+
     citationColor(citations) {
       if (citations >= 50) {
         return 'rgb(255, 99, 71)';
@@ -135,42 +148,61 @@ export default {
         sort: this.sortBy * this.sortDown,
         page: this.currentPage,
         userId: this.userId
-      })
-
-      var response = fetchResults({
-        searchConditions: this.searchConditions,
-        sort: this.sortBy * this.sortDown,
-        page: this.currentPage,
-        userId: this.userId
       });
-      response
-      .then(data => {
+
+      try {
+        // 假设 fetchResults 是一个返回 Promise 的异步函数
+        const data = await fetchResults({
+          searchConditions: this.searchConditions,
+          sort: this.sortBy * this.sortDown,
+          page: this.currentPage,
+          userId: this.userId
+        });
+
         console.log("fetchResults", data);
-        if(data.status == "error"){
+
+        if (data.status === "error") {
           console.error("Error fetching results");
+          // 如果数据请求失败，使用假数据
           this.showRes = [
             { 
-              Id:'11',
+              Id: '11',
               name: '测试学者名字', 
               organization: '北京航空航天大学', 
               paperCount: 4, 
-              collaborators: [{ name: '作者 1', Id: '002' }, { name: '作者 3', Id: '003' }], 
-              fields: ['人工智能', '深度学习']
+              collaborators: [{ name: '作者 1', Id: '002' }, { name: '作者 3', Id: '003' }],
+              fields: [{ fieldname: '人工智能', fieldId: '001' }, { fieldname: '深度学习', fieldId: '002' }]
             }
           ];
-        }else{
+        } else {
+          // 数据正常返回时，映射数据结构
           this.results = data.map(scholar => ({
-            ...scholar,
-            collaborators: scholar.collaborators.map(collaborator => ({ name: collaborator.name, Id: collaborator.Id }))
+            Id: scholar.Id,
+            name: scholar.name,
+            organization: scholar.organization,
+            paperCount: parseInt(scholar.paperCount), // 需要确保是数字类型
+            collaborators: scholar.collaborators.map(collaborator => ({
+              name: collaborator.name,
+              Id: collaborator.id
+            })),
+            fields: scholar.fields.map(field => ({
+              fieldname: field.fieldname,
+              fieldId: field.fieldId
+            }))
           }));
+
+          // 分页处理
           this.showRes = this.results.slice((this.currentPage - 1) * 10, this.currentPage * 10);
         }
-      })
-      .finally(() => {
-        console.log("fetchResults end")
+      } catch (error) {
+        console.error("Error occurred while fetching results", error);
         this.loading = false;
-      });
+      } finally {
+        console.log("fetchResults end");
+        this.loading = false;
+      }
     },
+
     goToPage(page) {
       if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page;

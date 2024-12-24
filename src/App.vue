@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <!-- 导航栏 -->
     <el-container class="navbar">
       <el-header>
@@ -75,7 +75,7 @@ export default {
         this.$router.push("/admin");
       }
       else{
-        this.$router.push("/MyGateway"); // 跳转到个人主页
+        this.$router.push("/myGateway"); // 跳转到个人主页
       }
     },
     async logout() {
@@ -103,7 +103,7 @@ export default {
             searchConditions: JSON.stringify([{
               "logic": null, 
               "value": this.searchQuery, 
-              "scope": null
+              "scope": "title",
             }])
           }
         });
