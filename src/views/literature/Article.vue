@@ -78,13 +78,13 @@
                 <div class="articleDetail">
                     <el-tabs v-model="activeTab" @tab-click="toComment">
                         <el-tab-pane label="参考文献" name="first">
-                            <div class="tab-tip" v-if="article.reference">
-                                共 {{ article.reference.length }} 条
+                            <div class="tab-tip" v-if="article.refCnt">
+                                共 {{ article.refCnt }} 条
                             </div>
                             <div class="tab-tip" v-else>
                                 暂无该文章参考文献.
                             </div>
-                            <div class="tab-tip" v-if="article.reference && article.reference.length>0">
+                            <div class="tab-tip" v-if="article.reference && article.refCnt > 0">
                                 由于版权限制，此处可能仅展示部分相关论文
                             </div>
                             <el-scrollbar height="350px">
@@ -557,6 +557,13 @@ export default{
             }
             else{
                 this.article = result.article;
+                // 去除无参考文献的数据
+                this.article.refCnt = this.article.reference.length;
+                this.article.reference = this.article.reference.filter(ele => ele.articleTitle !== 'title_ex');
+                // 去除无相关文献的数据
+                this.article.relaCnt = this.article.relation.length;
+                this.article.relation = this.article.relation.filter(ele => ele.articleTitle !== 'title_ex');
+
                 this.quotation = this.formatGB7714();
                 this.institutionNoRepeat = [...new Set(this.article.institution)];
                 isArticle = true;
