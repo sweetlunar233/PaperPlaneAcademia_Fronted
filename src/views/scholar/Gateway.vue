@@ -273,7 +273,9 @@ export default {
     fetchScholarData() {
       const currentUserId = this.$cookies.get('userId');
       const targetUserId = this.$route.query.userId;
+      console.log("searching0");
       var promise = GetScholarData(currentUserId, targetUserId);
+      console.log("searching1");
       promise.then(response => {
           // 假设返回的数据结构包含 userInfo, articles, experts, contributions
           const { userInfo, articles, experts, contributions} = response;
