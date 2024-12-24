@@ -26,5 +26,6 @@ export function Publish(paperId,userId,content){
     data.paperId = paperId;
     data.userId = userId;
     data.content = content;
+    console.log("sending data",data);
     return post("/comment/publish/",JSON.stringify(data));
 }

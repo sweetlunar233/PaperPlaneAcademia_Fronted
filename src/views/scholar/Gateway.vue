@@ -101,18 +101,19 @@
       <!-- 下方的domain和value -->
       <div class="bottom-info">
         <!-- Domain部分使用card包裹 -->
-        <el-card class="domain-card" style="display: inline-block; width: auto; max-width: 100%;">
-          <div class="domain">
-            <span>{{ contribution.domain }}</span>
-          </div>
-        </el-card>
+        <el-card class="domain-card" style="display: inline-block; width: 300px; max-width: 45%;">
+  <div class="domain" style="white-space: normal; word-wrap: break-word;">
+    <span>{{ contribution.domain }}</span>
+  </div>
+</el-card>
 
         <!-- Value部分为环形进度条 -->
-        <div class="value">
+        <div class="value" style="width: 300px; height: 300px;">
           <el-progress
-            :percentage="contribution.value"
+            :percentage="(contribution.value / 0.00001) * 100"
             type="circle"
-            :stroke-width="10"
+            :stroke-width="20"
+            :size="900" 
             
           />
         </div>
@@ -272,17 +273,21 @@ export default {
     // 集中处理所有数据获取请求
     fetchScholarData() {
       const currentUserId = this.$cookies.get('userId');
-      const targetUserId = this.$route.query.userId;
-      console.log("searching0");
+      // const targetUserId = this.$route.query.userId;
+      const targetUserId = "https://openalex.org/A5029688225";
+
+
       var promise = GetScholarData(currentUserId, targetUserId);
-      console.log("searching1");
+
       promise.then(response => {
-        console.log("searching2");
+
           // 假设返回的数据结构包含 userInfo, favoriteArticles, comments, articles
           const { userInfo, articles, experts, contributions} = response;
+
           // 更新数据
-          console.log(response)
+
           this.userInfo = userInfo;
+
           this.centerExpert.name = userInfo.name;
           
           this.centerExpert.id = userInfo.orcid;
@@ -292,6 +297,8 @@ export default {
           console.log("data:",contributions);
         })
         .catch(error => {
+          alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+                window.open(id, '_blank');
           console.error('获取数据失败', error);
         });
 
