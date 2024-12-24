@@ -7,7 +7,7 @@ const router = useRouter();
 
 
 
-import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../../api/home.js'
+import { GetTopArticles, GetRecommendedArticles, GetStatistics, GetOrganizations, GetFields } from '../api/home.js'
 
 const isLoading = ref(false);
 
@@ -103,12 +103,14 @@ const organizations = ref([
 const fields = ref([
   {
     fieldName: "ABC",
+    fieldId: "111",
     topArticleName: "Article1",
     topArticleId: "1",
     works_number: 66,
   },
   {
     fieldName: "ABC",
+    fieldId: "111",
     topArticleName: "Article2",
     topArticleId: "1",
     works_number: 66,
@@ -171,6 +173,16 @@ const gotoScholar = (userId) => {
       path: '/gateway',
       query: {
           userId: userId
+      }
+    });
+}
+
+const gotoField = (fieldId) => {
+  console.log(fieldId);
+    router.push({
+      path: '/field',
+      query: {
+          id: fieldId
       }
     });
 }
@@ -550,7 +562,7 @@ onMounted(() => {
                                 <div>
                                   <div style="text-align: left;">
                                       <div>
-                                          <span class="title">{{ field.fieldName }}</span>
+                                          <span class="title" @click="gotoField(field.fieldId)">{{ field.fieldName }}</span>
                                       </div>
                                       <div style="margin-top: 10px;">
                                         <span>TOP引用量文章：</span>
