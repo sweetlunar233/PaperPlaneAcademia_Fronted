@@ -89,10 +89,10 @@
           </div>
 
           <div class="action-buttons" >
-            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="paper.isFavorite"> 
+            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="!paper.isFavorite"> 
               <el-icon :size="18" ><Star /></el-icon>
             </button>
-            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="!paper.isFavorite"> 
+            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="paper.isFavorite"> 
               <el-icon :size="18" ><StarFilled /></el-icon>
             </button>
             <!-- <button @click="quotePaper(paper)" class="action-btn">
