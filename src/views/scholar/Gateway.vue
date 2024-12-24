@@ -176,7 +176,7 @@
 <script>
 import router from "@/router/index.js";
 import {GetScholarData} from "@/api/user.js";
-import { ElMessage } from 'element-plus';  // 对于 Element Plus
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 export default {
   data() {
@@ -280,9 +280,10 @@ export default {
       var promise = GetScholarData(currentUserId, targetUserId);
 
       promise.then(response => {
+
           // 假设返回的数据结构包含 userInfo, articles, experts, contributions
           const { userInfo, articles, experts, contributions} = response;
-
+          
           // 更新数据
 
           this.userInfo = userInfo;
@@ -296,8 +297,28 @@ export default {
           console.log("data:",contributions);
         })
         .catch(error => {
-          ElMessage.warning("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
-                window.open(id, '_blank');
+          // ElMessage.warning("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+          // window.open(targetUserId, '_blank');
+          // console.error('获取数据失败', error);
+          ElMessageBox.confirm(
+            "该领域在本网站无信息，已为您跳转到该领域的官方网站。",
+            "提示",
+            {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            }
+          )
+          .then(() => {
+            // 点击确定，跳转到指定链接
+            window.history.back();
+            window.open(targetUserId, '_blank');
+          })
+          .catch(() => {
+            // 点击取消，返回上一页
+            window.history.back();
+          });
+
           console.error('获取数据失败', error);
         });
 
@@ -444,6 +465,7 @@ html, body {
 .user-info {
   display: flex;
   flex-direction: column;
+  margin-left: 3%;
 }
 .left{
   width: 20%;

@@ -1,5 +1,5 @@
 <template >
-    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgba(244, 246, 247,0.8)">
+    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgb(244, 246, 247)">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -110,6 +110,7 @@
 import { GetField } from '@/api/field';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 export default{
     
@@ -150,7 +151,11 @@ export default{
                 window.open(targetUrl, '_blank');
             }
             else{
-                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.");
+                ElMessage({
+                    message: '该领域在本网站无信息，已为您跳转到该领域的官方网站.',
+                    type: 'error',
+                    plain: true,
+                });
                 window.open(id, '_blank');
             }
         },
@@ -185,8 +190,30 @@ export default{
         var promise = GetField(this.id);
         promise.then((result) => {
             if(result.status === "error"){
-                alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
-                window.open(this.id, '_blank');
+                // ElMessage({
+                //     message: '该领域在本网站无信息，已为您跳转到该领域的官方网站.',
+                //     type: 'error',
+                //     plain: true,
+                // });
+                // window.open(this.id, '_blank');
+                ElMessageBox.confirm(
+                    "该领域在本网站无信息，已为您跳转到该领域的官方网站。",
+                    "提示",
+                    {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                    }
+                )
+                .then(() => {
+                    // 点击确定，跳转到指定链接
+                    window.history.back();
+                    window.open(this.id, '_blank');
+                })
+                .catch(() => {
+                    // 点击取消，返回上一页
+                    window.history.back();
+                });
             }
             else{
                 this.field = result.field;
