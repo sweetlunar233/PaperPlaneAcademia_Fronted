@@ -18,14 +18,13 @@ export function GetMyUserData(userId){
     return post("/users/myUserData/",data);
 }
 
-export function Register(username,password,email,organization,userType){
+export function Register(username,password,email,organization, avatar){
     let data = {};
     data.username = username;
     data.password = password;
     data.email = email;
     data.organization = organization;
-    data.userType = userType;
-    console.log(data);
+    data.avatar = avatar;
     return post("/users/register/",data);
 }
 

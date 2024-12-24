@@ -51,20 +51,26 @@ export default {
       var promise = Login(this.loginForm.username,this.loginForm.password);
         promise.then((result) => {
             if(result.status === "success"){
-              alert("登录成功！");
+              ElMessage({
+                message: '登录成功',
+                type: 'success',
+              });
               this.$cookies.set("userId", result.UserId);
               this.$cookies.set("username", result.username);
               this.$cookies.set("avatar",result.avatarId);
               // 更新 App.vue 状态
               this.$root.checkLoginStatus();  // 调用 checkLoginStatus 更新状态
               if(this.loginForm.username === "admin"){
-                this.$router.push("/Admin");// 管理员上号
+                this.$router.push("/admin");// 管理员上号
               }else{
                 this.$router.push("/home"); // 登录成功跳转到主页面
               }
             }
             else{
-              alert(result.message);
+              ElMessage({
+                message: result.message,
+                type: 'error',
+              });
             }
         })
     },
