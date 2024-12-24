@@ -226,7 +226,7 @@ export default{
 
 </script>
 
-<style  scoped>
+<style scoped>
 
 .article .title-block {
     width: 60%;

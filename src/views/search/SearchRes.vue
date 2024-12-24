@@ -395,7 +395,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 :root {
   --theme-color: #385b9d;
   --mid-color:#5f96c7;
