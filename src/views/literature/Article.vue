@@ -580,7 +580,7 @@ export default{
             }
         })
 
-        var promise3 = GetStarCnt(this.id,this.userId);
+        var promise3 = GetStarCnt(this.id);
         promise3
         .then((result) => {
             this.starCnt = result.count;
