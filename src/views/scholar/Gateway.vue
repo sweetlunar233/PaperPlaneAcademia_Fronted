@@ -279,9 +279,10 @@ export default {
       var promise = GetScholarData(currentUserId, targetUserId);
 
       promise.then(response => {
+
           // 假设返回的数据结构包含 userInfo, articles, experts, contributions
           const { userInfo, articles, experts, contributions} = response;
-
+          
           // 更新数据
 
           this.userInfo = userInfo;
