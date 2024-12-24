@@ -273,7 +273,7 @@ export default {
     // 集中处理所有数据获取请求
     fetchScholarData() {
       const currentUserId = this.$cookies.get('userId');
-      const targetUserId = this.$route.query.userId;
+      const targetUserId = this.$route.query.id;
       // const targetUserId = "https://openalex.org/A5029688225";
       console.log("searching0");
       var promise = GetScholarData(currentUserId, targetUserId);
@@ -297,7 +297,9 @@ export default {
         })
         .catch(error => {
           alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
-                window.open(id, '_blank');
+          window.open(targetUserId, '_blank');
+          console.log("TIEZHU")
+          console.log(targetUserId)
           console.error('获取数据失败', error);
         });
 
@@ -444,6 +446,7 @@ html, body {
 .user-info {
   display: flex;
   flex-direction: column;
+  margin-left: 3%;
 }
 .left{
   width: 20%;
