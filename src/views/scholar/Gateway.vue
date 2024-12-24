@@ -10,12 +10,13 @@
       </div>
       <div class="user-info">
         <h1 class="username">{{ userInfo?.name }}</h1>
-          <p><strong>OrcId：</strong>{{ userInfo?.orcid }}
-          </p>
-          <p><strong>可能出现的其他名称：</strong>{{ userInfo?.alternative_names[0] }}
+        <div style="margin-top: 3%;">
+          <p v-if="userInfo.orcid"><strong>OrcId：</strong>{{ userInfo?.orcid }}</p>
+          <p><strong>曾用名：</strong>{{ userInfo?.alternative_names[0] }}
           </p>
         <p><strong>学术作品数量：</strong>{{ userInfo?.works_count }}</p>
         <p><strong>被引用次数：</strong>{{ userInfo?.cited_count }}</p>
+      </div>
       </div>
     </div>
 
