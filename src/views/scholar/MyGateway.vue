@@ -200,14 +200,22 @@ export default {
                 console.log(121)
                 this.userInfo.photoUrl = avatarIndex; // 本地更新头像
               } else {
-                alert(`头像更新失败：${response.data.message}`);
+                ElMessage({
+                    message: `头像更新失败：${response.data.message}`,
+                    type: 'error',
+                    plain: true,
+                });
               }
             })
             .catch(error => {
               console.error('头像更新失败:', error);
             });
       } else {
-        alert('请选择一个头像！');
+        ElMessage({
+            message: `请选择一个头像！`,
+            type: 'warning',
+            plain: true,
+        });
       }
 
       this.showAvatarDialog = false; // 关闭对话框
