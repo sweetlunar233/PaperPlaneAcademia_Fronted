@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2>平台概况</h2>
-    <el-row :gutter="20">
-      <el-col :span="6" v-for="(item, index) in statistics" :key="index">
+    <el-row :gutter="20" v-loading="isLoading">
+      <el-col :span="6" v-for="(item, index) in statistics" :key="index" >
         <el-card class="stat-card">
           <div class="stat-card-content">
             <h3>{{ item.label }}</h3>
@@ -16,7 +16,6 @@
 
 <script>
 import { platformOverview } from "@/api/user";
-import axios from "axios";
 import { useRouter } from "vue-router";
 
 export default {
@@ -29,20 +28,11 @@ export default {
         { label: "入驻学者数量", value: 0 },
       ],
       router:useRouter(),
+      isLoading:true,
     };
   },
-  async created() {
-    var promise = platformOverview();
-    promise.then((result)=>{
-      if (result.status === 200 && result.data) {
-        this.statistics[0].value = result.data.totalUsers || 0;
-        this.statistics[1].value = result.data.totalPapers || 0;
-        this.statistics[2].value = result.data.totalAuthors || 0;
-        this.statistics[3].value = result.data.totalScholars || 0;
-      }
-    });
-  },
   mounted(){
+    this.isLoading = true;
     var isAdmin = this.$cookies.get("username") === 'admin';
     if(!isAdmin){
       this.router.push({path:'/login'});
@@ -52,6 +42,21 @@ export default {
         plain: true,
       });
     }
+
+    var promise = platformOverview();
+    promise.then((result)=>{
+      console.log(result);
+      if (result.status === 'success' && result.data) {
+        this.statistics[0].value = result.data.totalUsers || 0;
+        this.statistics[1].value = result.data.totalPapers || 0;
+        this.statistics[2].value = result.data.totalAuthors || 0;
+        this.statistics[3].value = result.data.totalScholars || 0;
+      }
+      this.isLoading = false;
+      console.log(this.statistics)
+    })
+    .finally(() => {
+    })
   },
 };
 </script>
