@@ -196,7 +196,7 @@ export default{
                 // });
                 // window.open(this.id, '_blank');
                 ElMessageBox.confirm(
-                    "该领域在本网站无信息，已为您跳转到该领域的官方网站。",
+                    "该领域在本网站无信息，是否为您跳转到该领域的官方网站？",
                     "提示",
                     {
                     confirmButtonText: "确定",
@@ -210,8 +210,12 @@ export default{
                     window.open(this.id, '_blank');
                 })
                 .catch(() => {
-                    // 点击取消，返回上一页
-                    window.history.back();
+                    if (window.opener) {
+                        window.close();  // 关闭当前标签页
+                    } else {
+                        // 如果有 window.opener，则说明是子页面，返回上一页
+                        window.history.back();  // 返回上一页
+                    }
                 });
             }
             else{
@@ -226,7 +230,7 @@ export default{
 
 </script>
 
-<style  scoped>
+<style scoped>
 
 .article .title-block {
     width: 60%;

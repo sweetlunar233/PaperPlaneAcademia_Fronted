@@ -161,7 +161,12 @@
         <div class="user-info-card-content">
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-if="userInfo.institution[0].length < 10">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-else>
+              <el-tooltip :content="userInfo.institution[0]" placement="top">
+                {{ userInfo?.institution[0].substring(0,7) }}...
+              </el-tooltip>
+            </span>
           </div>
           <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
@@ -307,7 +312,7 @@ export default {
           // window.open(targetUserId, '_blank');
           // console.error('获取数据失败', error);
           ElMessageBox.confirm(
-            "该领域在本网站无信息，已为您跳转到该领域的官方网站。",
+            "该学者在本网站无信息，是否为您跳转到该学者的官方网站？",
             "提示",
             {
               confirmButtonText: "确定",
@@ -317,12 +322,20 @@ export default {
           )
           .then(() => {
             // 点击确定，跳转到指定链接
+            // 打开新标签页
             window.history.back();
             window.open(targetUserId, '_blank');
+
+            
+            
           })
           .catch(() => {
-            // 点击取消，返回上一页
-            window.history.back();
+            if (window.opener) {
+              window.close();  // 关闭当前标签页
+            } else {
+              // 如果有 window.opener，则说明是子页面，返回上一页
+              window.history.back();  // 返回上一页
+            }
           });
 
           console.error('获取数据失败', error);

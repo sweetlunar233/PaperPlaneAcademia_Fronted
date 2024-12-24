@@ -7,7 +7,7 @@
       <el-main>
         <el-card class="custom-card">
           <h2 style="display: flex;justify-content: center ; font-size: 60px; color: white ;text-shadow: 
-    10px 10px 5px black, 
+    1px 1px 1px black, 
     /* -2px -2px 3px black,  */
     /* 5px -5px 5px black, */
     -5px 5px 5px black;">高级搜索<svg t="1732093185852" style="color: white;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2792" width="32" height="32"><path d="M974.966667 91.46a21.333333 21.333333 0 0 0-21.713334-5.033333l-896 298.666666a21.333333 21.333333 0 0 0-4.226666 38.533334L256 545.413333V832a21.333333 21.333333 0 0 0 36.42 15.086667L448 691.506667l240.913333 240.913333a21.333333 21.333333 0 0 0 35.426667-8.666667l256-810.666666a21.333333 21.333333 0 0 0-5.373333-21.626667z" fill="rgb(121.3, 187.1, 255)" p-id="2793"></path></svg></h2>
