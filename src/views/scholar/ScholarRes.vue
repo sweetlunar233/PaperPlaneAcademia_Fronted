@@ -128,9 +128,10 @@ export default {
       var response = getTotalPages({
         searchConditions: this.searchConditions
       });
-
+      console.log("1111");
       response
       .then(data => {
+        console.log("2222");
         console.log("getTotalPages", data);
         if(data.status == "error"){
           console.error("Error getting total pages");

@@ -176,6 +176,7 @@
 <script>
 import router from "@/router/index.js";
 import {GetScholarData} from "@/api/user.js";
+import { ElMessage } from 'element-plus';  // 对于 Element Plus
 
 export default {
   data() {
@@ -295,7 +296,7 @@ export default {
           console.log("data:",contributions);
         })
         .catch(error => {
-          alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
+          ElMessage.warning("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
                 window.open(id, '_blank');
           console.error('获取数据失败', error);
         });
