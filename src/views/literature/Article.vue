@@ -12,13 +12,14 @@
                 </div>
                 <div class="subtitle">
                     <span v-for="(author,index) in article.author">
-                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.authorName }}</span><sup>{{ authorToInstitution[index] }}</sup>
+                        <span class="hyperlink" @click="toGateway(author.id)">{{ author.authorName }}</span>
+                        <sup v-if="institutionNoRepeat.length > 1">{{ authorToInstitution[index] }}</sup>
                         <span v-if="index != article.author.length - 1">&ensp;, </span>
                     </span>
                 </div>
                 <div class="subtitle" style="padding-right: 0%">
                     <span v-for="(tmp,index) in institutionNoRepeat">
-                        {{ index + 1 }}.&ensp;{{ tmp }}
+                        <span v-if="institutionNoRepeat.length > 1">{{ index + 1 }}.&ensp;</span>{{ tmp }}
                         <span v-if="index != institutionNoRepeat.length - 1">&ensp;, </span>
                     </span>
                 </div>
