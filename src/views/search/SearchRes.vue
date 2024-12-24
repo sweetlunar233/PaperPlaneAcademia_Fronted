@@ -458,7 +458,7 @@ export default {
 
 .result-item:hover {
   transform: scale(1.015, 1.02);
-  box-shadow: 0 2px 10px var(--deep-shadow);
+  box-shadow: 0 2px 7px rgba(113, 133, 207, 0.45);
 }
 
 .paper-title {

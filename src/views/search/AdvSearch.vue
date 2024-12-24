@@ -72,8 +72,8 @@
           placeholder="到"
         />
       </div>
-      <el-button type="primary" @click="submitSearch" style="background-color: #333; color: white; border-radius: 5px; border: 1px solid #555; padding: 8px 20px;">确定</el-button>
-      <el-button type="warning" @click="onReset" style="margin-left: 10px;">重置</el-button>
+      <el-button type="primary" @click="submitSearch" style="background-color: #333; color: white; border-radius: 5px; border: 1px solid; padding: 8px 20px;margin-top:3%;">确定</el-button>
+      <el-button type="warning" @click="onReset" style="margin-left: 10px;margin-top: 3%; border-radius: 5px; border: 1px solid; padding: 8px 20px;">重置</el-button>
     </div>
           
           
@@ -121,23 +121,35 @@
       
       submitSearch() {
         // 构造 searchData 格式的数据
-        const searchData = this.advancedFields.map(field => ({
-          logic: field.logic||null, // 保留原来的逻辑
-          value: field.value||null,  // 保留原来的值
-          scope: field.scope||null   // 保留原来的范围
-        }));
+         // 构造 searchData 格式的数据
+    const searchData = this.advancedFields.map(field => {
+        // 检查每个条件的逻辑（logic）是否为空
+        if (!field.logic) {
+            this.$message.warning("请为所有条件选择逻辑！");
+            return null;  // 如果没有选择逻辑，则返回 null，跳过此条数据
+        }
+
+        return {
+            logic: field.logic || null, // 保留原来的逻辑
+            value: field.value || null,  // 保留原来的值
+            scope: field.scope || null   // 保留原来的范围
+        };
+    }).filter(item => item !== null);  // 过滤掉没有逻辑的条件
+    if (searchData.length === 0) {
+        return;  // 直接返回，阻止继续执行后面的代码
+    }
 
         // 将 searchType 和 searchKeyword 作为额外的条件添加到 searchData 中
         if (this.searchKeyword && this.searchType) {
-          searchData.push({
-            logic: null,         // 没有逻辑
-            value: this.searchKeyword,  // 将 searchKeyword 作为 value
-            scope: this.searchType // 将 searchType 作为 scope
-          });
-        }else{
-          this.$message.warning("请填写搜索条件");
-          return;
-        }
+  searchData.unshift({  // 使用 unshift() 将其放在数组的第一位
+    logic: null,         // 没有逻辑
+    value: this.searchKeyword,  // 将 searchKeyword 作为 value
+    scope: this.searchType // 将 searchType 作为 scope
+  });
+} else {
+  this.$message.warning("请填写搜索条件");
+  return;
+}
         const formatDate = (date) => {
     if (!date) return null;
     const d = new Date(date);
