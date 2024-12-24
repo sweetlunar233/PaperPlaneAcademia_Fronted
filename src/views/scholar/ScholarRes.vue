@@ -45,9 +45,9 @@
                 v-for="(field, idx) in scholar.fields"
                 :key="idx"
                 class="research-field"
-                @click="goToFieldPage(field)"
+                @click.stop="goToFieldPage(field)"
               >
-                <i class="field-icon">#</i> {{ field }}
+                <i class="field-icon"></i> {{ field.fieldname }}
               </span>
             </div>
 
