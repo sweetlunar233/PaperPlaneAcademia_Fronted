@@ -548,7 +548,7 @@ onMounted(() => {
                                       <div>
                                           <span class="title" @click="gotoField(field.fieldId)">{{ field.fieldName }}</span>
                                       </div>
-                                      <div style="margin-top: 10px;">
+                                      <div v-if="field.topArticleName !== ''" style="margin-top: 10px;">
                                         <span class="abstract">TOP引用量文章：</span>
                                         <span class="author-name" @click="gotoPaper(field.topArticleId)"><u>{{ field.topArticleName }}</u></span>
                                       </div>
