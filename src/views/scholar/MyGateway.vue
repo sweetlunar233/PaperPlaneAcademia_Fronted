@@ -200,6 +200,7 @@ export default {
               if (response.status) {
                 console.log(121)
                 this.userInfo.photoUrl = avatarIndex; // 本地更新头像
+                this.$cookies.set("avatar",avatarIndex);
               } else {
                 ElMessage({
                     message: `头像更新失败：${response.data.message}`,
