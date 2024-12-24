@@ -158,6 +158,8 @@
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
             <span class="user-info-value">{{ userInfo?.institution }}</span>
+          </div>
+          <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
             <span class="user-info-value">{{ userInfo?.institution_country }}</span>
           </div>
@@ -217,12 +219,12 @@ export default {
     ],
       activeTab: "TA的贡献", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
-        'https://th.bing.com/th/id/OIP.Wm28iTeZUzxP_FOrlfqZWAHaHa?rs=1&pid=ImgDetMain',
-        'https://th.bing.com/th/id/OIP.jHUH4s7TQ48X_B-1iozuJgHaHa?rs=1&pid=ImgDetMain',
-        'https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
-        'https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1280,limit_1/sharpen,100',
-        'https://th.bing.com/th/id/R.7376aae88d772c821c6925b91e2ca1aa?rik=8n%2bJq8ypQTiJHA&pid=ImgRaw&r=0',
-        'https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp',
+        "src/assets/images/avatar/1.jpg",
+        "src/assets/images/avatar/2.jpg",
+        "src/assets/images/avatar/3.jpg",
+        "src/assets/images/avatar/4.jpg",
+        "src/assets/images/avatar/5.jpg",
+        "src/assets/images/avatar/6.jpg",
       ],
       userInfo: {
         name: 'a',
@@ -405,11 +407,29 @@ html, body {
   border-bottom: 1px solid #b3cde0; /* 灰色边框 */
 }
 
+.profile-photo {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden; /* 确保超出部分被隐藏 */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-photo:hover {
+  transform: scale(1.05); /* 放大效果 */
+}
+
 .profile-photo img {
   width: 160px;
   height: 160px;
   border-radius: 50%;
   margin-right: 20px;
+}
+
+.profile-photo:hover .profile-photo-img {
+  opacity: 0.8; /* 悬停时图片透明度变化 */
 }
 
 .user-info {
@@ -422,35 +442,7 @@ html, body {
 .right{
   width: 20%;
 }
-.button-container {
-  display: flex;
-  margin-top: 20px; /* 使按钮与其它信息之间有间距 */
-  align-self: flex-end; /* 将按钮放到右侧 */
-  margin-left: 45%;
-  gap: 30px;
-}
 
-.follow-button {
-  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
-  color: #ffffff;
-  font-size: 18px; /* 增加字体大小 */
-  font-weight: bold;
-  padding: 15px 30px; /* 增大按钮的内边距 */
-  border: none;
-  border-radius: 30px; /* 增加圆角 */
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.follow-button:hover {
-  background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
-
-.follow-button:active {
-  transform: scale(0.98);
-}
 
 .username {
   font-size: 24px;
@@ -517,7 +509,7 @@ html, body {
   overflow-y: auto;
   background-color: #fff; /* 白色背景 */
   border-left: 1px solid #ddd;
-  height: 480px; /* 占满父容器的高度 */
+  height: 600px; /* 占满父容器的高度 */
   min-height: 0; /* 防止内容溢出 */
 }
 
@@ -636,38 +628,6 @@ html, body {
   font-weight: bold;
 }
 
-.follow-card {
-  position: fixed;
-  top: 350px; /* 定位在页面上方 */
-  right: 30px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 200px; /* 固定卡片宽度 */
-}
-
-.follow-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.follow-item {
-  display: flex;
-  justify-content: space-between;
-}
-
-.follow-label {
-  font-size: 18px;
-  color: #555;
-}
-
-.follow-number {
-  font-size: 20px;
-  color: #0066cc;
-  font-weight: bold;
-}
 
 .tab-title {
   font-size: 24px;
@@ -683,31 +643,6 @@ html, body {
   margin-top: 10px;
 }
 
-/* 评论列表容器样式 */
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* 每个评论的卡片样式 */
-.comment-item {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  padding: 20px;
-  transition: transform 0.3s;
-}
-
-.comment-item:hover {
-  transform: translateY(-5px); /* 鼠标悬停时的浮动效果 */
-}
-
-/* 评论卡片的头部样式 */
-.comment-header {
-  margin-bottom: 15px;
-}
 
 .comment-header h3 {
   font-size: 18px;
@@ -725,18 +660,6 @@ html, body {
   color: #999;
 }
 
-/* 评论内容样式 */
-.comment-content {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-/* 评论底部的点赞数 */
-.comment-footer {
-  font-size: 14px;
-  color: #888;
-}
 
 /* 如果没有评论，显示的文字 */
 .comment-footer p {
