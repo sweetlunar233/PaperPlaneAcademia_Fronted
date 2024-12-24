@@ -24,12 +24,14 @@
       
       <!-- 评论列表 -->
       <el-col class="postComment"  :span="16" v-loading="isLoading"
-      element-loading-background="rgba(244, 246, 247,0.8)">
+      element-loading-background="rgba(244, 246, 247,0.8)"
+      style="min-height: 220px;"
+      >
         <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">
           评论
         </h2>
         <div style="height: 1px; background-color: #dcdfe6; margin-bottom: 16px;"></div>
-        <div v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
+        <div v-if="comments.length > 0" v-for="(comment, index) in comments" :key="index" style="margin-bottom: 16px;">
           <el-card  type="flex" align="top">
             <div>
               <el-avatar size="200" :src="availableAvatars[comment.avator]"></el-avatar>
@@ -49,6 +51,9 @@
               </el-row>
             </div>
           </el-card>
+        </div>
+        <div v-else>
+          该文章暂无评论，快来评论吧！
         </div>
       </el-col>
 
