@@ -1,5 +1,5 @@
 <template >
-    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgb(244, 246, 247)">
+    <div style="background-color:#EBEEF5" v-loading="isLoading" element-loading-background="rgb(244, 246, 247)" element-loading-text="正在为您全力加载中...">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">

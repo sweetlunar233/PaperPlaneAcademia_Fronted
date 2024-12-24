@@ -1,5 +1,8 @@
 <template>
-  <div class="profile-page">
+  <div class="profile-page"  v-loading="isLoading"
+  element-loading-background="rgb(244, 246, 247)"
+  element-loading-text="正在为您全力加载中..."
+  >
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
@@ -172,6 +175,7 @@ export default {
       favoriteArticles: [],
       comments: [],
       articles: [],
+      isLoading:false,
     };
   },
   methods: {
@@ -243,6 +247,7 @@ export default {
 
     // 集中处理所有数据获取请求
     fetchUserData() {
+      this.isLoading = true;
       const userId = this.$cookies.get('userId');
       var promise = GetMyUserData(userId);
       promise.then(response => {
@@ -256,6 +261,7 @@ export default {
             this.favoriteArticles = favoriteArticles;
             this.comments = comments;
             this.articles = articles;
+            this.isLoading = false;
             console.log(response);
             console.log(userInfo);
           })

@@ -1,6 +1,8 @@
 <template>
   <div class="profile-page"  v-loading="isLoading"
-  element-loading-background="rgb(244, 246, 247)">
+  element-loading-background="rgb(244, 246, 247)"
+  element-loading-text="正在为您全力加载中..."
+  >
     <!-- 顶部区域 -->
     <div class="header">
       <div class="profile-photo">
