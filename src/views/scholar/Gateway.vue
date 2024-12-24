@@ -279,9 +279,10 @@ export default {
       var promise = GetScholarData(currentUserId, targetUserId);
 
       promise.then(response => {
+
           // 假设返回的数据结构包含 userInfo, articles, experts, contributions
           const { userInfo, articles, experts, contributions} = response;
-
+          
           // 更新数据
 
           this.userInfo = userInfo;
@@ -296,7 +297,9 @@ export default {
         })
         .catch(error => {
           alert("该领域在本网站无信息，已为您跳转到该领域的官方网站.")
-                window.open(id, '_blank');
+          window.open(targetUserId, '_blank');
+          console.log("TIEZHU")
+          console.log(targetUserId)
           console.error('获取数据失败', error);
         });
 
@@ -443,6 +446,7 @@ html, body {
 .user-info {
   display: flex;
   flex-direction: column;
+  margin-left: 3%;
 }
 .left{
   width: 20%;

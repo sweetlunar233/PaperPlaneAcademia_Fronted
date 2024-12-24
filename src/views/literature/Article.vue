@@ -1,7 +1,7 @@
 <!-- 文章详情页面 -->
 <template >
     <div style="background-color:#EBEEF5" v-loading="isLoading"
-    element-loading-background="rgba(244, 246, 247,0.8)">
+    element-loading-background="rgb(244, 246, 247)">
     <div class="article">
         <el-row class="title-block">
             <el-col :span="12">
@@ -455,7 +455,7 @@ export default{
 
         toGateway(id){
             // 获取目标 URL
-            const targetUrl = this.router.resolve({ path: '/gateway', query:{id:id} }).href;
+            const targetUrl = this.router.resolve({ path: '/gateway', query:{userId:id} }).href;
             // 使用 window.open 打开新窗口
             window.open(targetUrl, '_blank');
         },
