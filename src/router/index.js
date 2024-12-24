@@ -49,7 +49,7 @@ const router = createRouter({
     {
       path:'/home',
       name:'home',
-      component: () => import('../views/search/Home.vue')
+      component: () => import('../views/Home.vue')
     },
     {
       path:'/searchRes',
@@ -89,7 +89,7 @@ const router = createRouter({
     {
       path:'/error',
       name:'error',
-      component: () => import('../views/search/Error.vue')
+      component: () => import('../views/Error.vue')
     }
   ]
 })
