@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-card class="custom-card" ><h3 style="font-size: 45px;display: flex;justify-content: center ;font-size: 60px;text-shadow: 
+    <el-card class="custom-card" ><h3 style="color: rgb(46, 46, 46);font-size: 45px;display: flex;justify-content: center ;font-size: 60px;text-shadow: 
     10px 10px 5px gray, 
     /* -2px -2px 3px black,  */
     /* 5px -5px 5px black, */
@@ -149,9 +149,9 @@
       onReset() {
         this.authorConditions = [
           {
-            operator: "AND",
+            operator: "",
             value: "",
-            scope: "name",
+            scope: "",
           },
         ];
       },

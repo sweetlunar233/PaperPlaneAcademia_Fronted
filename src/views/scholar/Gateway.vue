@@ -312,7 +312,7 @@ export default {
           // window.open(targetUserId, '_blank');
           // console.error('获取数据失败', error);
           ElMessageBox.confirm(
-            "该领域在本网站无信息，已为您跳转到该领域的官方网站。",
+            "该学者在本网站无信息，是否为您跳转到该学者的官方网站？",
             "提示",
             {
               confirmButtonText: "确定",
@@ -322,12 +322,20 @@ export default {
           )
           .then(() => {
             // 点击确定，跳转到指定链接
+            // 打开新标签页
             window.history.back();
             window.open(targetUserId, '_blank');
+
+            
+            
           })
           .catch(() => {
-            // 点击取消，返回上一页
-            window.history.back();
+            if (window.opener) {
+              window.close();  // 关闭当前标签页
+            } else {
+              // 如果有 window.opener，则说明是子页面，返回上一页
+              window.history.back();  // 返回上一页
+            }
           });
 
           console.error('获取数据失败', error);
