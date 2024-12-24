@@ -176,9 +176,9 @@ const gotoScholar = (userId) => {
 }
 
 const gotoError = (userId) => {
-    router.push({
-    path: '/error',
-  });
+  //   router.push({
+  //   path: '/error',
+  // });
 }
 
 
