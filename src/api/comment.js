@@ -3,7 +3,7 @@ import { post,get } from "./api"
 export function GetComment(articleId){
     let data = {};
     data.articleId = articleId;
-    console.log(articleId);
+    
     return get("/comment/getComment/",JSON.stringify(data));
 }
 

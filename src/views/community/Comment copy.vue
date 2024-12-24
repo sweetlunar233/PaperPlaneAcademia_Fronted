@@ -124,7 +124,7 @@ export default {
       ],
       userId:0,
       username:"",
-      avatar:0,
+      avatar:1,
       paperId:0,
       isLoading:false,
     };
@@ -200,7 +200,7 @@ export default {
     this.username = this.$cookies.get("username");
     this.avatar = this.$cookies.get("avatar");
     this.paperId = this.$route.query.paperId;
-    
+    console.log("currentUserInfo",this.username,this.avatar);
     var promise = GetComment(this.paperId);
     promise.then((result) =>{
       if(result.comments === null){
@@ -211,6 +211,7 @@ export default {
         });
       }
       else{
+        console.log("data:",result.comments);
         this.comments = result.comments;
       }
     })
