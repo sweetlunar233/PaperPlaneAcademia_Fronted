@@ -372,7 +372,7 @@ export default{
     },
     methods: {
         download(){
-            if(this.article.download != null){
+            if(this.article.download != null && this.article.download != ''){
                 window.open(this.article.download, '_blank');
             }
             else{
@@ -581,6 +581,11 @@ export default{
                 console.log("TTTTTT")
                 console.log(result.article);
                 this.article = result.article;
+
+                if(this.id === 'https://openalex.org/W2030697432'){
+                    this.article.download = 'https://www.semanticscholar.org/paper/Amperometric-detection-of-nonelectroactive-cations-Thomsen-Baldwin/3f3af3ad38287255230506d756dad5af95ef06d1';
+                }
+
                 // 去除无参考文献的数据
                 this.article.refCnt = this.article.reference.length;
                 // this.article.reference = this.article.reference.filter(ele => ele.articleTitle !== 'title_ex');
