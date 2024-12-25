@@ -36,7 +36,7 @@
         <!-- 头像选择 -->
         <el-form-item label="头像">
           <el-button @click="showAvatarDialog = true" type="primary">选择头像</el-button>
-          <span v-if="registerForm.avatar">已选择头像</span>
+          <span v-if="registerForm.avatar" style="margin-left: 5px;">已选择头像</span>
         </el-form-item>
 
         <el-form-item>
@@ -62,7 +62,7 @@
             alt="头像选项"
             class="avatar-option"
             :class="{ selected: selectedAvatar === avatar }"
-            @click="selectAvatar(index)"
+            @click="selectAvatar(avatar)"
           />
         </div>
       </div>
@@ -213,9 +213,10 @@ export default {
 }
 
 .avatar-option.selected {
-  border-color: #007bff; /* 蓝色边框颜色 */
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* 蓝色阴影效果 */
+  border-color: #3697ff; /* 蓝色边框颜色 */
 }
+
+
 
 </style>
 
