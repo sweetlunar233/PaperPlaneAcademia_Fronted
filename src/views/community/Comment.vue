@@ -76,12 +76,12 @@ export default {
       // replyText: {}, // 用于存储每条评论的回复输入框内容
       // replyingTo: null, // 当前正在回复的评论ID
       availableAvatars: [ // 可供选择的头像
-        "../../images/avatar/1.jpg",
-        "../../images/avatar/2.jpg",
-        "../../images/avatar/3.jpg",
-        "../../images/avatar/4.jpg",
-        "../../images/avatar/5.jpg",
-        "../../images/avatar/6.jpg",
+        "../../assets/images/avatar/1.jpg",
+        "../../assets/images/avatar/2.jpg",
+        "../../assets/images/avatar/3.jpg",
+        "../../assets/images/avatar/4.jpg",
+        "../../assets/images/avatar/5.jpg",
+        "../../assets/images/avatar/6.jpg",
       ],
       userId:0,
       username:"",

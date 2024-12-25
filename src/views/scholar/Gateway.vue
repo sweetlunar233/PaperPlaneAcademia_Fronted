@@ -230,12 +230,12 @@ export default {
     ],
       activeTab: "TA的贡献", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
-        "src/assets/images/avatar/1.jpg",
-        "src/assets/images/avatar/2.jpg",
-        "src/assets/images/avatar/3.jpg",
-        "src/assets/images/avatar/4.jpg",
-        "src/assets/images/avatar/5.jpg",
-        "src/assets/images/avatar/6.jpg",
+        "../../assets/images/avatar/1.jpg",
+        "../../assets/images/avatar/2.jpg",
+        "../../assets/images/avatar/3.jpg",
+        "../../assets/images/avatar/4.jpg",
+        "../../assets/images/avatar/5.jpg",
+        "../../assets/images/avatar/6.jpg",
       ],
       userInfo: {
         name: 'a',
