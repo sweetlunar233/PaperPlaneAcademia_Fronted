@@ -41,7 +41,7 @@
         </p>
         <p><strong>发表论文数：</strong>{{ userInfo.papersCount }}</p>
         <p><strong>电子邮件：</strong>{{ userInfo.email }}</p>
-        <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p>
+        <!-- <p><strong>电话：</strong>{{ userInfo.phoneNumber }}</p> -->
       </div>
         <button @click="toggleAuthenticate" class="button">
           {{ isAuthenticated ? '✔ 已认证' : '去认证' }}
