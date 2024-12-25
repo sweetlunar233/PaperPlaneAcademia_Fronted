@@ -136,8 +136,10 @@
                 </div>
                 <div class="article-content">
                   <div class="article-info">
-                    <p><strong>作者：</strong>{{ article.authors }}</p>
-                    <p><strong>机构：</strong>{{ article.institutions }}</p>
+                    <p><strong>作者：</strong>
+                      <span v-for=" (ref,index) in article.authors">{{ ref }}</span>
+                    </p>
+                    <!-- <p><strong>机构：</strong>{{ article.institutions }}</p> -->
                     <p><strong>发表期刊：</strong>{{ article.journal }}</p>
                   </div>
                   <div class="article-meta">

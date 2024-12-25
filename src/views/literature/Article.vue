@@ -93,9 +93,9 @@
                                     <el-col :span="1" style="text-align: left;">
                                         [{{ index + 1 }}] 
                                     </el-col>
-                                    <el-col :span="22" class="hyperlink">
-                                        {{ ref.articleId }}
-                                        <!-- <div class="reference-author">
+                                    <el-col :span="22" class="hyperlink" @click="toArticle(articleId)">
+                                        {{ ref.articleTitle }}
+                                        <div class="reference-author">
                                             <span v-for="(author,index2) in ref.authors">
                                                 <span v-if="index2 < 5">
                                                     {{ author }}
@@ -107,7 +107,7 @@
                                                     .etc
                                                 </span>
                                             </span>
-                                        </div> -->
+                                        </div>
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
@@ -181,9 +181,9 @@
                 <el-divider />
                 <div>
                     <div class="abstract-title">相关文献</div>
-                    <div v-if="article.relation.length > 0" v-for="(rela,index) in article.relation" @click="toOpenAlex(rela.articleId)" class="field">
-                        <span class="hyperlink">{{ rela.articleId }}</span>
-                        <!-- <div class="relation-author">
+                    <div v-if="article.relation.length > 0" v-for="(rela,index) in article.relation" @click="toArticle(rela.articleId)" class="field">
+                        <span class="hyperlink">{{ rela.articleTitle }}</span>
+                        <div class="relation-author">
                             <span v-for="(author,index2) in rela.authors">
                                 <span v-if="index2 < 2">
                                     {{ author }}
@@ -195,7 +195,7 @@
                                     .etc
                                 </span>
                             </span>
-                        </div> -->
+                        </div>
                     </div>
                     <div v-else class="tab-tip" style="padding-top: 2%;">
                         暂无相关文献.

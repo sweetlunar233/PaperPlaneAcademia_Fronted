@@ -24,7 +24,7 @@ export default {
     return {
       statistics: [
         { label: "注册用户数", value: 5 },
-        { label: "文献数量", value: "7,364,887" },
+        { label: "文献数量", value: "18,777,710" },
         { label: "作者数量", value: "15,997,012" },
         { label: "入驻学者数量", value: 2 },
       ],

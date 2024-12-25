@@ -121,7 +121,7 @@ const fields = ref([
 
 const statistic = ref({
   authorCount: 15997012,
-  paperCount: 7364887,
+  paperCount: 18777710,
   journalCount: 29063,
   organizationsCount: 49100,
   fieldsCount: 379754,
@@ -228,7 +228,7 @@ const startCounting = () => {
         }
         else if(index == 1){
           if (numbers.value[index] < target) {
-              numbers.value[index] += increment * 299;
+              numbers.value[index] += increment * 299*3;
           } else {
               numbers.value[index] = target;
               clearInterval(intervals[index]); // 达到目标时停止
