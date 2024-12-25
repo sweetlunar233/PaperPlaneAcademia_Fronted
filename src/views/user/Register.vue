@@ -61,7 +61,7 @@
             :src="avatar"
             alt="头像选项"
             class="avatar-option"
-            :class="{ selected: selectedAvatar === avatar }"
+            :class="{ selected: selectedAvatar === index }"
             @click="selectAvatar(index)"
           />
         </div>
