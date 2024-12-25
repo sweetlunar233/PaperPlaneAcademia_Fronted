@@ -151,12 +151,12 @@ export default {
       selectedAvatar: null, // 当前选择的头像
       isAuthenticated: false,
       availableAvatars: [ // 可供选择的头像
-        "../../images/avatar/1.jpg",
-        "../../images/avatar/2.jpg",
-        "../../images/avatar/3.jpg",
-        "../../images/avatar/4.jpg",
-        "../../images/avatar/5.jpg",
-        "../../images/avatar/6.jpg",
+        "src/assets/images/avatar/1.jpg",
+        "src/assets/images/avatar/2.jpg",
+        "src/assets/images/avatar/3.jpg",
+        "src/assets/images/avatar/4.jpg",
+        "src/assets/images/avatar/5.jpg",
+        "src/assets/images/avatar/6.jpg",
       ],
       userInfo: {
         name: '',
