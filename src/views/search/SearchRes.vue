@@ -254,7 +254,7 @@ export default {
         dateRange: this.dateRange,
         filter: {
           keys: this.selectedKeywords,
-          years: this.selectedYears.map(year => year.toString()),
+          years: this.selectedYears.map(year => year.getFullYear().toString()),
           authorOrganizations: this.selectedAuthors
         },
         sort: this.sortBy * this.sortDown,

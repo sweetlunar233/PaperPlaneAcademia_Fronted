@@ -97,7 +97,7 @@
               <div class="comment-card">
                 <div class="comment-header">
                   <h3>{{ comment.commenter }}</h3>
-                  <p class="paper-id">所属论文：<span>{{ comment.paperId }}</span></p>
+                  <p class="paper-id">所属论文：<span style="font-family: 'Times New Roman', Times, serif;">{{ comment.paperTitle }}</span></p>
                   <p class="comment-time">{{ comment.time }}</p>
                 </div>
                 <div class="comment-content">
