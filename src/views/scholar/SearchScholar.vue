@@ -124,26 +124,31 @@
   
       // 提交搜索
       submitSearch() {        
-        // 生成搜索参数
-        const searchParams = this.authorConditions.map((cond) => ({
-          logic: cond.logic||null,
-          value: cond.value||null,
-          scope: cond.scope||null,
-        }));
-        if (this.searchKeyword && this.searchType) {
-          searchParams.unshift({
-            logic: null,         // 没有逻辑
-            value: this.searchKeyword,  // 将 searchKeyword 作为 value
-            scope: this.searchType // 将 searchType 作为 scope
-          });
-        }
-        else{
-          this.$message.warning("请填写所有搜索条件");
-          return;
-        }
-        // 跳转到 ScholarRes.vue 页面并传递参数
-        this.$router.push({ name: "scholarRes", query: { conditions: JSON.stringify(searchParams) } });
-      },
+  // 先确保 searchKeyword 和 searchType 有值，否则不执行搜索
+  if (!this.searchKeyword || !this.searchType) {
+    this.$message.warning("请填写所有搜索条件");
+    return;
+  }
+
+  // 生成搜索参数，过滤掉空值的条件
+  const searchParams = this.authorConditions
+    .filter(cond => cond.value && cond.scope && cond.logic)  // 筛掉空条件
+    .map((cond) => ({
+      logic: cond.logic,
+      value: cond.value,
+      scope: cond.scope,
+    }));
+
+  // 确保至少有一个条件 (searchKeyword 和 searchType) 被加入
+  searchParams.unshift({
+    logic: null,           // 没有逻辑
+    value: this.searchKeyword, // 将 searchKeyword 作为 value
+    scope: this.searchType   // 将 searchType 作为 scope
+  });
+
+  // 跳转到 ScholarRes.vue 页面并传递参数
+  this.$router.push({ name: "scholarRes", query: { conditions: JSON.stringify(searchParams) } });
+},
   
       // 重置条件
       onReset() {
