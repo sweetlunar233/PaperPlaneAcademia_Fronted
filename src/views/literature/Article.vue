@@ -532,10 +532,11 @@ export default{
                 return this.article.author[0].authorName;
             } else if (this.article.author.length === 2) {
                 return this.article.author[0].authorName + ' 和 ' + this.article.author[1].authorName;
-            } else {
+            } else if(this.article.author.length > 2){
                 // 超过两个作者，取前三个，并在末尾加上“等”
                 return this.article.author[0].authorName + '、' + this.article.author[1].authorName + '、' + this.article.author[2].authorName + ' 等';
             }
+            return "";
         },
         toOpenAlex(id){
             window.open(id, '_blank');
