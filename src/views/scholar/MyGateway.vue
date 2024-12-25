@@ -151,12 +151,12 @@ export default {
       selectedAvatar: null, // 当前选择的头像
       isAuthenticated: false,
       availableAvatars: [ // 可供选择的头像
-        "src/assets/images/avatar/1.jpg",
-        "src/assets/images/avatar/2.jpg",
-        "src/assets/images/avatar/3.jpg",
-        "src/assets/images/avatar/4.jpg",
-        "src/assets/images/avatar/5.jpg",
-        "src/assets/images/avatar/6.jpg",
+        "https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/01a6095f110b9fa8012066219b67d4.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/014f685f110b9fa801215aa096689e.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/015ac85f110b9fa801206621387957.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
       ],
       userInfo: {
         name: '',

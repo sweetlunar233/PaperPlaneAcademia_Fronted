@@ -162,8 +162,8 @@
         <div class="user-info-card-content">
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value" v-if="userInfo.institution[0].length < 10">{{ userInfo?.institution[0] }}</span>
-            <span class="user-info-value" v-else>
+            <span class="user-info-value" v-if="userInfo && userInfo.institution && userInfo.institution[0].length < 10">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-if="userInfo && userInfo.institution && userInfo.institution[0].length >= 10">
               <el-tooltip :content="userInfo.institution[0]" placement="top">
                 {{ userInfo?.institution[0].substring(0,7) }}...
               </el-tooltip>
@@ -230,12 +230,12 @@ export default {
     ],
       activeTab: "TA的贡献", // 默认激活动态选项卡
       availableAvatars: [ // 可供选择的头像
-        "src/assets/images/avatar/1.jpg",
-        "src/assets/images/avatar/2.jpg",
-        "src/assets/images/avatar/3.jpg",
-        "src/assets/images/avatar/4.jpg",
-        "src/assets/images/avatar/5.jpg",
-        "src/assets/images/avatar/6.jpg",
+      "https://img.zcool.cn/community/016a2e5f110b9fa801215aa097202c.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/01a6095f110b9fa8012066219b67d4.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/01972c5f110b9fa801206621eba569.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/0143395f110b9fa801215aa060a140.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/014f685f110b9fa801215aa096689e.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
+        "https://img.zcool.cn/community/015ac85f110b9fa801206621387957.png?imageMogr2/auto-orient/thumbnail/1280x%3e/sharpen/0.5/quality/100/format/webp",
       ],
       userInfo: {
         name: 'a',
