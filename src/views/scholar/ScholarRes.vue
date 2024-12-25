@@ -80,6 +80,7 @@
 <script>
 import { fetchResults } from '@/api/user';
 import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';  // 对于 Element Plus
 
 export default {
   data() {
@@ -140,6 +141,8 @@ export default {
           page: this.currentPage,
           userId: this.userId
         });
+
+        // ElMessage.success(this.time);
 
         console.log("fetchResults", data);
 

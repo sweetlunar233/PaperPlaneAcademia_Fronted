@@ -89,13 +89,13 @@
                                 由于版权限制，此处可能仅展示部分相关论文
                             </div>
                             <el-scrollbar height="350px">
-                                <el-row v-if="article.reference" v-for="(ref,index) in article.reference" class="reference-block" @click="toArticle(ref.articleId)">
+                                <el-row v-if="article.reference" v-for="(ref,index) in article.reference" class="reference-block" @click="toOpenAlex(ref.articleId)">
                                     <el-col :span="1" style="text-align: left;">
                                         [{{ index + 1 }}] 
                                     </el-col>
-                                    <el-col :span="22">
-                                        {{ ref.articleTitle }}
-                                        <div class="reference-author">
+                                    <el-col :span="22" class="hyperlink">
+                                        {{ ref.articleId }}
+                                        <!-- <div class="reference-author">
                                             <span v-for="(author,index2) in ref.authors">
                                                 <span v-if="index2 < 5">
                                                     {{ author }}
@@ -107,7 +107,7 @@
                                                     .etc
                                                 </span>
                                             </span>
-                                        </div>
+                                        </div> -->
                                     </el-col>
                                 </el-row>
                             </el-scrollbar>
@@ -181,9 +181,9 @@
                 <el-divider />
                 <div>
                     <div class="abstract-title">相关文献</div>
-                    <div v-if="article.relation.length > 0" v-for="(rela,index) in article.relation" @click="toArticle(rela.articleId)" class="field">
-                        <span class="hyperlink">{{ rela.name }}</span>
-                        <div class="relation-author">
+                    <div v-if="article.relation.length > 0" v-for="(rela,index) in article.relation" @click="toOpenAlex(rela.articleId)" class="field">
+                        <span class="hyperlink">{{ rela.articleId }}</span>
+                        <!-- <div class="relation-author">
                             <span v-for="(author,index2) in rela.authors">
                                 <span v-if="index2 < 2">
                                     {{ author }}
@@ -195,7 +195,7 @@
                                     .etc
                                 </span>
                             </span>
-                        </div>
+                        </div> -->
                     </div>
                     <div v-else class="tab-tip" style="padding-top: 2%;">
                         暂无相关文献.
@@ -521,6 +521,9 @@ export default{
                 // 超过两个作者，取前三个，并在末尾加上“等”
                 return this.article.author.slice(0, 3).join('、') + ' 等';
             }
+        },
+        toOpenAlex(id){
+            window.open(id, '_blank');
         }
     },
 
@@ -533,6 +536,7 @@ export default{
         var promise = GetArticle(this.id);
         promise
         .then((result) => {
+
             if(result.status === "error"){
                 // ElMessage({
                 //     message: '该论文不存在',
@@ -558,13 +562,15 @@ export default{
                 });
             }
             else{
+                console.log("TTTTTT")
+                console.log(result.article);
                 this.article = result.article;
                 // 去除无参考文献的数据
                 this.article.refCnt = this.article.reference.length;
-                this.article.reference = this.article.reference.filter(ele => ele.articleTitle !== 'title_ex');
+                // this.article.reference = this.article.reference.filter(ele => ele.articleTitle !== 'title_ex');
                 // 去除无相关文献的数据
                 this.article.relaCnt = this.article.relation.length;
-                this.article.relation = this.article.relation.filter(ele => ele.articleTitle !== 'title_ex');
+                // this.article.relation = this.article.relation.filter(ele => ele.articleTitle !== 'title_ex');
 
                 this.quotation = this.formatGB7714();
                 this.institutionNoRepeat = [...new Set(this.article.institution)];
