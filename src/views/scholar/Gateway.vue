@@ -162,8 +162,9 @@
         <div class="user-info-card-content">
           <div class="user-info-item">
             <span class="user-info-label">机构：</span>
-            <span class="user-info-value" v-if="userInfo && userInfo.institution && userInfo.institution[0].length < 10">{{ userInfo?.institution[0] }}</span>
-            <span class="user-info-value" v-if="userInfo && userInfo.institution && userInfo.institution[0].length >= 10">
+            <span class="user-info-value" v-if="userInfo && userInfo.institution && userInfo.institution[0] && userInfo.institution[0].length < 10">{{ userInfo?.institution[0] }}</span>
+            <span class="user-info-value" v-else>暂无</span>
+            <span class="user-info-value" v-if="userInfo && userInfo.institution && userInfo.institution[0] && userInfo.institution[0].length >= 10">
               <el-tooltip :content="userInfo.institution[0]" placement="top">
                 {{ userInfo?.institution[0].substring(0,7) }}...
               </el-tooltip>
@@ -171,7 +172,7 @@
           </div>
           <div class="user-info-item">
             <span class="user-info-label">机构国籍：</span>
-            <span class="user-info-value">{{ userInfo?.institution_country[0] }}</span>
+            <span class="user-info-value">{{ userInfo?.institution_country[0] || "暂无" }}</span>
           </div>
         </div>
       </div>
