@@ -118,7 +118,7 @@
             type="circle"
             :stroke-width="20"
             :size="900" 
-            
+            :format="formatProgress"
           />
         </div>
       </div>
@@ -261,7 +261,7 @@ export default {
     getRandomAvatar() {
     const randomIndex = Math.floor(Math.random() * this.availableAvatars.length);
     return this.availableAvatars[randomIndex];
-  },
+    },
     getAvatarStyle(index) {
       const angle = (index / this.experts.length) * 2 * Math.PI;
       const x = this.centerX + Math.cos(angle) * this.radius;
@@ -350,6 +350,9 @@ export default {
           paperId: id
         }
       })
+    },
+    formatProgress(percent) {
+      return `${percent.toFixed(2)}`; // 不显示 %
     }
   },
   mounted() {
