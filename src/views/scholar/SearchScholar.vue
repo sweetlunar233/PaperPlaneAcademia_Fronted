@@ -131,7 +131,7 @@
           scope: cond.scope||null,
         }));
         if (this.searchKeyword && this.searchType) {
-          searchParams.push({
+          searchParams.unshift({
             logic: null,         // 没有逻辑
             value: this.searchKeyword,  // 将 searchKeyword 作为 value
             scope: this.searchType // 将 searchType 作为 scope
