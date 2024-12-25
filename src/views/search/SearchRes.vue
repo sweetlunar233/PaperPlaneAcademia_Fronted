@@ -381,6 +381,9 @@ export default {
     },
     router: {
       handler() {
+        this.selectedKeywords = [];
+        this.selectedYears = [];
+        this.selectedAuthors = [];
         this.currentPage = 1;
         this.fetchFilters(); // 加载筛选条件
         this.getTotalPages(); // 加载总页数
