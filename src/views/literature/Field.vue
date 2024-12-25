@@ -165,7 +165,14 @@ export default{
 
         async copy(content){
             try {
-                await navigator.clipboard.writeText(content);
+                // await navigator.clipboard.writeText(content);
+                // 创建一个临时的textarea元素，用于复制文本
+                const textArea = document.createElement('textarea');
+                textArea.value = content;  // 设置为你想要复制的内容
+                document.body.appendChild(textArea);
+                textArea.select();  // 选择文本
+                document.execCommand('copy');  // 执行复制操作
+                document.body.removeChild(textArea);  // 移除临时的textarea
                 ElMessage({
                     message: '已复制到剪切板',
                     type: 'success',
