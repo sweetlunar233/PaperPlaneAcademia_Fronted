@@ -173,7 +173,7 @@ export default{
                 });
             } catch (err) {
                 ElMessage({
-                    message: '文本复制失败：',
+                    message: '文本复制失败：'+err,
                     type: 'error',
                     plain: true,
                 });
