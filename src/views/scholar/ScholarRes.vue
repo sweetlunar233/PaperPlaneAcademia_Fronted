@@ -149,16 +149,16 @@ export default {
         if (data.status === "error") {
           console.error("Error fetching results");
           // 如果数据请求失败，使用假数据
-          this.showRes = [
-            { 
-              Id: '11',
-              name: '测试学者名字', 
-              organization: '北京航空航天大学', 
-              paperCount: 4, 
-              collaborators: [{ name: '作者 1', Id: '002' }, { name: '作者 3', Id: '003' }],
-              fields: [{ fieldname: '人工智能', fieldId: '001' }, { fieldname: '深度学习', fieldId: '002' }]
-            }
-          ];
+          // this.showRes = [
+          //   { 
+          //     Id: '11',
+          //     name: '测试学者名字', 
+          //     organization: '北京航空航天大学', 
+          //     paperCount: 4, 
+          //     collaborators: [{ name: '作者 1', Id: '002' }, { name: '作者 3', Id: '003' }],
+          //     fields: [{ fieldname: '人工智能', fieldId: '001' }, { fieldname: '深度学习', fieldId: '002' }]
+          //   }
+          //];
         } else {
           // 数据正常返回时，映射数据结构
           this.totalPages = data.totalPages;
