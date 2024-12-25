@@ -152,7 +152,7 @@ export default {
                 this.$router.push("/login");
               } else {
                 ElMessage({
-                  message: result,
+                  message: result.message,
                   type: 'error',
                 });
               }
