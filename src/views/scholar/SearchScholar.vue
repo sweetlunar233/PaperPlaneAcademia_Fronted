@@ -34,7 +34,7 @@
           >
 
             <!-- 运算符选择 -->
-            <el-select v-if="index >= 0" v-model="condition.operator" placeholder="逻辑运算" style="width: 100px;">
+            <el-select v-if="index >= 0" v-model="condition.logic" placeholder="逻辑运算" style="width: 100px;">
               <el-option label="AND" value="AND"></el-option>
               <el-option label="OR" value="OR"></el-option>
               <el-option label="NOT" value="NOT"></el-option>
@@ -96,7 +96,7 @@
         ],
         authorConditions: [
           {
-            operator: null, // 初始条件的运算符
+            logic: null, // 初始条件的运算符
             value: "", // 条件内容
             scope: null, // 条件范围
           },
@@ -110,7 +110,7 @@
         alert('已达到最大条件数量（6条）');
         return;  // 不允许继续添加
     }
-        this.authorConditions.splice(index + 1, 0, {  value: "", operator: "", scope: ""  });
+        this.authorConditions.splice(index + 1, 0, {  value: "", logic: "", scope: ""  });
       },
   
       // 移除条件
@@ -126,7 +126,7 @@
       submitSearch() {        
         // 生成搜索参数
         const searchParams = this.authorConditions.map((cond) => ({
-          operator: cond.operator||null,
+          logic: cond.logic||null,
           value: cond.value||null,
           scope: cond.scope||null,
         }));
@@ -149,7 +149,7 @@
       onReset() {
         this.authorConditions = [
           {
-            operator: "",
+            logic: "",
             value: "",
             scope: "",
           },
