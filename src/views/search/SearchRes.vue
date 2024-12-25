@@ -292,8 +292,8 @@ export default {
             },
           ];
         }else{
-          this.searchTime=data.queryTime;
-          this.searchCount=data.total%100;
+          this.searchTime=data.queryTime%100;
+          this.searchCount=data.total;
           this.showRes = data.articles;
         }
       })
