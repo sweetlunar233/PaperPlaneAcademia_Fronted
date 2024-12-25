@@ -583,7 +583,7 @@ export default{
                 this.article = result.article;
 
                 if(this.id === 'https://openalex.org/W2030697432'){
-                    this.article.download = 'https://www.semanticscholar.org/paper/Amperometric-detection-of-nonelectroactive-cations-Thomsen-Baldwin/3f3af3ad38287255230506d756dad5af95ef06d1';
+                    this.article.download = 'https://pubs.acs.org/doi/epdf/10.1021/ac00198a002?ref=article_openPDF';
                 }
 
                 // 去除无参考文献的数据
