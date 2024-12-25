@@ -396,9 +396,16 @@ export default{
             this.starCnt--;
         },
 
-        async share(){
+        async share() {
             try {
-                await navigator.clipboard.writeText(window.location.href);
+                // 创建一个临时的textarea元素，用于复制文本
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;  // 设置为你想要复制的内容
+                document.body.appendChild(textArea);
+                textArea.select();  // 选择文本
+                document.execCommand('copy');  // 执行复制操作
+                document.body.removeChild(textArea);  // 移除临时的textarea
+
                 ElMessage({
                     message: '分享链接已复制到剪切板',
                     type: 'success',
@@ -406,16 +413,24 @@ export default{
                 });
             } catch (err) {
                 ElMessage({
-                    message: '文本复制失败：'+err,
+                    message: '文本复制失败：' + err,
                     type: 'error',
                     plain: true,
                 });
             }
         },
 
+
         async quote(){
             try {
-                await navigator.clipboard.writeText(this.quotation);
+                // 创建一个临时的textarea元素，用于复制文本
+                const textArea = document.createElement('textarea');
+                textArea.value = this.quotation;  // 设置为你想要复制的内容
+                document.body.appendChild(textArea);
+                textArea.select();  // 选择文本
+                document.execCommand('copy');  // 执行复制操作
+                document.body.removeChild(textArea);  // 移除临时的textarea
+                // await navigator.clipboard.writeText(this.quotation);
                 ElMessage({
                     message: '引用格式已复制到剪切板',
                     type: 'success',
@@ -514,12 +529,12 @@ export default{
         // 格式化作者信息
         formatAuthors() {
             if (this.article.author.length === 1) {
-                return this.article.author[0];
+                return this.article.author[0].authorName;
             } else if (this.article.author.length === 2) {
-                return this.article.author.join(' 和 ');
+                return this.article.author[0].authorName + ' 和 ' + this.article.author[1].authorName;
             } else {
                 // 超过两个作者，取前三个，并在末尾加上“等”
-                return this.article.author.slice(0, 3).join('、') + ' 等';
+                return this.article.author[0].authorName + '、' + this.article.author[1].authorName + '、' + this.article.author[2].authorName + ' 等';
             }
         },
         toOpenAlex(id){
