@@ -36,18 +36,21 @@
 
     <div class="results-section">
       <h1 style="color:#282829;">检索结果</h1>
-
-      <div class="sort-controls">
-        <el-radio-group v-model="sortBy" fill="#a6c0ed">
-          <el-radio-button :value=1 >按相关度排序</el-radio-button>
-          <el-radio-button :value=3 >按时间排序</el-radio-button>
-          <el-radio-button :value=2 >按被引次数排序</el-radio-button>
-        </el-radio-group>
-        <p style="width:25px;height:25px;border: 1px solid #c7d0db;border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
-          <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="#385b9d"><SortDown /></el-icon>
-          <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="#385b9d"><SortUp /></el-icon>
-        </p>
-      </div>
+        <div class="container">
+          <span>用时 {{searchTime}}ms 共检索到 {{ searchCount }} 篇相关论文</span>
+          <div class="sort-controls">
+            
+            <el-radio-group v-model="sortBy" fill="#a6c0ed">
+              <el-radio-button :value=1 >按相关度排序</el-radio-button>
+              <el-radio-button :value=3 >按时间排序</el-radio-button>
+              <el-radio-button :value=2 >按被引次数排序</el-radio-button>
+            </el-radio-group>
+            <p style="width:25px;height:25px;border: 1px solid #c7d0db;border-radius: 15px; display: flex; justify-content: center; align-items: center;margin-right:20px">
+              <el-icon v-if="sortDown===1" @click="sortDown=-1" size="20" color="#385b9d"><SortDown /></el-icon>
+              <el-icon v-if="sortDown===-1" @click="sortDown=1" size="20" color="#385b9d"><SortUp /></el-icon>
+            </p>
+          </div>
+        </div>
 
       <div class="results-list">
         
@@ -135,6 +138,9 @@ export default {
       selectedKeywords: [],
       selectedYears: [],
       selectedAuthors: [],
+
+      searchTime:15,
+      searchCount:358,
 
       userId: this.$cookies.get('userId'),
       router:useRouter(),
@@ -286,7 +292,8 @@ export default {
             },
           ];
         }else{
-          
+          this.searchTime=data.queryTime%100;
+          this.searchCount=data.total;
           this.showRes = data.articles;
         }
       })
@@ -403,15 +410,15 @@ export default {
 .search-container {
   display: flex;
   margin: 20px;
-  height:80vh;
+  height: 80vh;
 }
 
 .search-filters {
   width: 300px;
   border-right: 2px solid #c7d0db;
   position: sticky;
-  word-wrap:break-word;  
-  word-break:break-all;  
+  word-wrap: break-word;  
+  word-break: break-all;  
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -437,9 +444,10 @@ export default {
 }
 
 .results-list {
+  border-top: 1.2px solid #c7d0db;
   width:77vw;
   overflow-y: auto;
-  padding-top: 20px;
+  padding-top: 10px;
   padding-left: 10px;
 }
 
@@ -515,13 +523,22 @@ export default {
   margin-top: 5px;
 }
 
+.container {
+  color: #6e8cc4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left:10px;
+  margin-bottom: -20px;
+}
+
 .sort-controls{
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 100%;  
+  width: 40vw;  
+  margin-bottom:15px;
   gap: 10px;
-  border-bottom: 1px solid #c7d0db;
 }
 
 .action-buttons {
