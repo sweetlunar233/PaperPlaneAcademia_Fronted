@@ -50,7 +50,7 @@
         <el-select v-model="field.scope" placeholder="选择范围" style="width: 150px;margin-left: 10px">
           <el-option label="标题" value="title"></el-option>
           <el-option label="作者" value="author"></el-option>
-          <el-option label="关键词" value="keyword"></el-option>
+          <el-option label="关键词" value="keywords"></el-option>
         </el-select>
 
         <!-- 增加/删除按钮 -->
@@ -100,7 +100,7 @@
         searchTypes: [
           { label: "标题", value: "title" },
           { label: "作者", value: "author" },
-          { label: "关键词", value: "keyword" },
+          { label: "关键词", value: "keywords" },
         ],
         advancedFields: [
           { value: "", logic: null, scope: null},
