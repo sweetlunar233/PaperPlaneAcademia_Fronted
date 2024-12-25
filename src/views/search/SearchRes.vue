@@ -92,10 +92,10 @@
           </div>
 
           <div class="action-buttons" >
-            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="!paper.isFavorite"> 
+            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="!paper.isFavorite && userId"> 
               <el-icon :size="18" ><Star /></el-icon>
             </button>
-            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="paper.isFavorite"> 
+            <button @click.stop="collectPaper(paper)" class="action-btn" v-if="paper.isFavorite && userId"> 
               <el-icon :size="18" ><StarFilled /></el-icon>
             </button>
             <!-- <button @click="quotePaper(paper)" class="action-btn">
@@ -246,7 +246,7 @@ export default {
         },
         sort: this.sortBy * this.sortDown,
         page: this.currentPage,
-        userId: this.userId
+        userId: this.userId || 16
       })
       this.loading = true;
       var response = fetchResults({
@@ -259,7 +259,7 @@ export default {
         },
         sort: this.sortBy * this.sortDown,
         page: this.currentPage,
-        userId: this.userId
+        userId: this.userId || 16
       });
 
       response
@@ -329,7 +329,7 @@ export default {
     },
 
     collectPaper(paper) {
-      var response = PostStar(this.userId, paper.Id, paper.isFavorite);
+      var response = PostStar(this.userId || 16, paper.Id, paper.isFavorite);
 
       response
       .then((result) => {
