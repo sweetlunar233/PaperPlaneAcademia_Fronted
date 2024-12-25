@@ -62,7 +62,7 @@
             alt="头像选项"
             class="avatar-option"
             :class="{ selected: selectedAvatar === avatar }"
-            @click="selectAvatar(avatar)"
+            @click="selectAvatar(index)"
           />
         </div>
       </div>
